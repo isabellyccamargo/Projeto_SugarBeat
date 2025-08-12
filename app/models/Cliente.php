@@ -1,6 +1,6 @@
 <?php
 
-class Cliente
+class Cliente implements JsonSerializable
 {
     private $id_cliente;
     private $nome;
@@ -115,5 +115,21 @@ class Cliente
     public function setDataCadastro($data_cadastro)
     {
         $this->data_cadastro = $data_cadastro;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id_cliente' => $this->id_cliente,
+            'nome' => $this->nome,
+            'cpf' => $this->cpf,
+            'email' => $this->email,
+            'senha' => $this->senha,
+            'cidade' => $this->cidade,
+            'bairro' => $this->bairro,
+            'rua' => $this->rua,
+            'numero_da_casa' => $this->numero_da_casa,
+            'data_cadastro' => $this->data_cadastro
+        ];
     }
 }

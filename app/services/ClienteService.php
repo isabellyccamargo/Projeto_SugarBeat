@@ -26,10 +26,6 @@ class ClienteService {
     public function atualizarCliente(Cliente $cliente) {
         return $this->clienteRepository->update($cliente);
     }
-
-    public function deletarCliente($id) {
-        return $this->clienteRepository->delete($id);
-    }
 }
 
 ?>

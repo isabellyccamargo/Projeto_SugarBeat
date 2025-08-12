@@ -61,11 +61,11 @@ function main()
 
     // Simulação de uma requisição GET para um cliente específico
     echo "--- Testando a busca por um cliente com ID 1 ---\n";
-    $clienteController->get(1);
+    $clienteController->get(2);
 
     // Simulação de uma requisição GET para todos os clientes
-    echo "\n--- Testando a busca por todos os clientes ---\n";
-    $clienteController->get();
+    //echo "\n--- Testando a busca por todos os clientes ---\n";
+    //$clienteController->get();
 }
 
 main();

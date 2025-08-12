@@ -5,5 +5,4 @@ interface IClienteRepository
     public function getAll();
     public function save($cliente);
     public function update($cliente);
-    public function delete($id);
 }

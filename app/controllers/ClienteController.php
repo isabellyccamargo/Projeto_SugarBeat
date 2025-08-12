@@ -13,7 +13,7 @@ class ClienteController
         if ($id) {
             try {
                 $cliente = $this->clienteService->getCliente($id);
-                header('Content-Type: application/json');
+                //header('Content-Type: application/json');
                 echo json_encode($cliente);
             } catch (Exception $e) {
                 http_response_code(404);
@@ -74,16 +74,5 @@ class ClienteController
         }
     }
 
-    public function delete($id)
-    {
-        try {
-            $this->clienteService->deletarCliente($id);
-            http_response_code(200);
-            echo json_encode(['message' => 'Cliente deletado com sucesso.']);
-        } catch (Exception $e) {
-            http_response_code(404);
-            echo json_encode(['error' => $e->getMessage()]);
-        }
-    }
 }
 ?>
