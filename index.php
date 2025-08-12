@@ -1,91 +1,113 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<?php
+/**
+ * index.php
+ * Este é o Front Controller da aplicação. Todas as requisições
+ * são direcionadas para este arquivo, que é responsável por
+ * carregar as classes e rotear a requisição para o
+ * controlador e método corretos.
+ */
 
-<head>
-    <meta charset="UTF-8">
-    <title>SugarBeat</title>
-    <link rel="icon" type="image/png" href="fotos/imgsite.jpg">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&family=Bitter:ital,wght@0,100..900;1,100..900&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Marcellus&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Padauk:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+// --- AUTOLOADER ---
+// A função spl_autoload_register permite registrar um autoloader,
+// que será executado automaticamente pelo PHP quando uma classe
+// for instanciada pela primeira vez.
+spl_autoload_register(function ($className) {
+    // Lista de diretórios onde as classes podem ser encontradas
+    $directories = [
+        'app/controllers/',
+        'app/models/',
+        'app/services/',
+        'app/repositories/',
+        'app/interfaces/',
+        'app/config/'
+    ];
 
-</head>
+    // Mapeamento especial para o arquivo database.php
+    if ($className === 'Connection') {
+        $filePath = 'app/config/database.php';
+        if (file_exists($filePath)) {
+            require_once $filePath;
+            return;
+        }
+    }
 
-<body>
+    // Procura a classe em cada um dos diretórios
+    foreach ($directories as $directory) {
+        $filePath = $directory . $className . '.php';
+        if (file_exists($filePath)) {
+            require_once $filePath;
+            return;
+        }
+    }
+});
+// --- FIM DO AUTOLOADER ---
 
-    <div class="topo">
-        <div class="logo-area">
-            <img src="fotos/logo.jpg" alt="Logo da Empresa" class="logo">
-            <span class="nome-empresa">SugarBeat</span>
-        </div>
+// Obtém o caminho da URL e remove a barra inicial se existir
+$requestUri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+// Divide o caminho em partes
+$segments = explode('/', $requestUri);
 
-        <div class="icons">
+// Define o mapeamento de URLs para os controladores
+$routes = [
+    'clientes' => 'ClienteController',
+    'produtos' => 'ProdutoController',
+    'pedidos' => 'PedidoController'
+];
 
-            <div class="icon" title="Carrinho">
-                <i class="icon fas fa-shopping-cart carrinho-icon"></i>
-            </div>
+$controllerName = 'ClienteController'; // Controlador padrão
+$method = 'get'; // Método padrão
+$param = null; // Parâmetro padrão
 
-            <div class="icon" title="Histórico de Compras">
-                <i class="fas fa-bag-shopping historico-icon"></i>
-            </div>
+// Verifica se a URL corresponde a uma rota definida
+if (isset($segments[0]) && !empty($segments[0])) {
+    $route = strtolower($segments[0]);
+    if (array_key_exists($route, $routes)) {
+        $controllerName = $routes[$route];
+    } else {
+        http_response_code(404);
+        die("Rota não encontrada.");
+    }
+}
 
-            <div class="icon" title="Perfil">
-                <i class="icon  fas fa-user-circle avatar-icon"></i>
-            </div>
-        </div>
-    </div>
+// Verifica se existe um ID ou outro parâmetro na URL
+if (isset($segments[1]) && !empty($segments[1])) {
+    $param = $segments[1];
+}
 
-    <div class="banner">
-        <img src="fotos/banner4.jpg" alt="Banner" class="banner-img">
-    </div>
+// Inicializa a injeção de dependência
+$dbConnection = Connection::connect();
+$clienteRepository = new ClienteRepository($dbConnection);
+$produtoRepository = new ProdutoRepository($dbConnection);
+$pedidoRepository = new PedidoRepository($dbConnection);
+$itemPedidoRepository = new ItemPedidoRepository($dbConnection);
 
-    <div class="tabela-precos">
-    <h2 class="titulo-precos">Tabela de Preços</h2>
-    <div class="precos-grid">
-        <div class="preco-item">
-            <h3>Unidade</h3>
-            <p>R$ 1,50</p>
-        </div>
-        <div class="preco-item">
-            <h3>Meio Cento</h3>
-            <p>R$ 70,00</p>
-        </div>
-        <div class="preco-item">
-            <h3>Um Cento</h3>
-            <p>R$ 130,00</p>
-        </div>
-    </div>
-</div>
+$clienteService = new ClienteService($clienteRepository);
+$produtoService = new ProdutoService($produtoRepository);
+$pedidoService = new PedidoService($pedidoRepository, $itemPedidoRepository);
 
-    <div class="produtos">
-        <h2 class="sabores">Nossos Sabores</h2>
-        <div class="grid">
-            <?php
-            // Lista de produtos simulada
-            $produtos = [
-                ["nome" => "Brigadeiro", "img" => "fotos/brigadeiro1.jpg"],
-                ["nome" => "Beijinho", "img" => "fotos/beijinho.jpg"],
-                ["nome" => "Brigadeiro de Nutella", "img" => "fotos/briNutella.jpg"],
-                ["nome" => "Brigadeiro de Amendoim", "img" => "fotos/amendoim.jpg"],
-            ];
+// Mapeia o nome do controlador para a instância da classe
+$controller = null;
+switch ($controllerName) {
+    case 'ClienteController':
+        $controller = new ClienteController($clienteService);
+        break;
+    case 'ProdutoController':
+        $controller = new ProdutoController($produtoService);
+        break;
+    case 'PedidoController':
+        $controller = new PedidoController($pedidoService);
+        break;
+    default:
+        http_response_code(404);
+        die("Controlador não encontrado.");
+}
 
-            foreach ($produtos as $produto) {
-                echo '<div class="card">';
-                echo '<img src="' . $produto["img"] . '" alt="' . $produto["nome"] . '">';
-                echo '<p>' . htmlspecialchars($produto["nome"]) . '</p>';
-                echo '<form method="post" action="adicionar_pedido.php">';
-                echo '<input type="hidden" name="produto" value="' . htmlspecialchars($produto["nome"]) . '">';
-                echo '<button type="submit">Adicionar</button>';
-                echo '</form>';
-                echo '</div>';
-            }
-            ?>
-        </div>
-        <button class="fechar-btn">Fechar</button>
-    </div>
+// Chama o método do controlador com o parâmetro
+if ($controller && method_exists($controller, $method)) {
+    $controller->$method($param);
+} else {
+    http_response_code(404);
+    die("Método não encontrado no controlador.");
+}
 
-</body>
-
-</html>
+?>
