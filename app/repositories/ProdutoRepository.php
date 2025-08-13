@@ -1,5 +1,7 @@
 <?php
 
+require_once 'IProdutoRepository.php';
+
 class ProdutoRepository implements IProdutoRepository
 {
     private $db;
@@ -42,6 +44,7 @@ class ProdutoRepository implements IProdutoRepository
                 $data['imagem']
             );
         }
+        return $produtos;
     }
 
     public function save($produto)

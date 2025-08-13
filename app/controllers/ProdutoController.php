@@ -7,20 +7,21 @@ class ProdutoController {
         $this->produtoService = $produtoService;
     }
 
-    public function get($id = null) {
+    public function get($id = null): mixed {
         if ($id) {
             try {
-                $produto = $this->produtoService->getProduto($id);
-                header('Content-Type: application/json');
-                echo json_encode($produto);
+                return $this->produtoService->getProduto($id);
+                //header('Content-Type: application/json');
+                //echo json_encode($produto);
             } catch (Exception $e) {
                 http_response_code(404);
-                echo json_encode(['error' => $e->getMessage()]);
+                return json_encode(['error' => $e->getMessage()]);
             }
         } else {
-            $produtos = $this->produtoService->listarProdutos();
-            header('Content-Type: application/json');
-            echo json_encode($produtos);
+            return $this->produtoService->listarProdutos();
+            //$produtos = $this->produtoService->listarProdutos();
+            //header('Content-Type: application/json');
+            //echo json_encode($produtos);
         }
     }
 

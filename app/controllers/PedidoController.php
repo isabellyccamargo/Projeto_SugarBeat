@@ -42,7 +42,7 @@ class PedidoController
             $pedidoData['descricao_pedido'] ?? null
         );
 
-                $itens = [];
+        $itens = [];
         foreach ($itensData as $itemData) {
             $itens[] = new ItemPedido(
                 null,
@@ -53,6 +53,7 @@ class PedidoController
                 $itemData['sub_total'] ?? null
             );
         }
+
         try {
             $novoPedido = $this->pedidoService->criarNovoPedido($pedido, $itens);
             http_response_code(201);
