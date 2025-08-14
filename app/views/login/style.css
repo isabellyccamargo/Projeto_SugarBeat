@@ -1,0 +1,93 @@
+:root {
+    --fontfamily:'Caalibri', serif;
+    --cor-primaria: #3b2500ff;
+    --cor-secundaria: #fff0d0ff;
+    --cor-terceira:rgb(252, 218, 143);
+    --TamanhoFont-Titulo:  60px;
+}
+
+
+body {
+    background-color: #f7f2ed; /* Cor de fundo principal */
+    font-family: var(--fontfamily);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: var(--cor-primaria); /* Cor do container principal */
+    padding: 60px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    background-color: #a37549; /* Cor do círculo do logo */
+    border-radius: 50%;
+    margin: 0 auto 30px;
+}
+
+.login-form .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-form label {
+    font-size: 14px;
+    color: #a37549; /* Cor do texto "email" e "senha" */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    background-color: #d1b8a5; /* Cor dos campos de input */
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #a37549;
+    outline: none;
+}
+
+.login-form input::placeholder {
+    color: #a37549;
+    opacity: 0.7;
+}
+
+.access-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #d1b8a5; /* Cor do botão de acesso */
+    border: none;
+    border-radius: 5px;
+    color: #a37549; /* Cor do texto "acessar" */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.signup-link {
+    margin-top: 30px;
+    color: #a37549;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.signup-link a {
+    color: #a37549;
+    text-decoration: none;
+    font-weight: bold;
+}
