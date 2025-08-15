@@ -4,7 +4,7 @@ require_once 'app/config/connection.php';
 require_once 'app/repositories/ProdutoRepository.php';
 require_once 'app/services/ProdutoService.php';
 require_once 'app/controllers/ProdutoController.php';
-require_once 'app/models/Produto.php'; // Adicionei esta linha. Verifique se o caminho está correto.
+require_once 'app/models/Produto.php'; 
 
 // Instancie os objetos
 $conexao = Connection::connect();
