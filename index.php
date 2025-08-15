@@ -96,9 +96,6 @@ $produtos = $produtoController->get();
                 echo '<p>Nenhum produto encontrado.</p>';
             }
             ?>
-        </div>
-        <button class="fechar-btn">Fechar</button>
-    </div>
 
 </body>
 

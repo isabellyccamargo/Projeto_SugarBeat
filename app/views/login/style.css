@@ -3,7 +3,6 @@
     --cor-primaria: #3b2500ff;
     --cor-secundaria: #fff0d0ff;
     --cor-terceira:rgb(252, 218, 143);
-    --TamanhoFont-Titulo:60px;
 }
 
 
@@ -13,12 +12,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    height: 95vh;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .textoLogin{
-    text-align: center;
     color: var(--cor-secundaria);
     font-size: 40px;
 }
@@ -26,8 +25,8 @@ body {
 .login-container {
     background-color: var(--cor-primaria); 
     padding: 40px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 7px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
     text-align: center;
     height: 480px;
     width: 400px;
@@ -56,8 +55,7 @@ body {
     width: 100%;
     padding: 12px;
     background-color: var(--cor-secundaria); 
-    border: none;
-    border-radius: 5px;
+    border-radius: 7px;
     box-sizing: border-box;
     font-size: 16px;
     outline: none;
@@ -90,7 +88,7 @@ body {
     padding: 10px;
     background-color: var(--cor-terceira); 
     border: none;
-    border-radius: 5px;
+    border-radius: 7px;
     color: var(--cor-primaria); 
     font-size: 20px;
     font-weight: bold;

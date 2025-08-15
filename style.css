@@ -62,13 +62,13 @@ body {
 }
 
 .carrinho-icon {
-    margin-top: 4px;
+  margin-top: 4px;
   font-size: 20px;
   color:var(--cor-secundaria); 
 }
 
 .avatar-icon {
-  font-size: 30px; /* tamanho ajustável */
+  font-size: 30px; 
   color:var(--cor-terceira);
   cursor: pointer;
 }
@@ -82,7 +82,6 @@ body {
 /* BANNER  */
 
 .banner {
-    
     width: 100%;
     height: 300px;
     display: flex;
@@ -126,7 +125,7 @@ body {
 
 .preco-item {
     background-color: var(--cor-terceira);
-    border-radius: 12px;
+    border-radius: 7px;
     padding: 15px 25px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     font-size: 18px;
@@ -167,14 +166,14 @@ body {
     width: 150px;
     background-color:var(--cor-terceira);
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 7px;
 }
 
 .card img {
     width: 100%;
     height: 140px;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 7px;
 }
 
 .card p {
@@ -189,16 +188,6 @@ body {
     border: none;
     padding: 6px 12px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 7px;
 }
 
-.fechar-btn {
-    margin-top: 40px;
-    background-color: var(--cor-primaria);
-    color: #fff;
-    padding: 10px 30px;
-    border: none;
-    font-size: 18px;
-    border-radius: 6px;
-    cursor: pointer;
-}
