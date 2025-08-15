@@ -15,14 +15,15 @@
         <div class="logo">
             <img src="../../../fotos/logo.jpg" alt="Logo da Empresa" class="logo">
         </div>
+        <h2 class="textoLogin">Login</h2>
         <form class="login-form" action="login.php" method="POST">
             <div class="input-group">
-                <label for="email">email</label>
+                <label for="email">E-mail</label>
                 <input type="email" id="email" name="email" placeholder=" ">
             </div>
             <div class="input-group">
                 <div class="input-group">
-                <label for="password">senha</label>
+                <label for="password">Senha</label>
                 <input type="password" id="password" name="password" placeholder=" ">
                 <div class="show-password-container">
                     <input type="checkbox" id="show-password">
@@ -30,10 +31,10 @@
                 </div>
               </div>
             </div>
-            <button type="submit" class="access-button">acessar</button>
+            <button type="submit" class="access-button">Acessar</button>
         </form>
         <div class="signup-link">
-            Não existe cadastro? <a href="cadastro.php">clique aqui</a>
+            Não existe cadastro? <a href="cadastro.php">Clique aqui.</a>
         </div>
     </div>
 </body>

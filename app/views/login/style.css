@@ -8,7 +8,7 @@
 
 
 body {
-    background-color: #f7f2ed; /* Cor de fundo principal */
+    background-color: var(--cor-secundaria); 
     font-family: var(--fontfamily);
     display: flex;
     justify-content: center;
@@ -17,25 +17,31 @@ body {
     margin: 0;
 }
 
+.textoLogin{
+    text-align: center;
+    color: var(--cor-secundaria);
+    font-size: 40px;
+}
+
 .login-container {
-    background-color: var(--cor-primaria); /* Cor do container principal */
+    background-color: var(--cor-primaria); 
     padding: 40px 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    height: 450px;
+    height: 480px;
     width: 400px;
 }
 
 .logo {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    margin: 0 auto 35px;
+    margin: 0 auto 0;
 }
 
 .login-form .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: left;
 }
 
@@ -44,7 +50,6 @@ body {
     color: var(--cor-secundaria);
     display: block;
     margin-bottom: 10px;
-    font-weight: bold;
 }
 
 .login-form input {
@@ -75,10 +80,7 @@ body {
 }
 
 .show-password-label {
-    font-size: 10px;
     color: var(--cor-secundaria);
-    font-weight: normal;
-    cursor: pointer;
     margin-top: 10px;
 }
 
@@ -100,11 +102,10 @@ body {
     margin-top: 20px;
     color: var(--cor-secundaria);
     font-size: 19px;
-    font-weight: bold;
+
 }
 
 .signup-link a {
     color: var(--cor-terceira);
     text-decoration: none;
-    font-weight: bold;
 }
