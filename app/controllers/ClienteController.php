@@ -26,6 +26,22 @@ class ClienteController
         }
     }
 
+    public function getClienteByEmailAndSenha($email, $senha): Cliente
+    {
+        if (empty($email) || empty($senha)) {
+            throw new Exception("Nome e email são obrigatórios.");
+        }
+
+        try {
+            return $this->clienteService->getClienteByEmailAndSenha($email, $senha);
+            //echo json_encode($cliente);
+        } catch (Exception $e) {
+            throw new Exception("Cliente não encontrado.");
+            //return http_response_code(404);
+            //echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
     public function post()
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -73,6 +89,4 @@ class ClienteController
             echo json_encode(['error' => $e->getMessage()]);
         }
     }
-
 }
-?>

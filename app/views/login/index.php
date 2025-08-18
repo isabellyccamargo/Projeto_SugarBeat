@@ -17,7 +17,7 @@
             <img src="../../../fotos/logo.jpg" alt="Logo da Empresa" class="logo">
         </div>
         <h2 class="textoLogin">Login</h2>
-        <form class="login-form" action="login.php" method="POST">
+        <form class="login-form" action="processa_login.php" method="POST">
             <div class="input-group">
                 <label for="email">E-mail</label>
                 <input type="email" id="email" name="email" placeholder=" ">

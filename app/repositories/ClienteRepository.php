@@ -1,5 +1,7 @@
 <?php
 
+require_once 'IClienteRepository.php';
+
 class ClienteRepository implements IClienteRepository
 {
     // A propriedade $db simula a conexão com o banco de dados.
@@ -18,9 +20,8 @@ class ClienteRepository implements IClienteRepository
         $stmt->execute();
         $clienteData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($clienteData) {
-            // Cria um novo objeto Cliente com os dados do banco
-            return new Cliente(
+        return $clienteData ? 
+            new Cliente(
                 $clienteData['id_cliente'],
                 $clienteData['nome'],
                 $clienteData['cpf'],
@@ -31,10 +32,31 @@ class ClienteRepository implements IClienteRepository
                 $clienteData['rua'],
                 $clienteData['numero_da_casa'],
                 $clienteData['data_cadastro']
-            );
-        }
+            ) : null ;
+    }
 
-        return null;
+    public function getClienteByEmailAndSenha($email, $senha) :Cliente {
+
+        echo "Validando login do usuário \n";
+        $stmt = $this->db->prepare("SELECT * FROM cliente WHERE email = :email and senha = :senha");
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':senha', $senha, PDO::PARAM_STR);
+        $stmt->execute();
+        $clienteData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $clienteData ? 
+            new Cliente(
+                $clienteData['id_cliente'],
+                $clienteData['nome'],
+                $clienteData['cpf'],
+                $clienteData['email'],
+                $clienteData['senha'],
+                $clienteData['cidade'],
+                $clienteData['bairro'],
+                $clienteData['rua'],
+                $clienteData['numero_da_casa'],
+                $clienteData['data_cadastro']
+            ) : null ;
     }
 
     public function getAll()
