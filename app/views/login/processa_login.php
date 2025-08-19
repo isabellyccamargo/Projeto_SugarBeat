@@ -22,33 +22,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $clienteService = new ClienteService($clienteRepository);
         $clienteController = new ClienteController($clienteService);
 
-        // Chame a função do controller para buscar o cliente
-        $cliente = $clienteController->getClienteByEmailAndSenha($email, $senha);
+        // --- INÍCIO DA MUDANÇA: Adicione o bloco try...catch ---
+        try {
+            // Chame a função do controller para buscar o cliente
+            $cliente = $clienteController->getClienteByEmailAndSenha($email, $senha);
 
-        // Verifique o resultado
-        if ($cliente) {
-            // Login bem-sucedido!
-            // Aqui você deve iniciar uma sessão e redirecionar o usuário
-            // para uma página segura.
+            // Se a linha acima não lançou exceção, o login foi um sucesso.
             session_start();
             $_SESSION['cliente_id'] = $cliente->getIdCliente();
             $_SESSION['cliente_email'] = $cliente->getEmail();
-            //header("Location: /caminho/para/dashboard.php");
-            echo "Login realizado com sucesso!";
-            exit();
-        } else {
-            // Login falhou, redirecione de volta para a página de login
-            // com uma mensagem de erro.
-            //header("Location: /caminho/para/login.php?erro=1");
             
-            echo "E-mail ou senha inválidos!";
+            echo "Login realizado com sucesso!";
+            
+            // Recomenda-se redirecionar o usuário
+            // header("Location: /caminho/para/dashboard.php");
+            exit();
+
+        } catch (Exception $e) {
+            // Se uma exceção foi lançada pelo Controller, o controle virá para este bloco.
+            // A exceção já contém a mensagem de erro que você quer.
+            
+            // Você pode exibir uma mensagem genérica, ou a mensagem da exceção
+            // dependendo de quão detalhados os erros podem ser.
+            // echo "E-mail ou senha inválidos!";
+            echo $e->getMessage();
+            
+            // Recomenda-se redirecionar com um parâmetro de erro
+            // header("Location: /caminho/para/login.php?erro=1");
             exit();
         }
+        // --- FIM DA MUDANÇA ---
     } else {
         // Campos ausentes, redirecione de volta com erro
-        //header("Location: /caminho/para/login.php?erro=2");
-        
         echo "O campo de e-mail e senha são obrigatórios!";
+        // header("Location: /caminho/para/login.php?erro=2");
         exit();
     }
 } else {

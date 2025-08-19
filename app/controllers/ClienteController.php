@@ -36,7 +36,7 @@ class ClienteController
             return $this->clienteService->getClienteByEmailAndSenha($email, $senha);
             //echo json_encode($cliente);
         } catch (Exception $e) {
-            throw new Exception("Cliente não encontrado.");
+         throw new Exception("Cliente não encontrado.");
             //return http_response_code(404);
             //echo json_encode(['error' => $e->getMessage()]);
         }

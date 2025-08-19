@@ -35,29 +35,34 @@ class ClienteRepository implements IClienteRepository
             ) : null ;
     }
 
-    public function getClienteByEmailAndSenha($email, $senha) :Cliente {
+    public function getClienteByEmailAndSenha($email, $senha): Cliente
+{
+    echo "Validando login do usuário \n";
+    $stmt = $this->db->prepare("SELECT * FROM cliente WHERE email = :email and senha = :senha");
+    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+    $stmt->bindValue(':senha', $senha, PDO::PARAM_STR);
+    $stmt->execute();
+    $clienteData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        echo "Validando login do usuário \n";
-        $stmt = $this->db->prepare("SELECT * FROM cliente WHERE email = :email and senha = :senha");
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-        $stmt->bindValue(':senha', $senha, PDO::PARAM_STR);
-        $stmt->execute();
-        $clienteData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $clienteData ? 
-            new Cliente(
-                $clienteData['id_cliente'],
-                $clienteData['nome'],
-                $clienteData['cpf'],
-                $clienteData['email'],
-                $clienteData['senha'],
-                $clienteData['cidade'],
-                $clienteData['bairro'],
-                $clienteData['rua'],
-                $clienteData['numero_da_casa'],
-                $clienteData['data_cadastro']
-            ) : null ;
+    if (!$clienteData) {
+        // Se os dados não forem encontrados, lance uma exceção.
+        throw new Exception("E-mail ou senha inválidos.");
     }
+
+    // Se os dados forem encontrados, retorne o objeto Cliente.
+    return new Cliente(
+        $clienteData['id_cliente'],
+        $clienteData['nome'],
+        $clienteData['cpf'],
+        $clienteData['email'],
+        $clienteData['senha'],
+        $clienteData['cidade'],
+        $clienteData['bairro'],
+        $clienteData['rua'],
+        $clienteData['numero_da_casa'],
+        $clienteData['data_cadastro']
+    ); 
+}
 
     public function getAll()
     {
