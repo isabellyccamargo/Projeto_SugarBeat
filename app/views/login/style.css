@@ -13,8 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 95vh;
-    margin-left: 20px;
-    margin-right: 20px;
+
 }
 
 .textoLogin{
@@ -30,6 +29,10 @@ body {
     text-align: center;
     height: 480px;
     width: 400px;
+    margin-top: 380px;
+    margin-bottom: 20px ;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .logo {

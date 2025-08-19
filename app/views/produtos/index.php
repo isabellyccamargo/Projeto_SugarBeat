@@ -9,5 +9,5 @@ $produtoController = new ProdutoController($produtoService);
 $produtos = $produtoController->get();
 
 
-include '../../../index.php';
+include '../home/index.php';
 ?>

@@ -1,10 +1,10 @@
 <?php
 // Inclua os arquivos de classe
-require_once 'app/config/connection.php';
-require_once 'app/repositories/ProdutoRepository.php';
-require_once 'app/services/ProdutoService.php';
-require_once 'app/controllers/ProdutoController.php';
-require_once 'app/models/Produto.php'; 
+require_once '../../config/connection.php';
+require_once '../../repositories/ProdutoRepository.php';
+require_once '../../services/ProdutoService.php';
+require_once '../../controllers/ProdutoController.php';
+require_once '../../models/Produto.php';
 
 // Instancie os objetos
 $conexao = Connection::connect();
@@ -23,7 +23,7 @@ $produtos = $produtoController->get();
 <head>
     <meta charset="UTF-8">
     <title>SugarBeat</title>
-    <link rel="icon" type="image/png" href="fotos/imgsite.jpg">
+    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,29 +33,14 @@ $produtos = $produtoController->get();
 
 <body>
 
-    <div class="topo">
-        <div class="logo-area">
-            <img src="fotos/logo.jpg" alt="Logo da Empresa" class="logo">
-            <span class="nome-empresa">SugarBeat</span>
-        </div>
+    <?php
 
-        <div class="icons">
-            <div class="icon" title="Carrinho">
-                <i class="icon fas fa-shopping-cart carrinho-icon"></i>
-            </div>
+    include '../header/index.php';
 
-            <div class="icon" title="Histórico de Compras">
-                <i class="fas fa-bag-shopping historico-icon"></i>
-            </div>
-
-            <div class="icon" title="Perfil">
-                <i class="icon fas fa-user-circle avatar-icon"></i>
-            </div>
-        </div>
-    </div>
+    ?>
 
     <div class="banner">
-        <img src="fotos/banner4.jpg" alt="Banner" class="banner-img">
+        <img src="../../../fotos/banner4.jpg" alt="Banner" class="banner-img">
     </div>
 
     <div class="tabela-precos">
@@ -95,7 +80,14 @@ $produtos = $produtoController->get();
             } else {
                 echo '<p>Nenhum produto encontrado.</p>';
             }
+
             ?>
+        </div>
+    </div>
+
+    <?php
+     include '../footer/index.php'
+    ?>
 
 </body>
 

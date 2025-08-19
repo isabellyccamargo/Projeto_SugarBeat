@@ -1,0 +1,108 @@
+:root {
+
+    --fontfamily:'Caalibri', serif;
+    --cor-primaria: #3b2500ff;
+    --cor-secundaria: #fff0d0ff;
+    --cor-terceira:rgb(252, 218, 143);
+    --TamanhoFont-Titulo:  60px;
+}
+
+body {
+    background-color: var(--cor-secundaria);
+    font-family: var(--fontfamily);
+    margin: 0;
+    padding: 0;
+}
+
+.topo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 97%;
+    background-color: var(--cor-primaria); /* ou a cor que estiver usando */
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 50%;
+   
+}
+
+.nome-empresa {
+    font-size: 34px;
+    font-weight: bold;
+    color: var(--cor-secundaria);
+}
+
+.icons {
+    display: flex;
+    gap: 45px;
+    margin-right: 40px;
+}
+
+.icon {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.carrinho-icon {
+  margin-top: 4px;
+  font-size: 20px;
+  color:var(--cor-secundaria); 
+}
+
+.avatar-icon {
+  font-size: 30px; 
+  color:var(--cor-terceira);
+  cursor: pointer;
+}
+
+.historico-icon {
+  font-size: 26px;
+  color:var(--cor-secundaria);
+  cursor: pointer;
+}
+
+.perfil-menu {
+    position: relative;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 40px; /* distância abaixo do ícone */
+    right: -40px;
+    background: var(--cor-terceira);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    min-width: 150px;
+    z-index: 1000;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: var(--cor-primaria);
+    font-size: 14px;
+}
+
+.dropdown a:hover {
+    color: rgb(139, 88, 0) ;
+}

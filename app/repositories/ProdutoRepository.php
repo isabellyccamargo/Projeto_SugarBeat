@@ -31,7 +31,7 @@ class ProdutoRepository implements IProdutoRepository
 
     public function getAll()
     {
-        echo "Buscando todos os produtos no banco de dados...\n";
+       // echo "Buscando todos os produtos no banco de dados...\n";
         $stmt = $this->db->query("SELECT * FROM produto");
         $produtosData = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $produtos = [];
