@@ -36,7 +36,7 @@ class ClienteController
             return $this->clienteService->getClienteByEmailAndSenha($email, $senha);
             //echo json_encode($cliente);
         } catch (Exception $e) {
-         throw new Exception("Cliente não encontrado.");
+            throw new Exception("Cliente não encontrado.");
             //return http_response_code(404);
             //echo json_encode(['error' => $e->getMessage()]);
         }
@@ -58,9 +58,15 @@ class ClienteController
         );
         try {
             $novoCliente = $this->clienteService->criarNovoCliente($cliente);
-            http_response_code(201);
-            echo json_encode($novoCliente);
+
+            // salva o ID do cliente na sessão
+            $_SESSION['cliente_id'] = $novoCliente->getIdCliente();
+
+            // redireciona para recarregar a página já com os dados
+            header("Location: ../views/cadastro/index.php");
+            exit;
         } catch (Exception $e) {
+            error_log("Erro ao cadastrar cliente: " . $e->getMessage());
             http_response_code(400);
             echo json_encode(['error' => $e->getMessage()]);
         }
@@ -68,7 +74,7 @@ class ClienteController
 
     public function put($id)
     {
-       $data = $_POST;
+        $data = $_POST;
         $cliente = new Cliente(
             $id,
             $data['nome'] ?? null,
