@@ -44,7 +44,7 @@ class ClienteController
 
     public function post()
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        $data = $_POST;
         $cliente = new Cliente(
             null,
             $data['nome'] ?? null,
@@ -68,7 +68,7 @@ class ClienteController
 
     public function put($id)
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+       $data = $_POST;
         $cliente = new Cliente(
             $id,
             $data['nome'] ?? null,
