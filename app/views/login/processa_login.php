@@ -1,5 +1,6 @@
 <?php
 
+// ... (código de inclusão de arquivos, como já está) ...
 require_once '../../config/connection.php';
 require_once '../../repositories/ClienteRepository.php';
 require_once '../../services/ClienteService.php';
@@ -12,55 +13,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verifique se os campos de email e senha foram enviados
     if (isset($_POST["email"]) && isset($_POST["password"])) {
         
-        // Receba os dados do formulário com o array $_POST
         $email = $_POST["email"];
         $senha = $_POST["password"]; 
 
-        // Conecte ao banco de dados e instancie os objetos
-        $conexao = Connection::connect();
-        $clienteRepository = new ClienteRepository($conexao);
-        $clienteService = new ClienteService($clienteRepository);
-        $clienteController = new ClienteController($clienteService);
-
-        // --- INÍCIO DA MUDANÇA: Adicione o bloco try...catch ---
         try {
-            // Chame a função do controller para buscar o cliente
+            $conexao = Connection::connect();
+            $clienteRepository = new ClienteRepository($conexao);
+            $clienteService = new ClienteService($clienteRepository);
+            $clienteController = new ClienteController($clienteService);
+
             $cliente = $clienteController->getClienteByEmailAndSenha($email, $senha);
 
-            // Se a linha acima não lançou exceção, o login foi um sucesso.
+            // Inicie a sessão e armazene os dados do cliente
             session_start();
             $_SESSION['cliente_id'] = $cliente->getIdCliente();
             $_SESSION['cliente_email'] = $cliente->getEmail();
             
-            echo "Login realizado com sucesso!";
-            
-            // Recomenda-se redirecionar o usuário
-            // header("Location: /caminho/para/dashboard.php");
+            // Redireciona para a página de "Meus Dados" com o parâmetro para carregar os dados
+            header("Location: ../cadastro/index.php?editar=true");
             exit();
 
         } catch (Exception $e) {
-            // Se uma exceção foi lançada pelo Controller, o controle virá para este bloco.
-            // A exceção já contém a mensagem de erro que você quer.
-            
-            // Você pode exibir uma mensagem genérica, ou a mensagem da exceção
-            // dependendo de quão detalhados os erros podem ser.
-            // echo "E-mail ou senha inválidos!";
-            echo $e->getMessage();
-            
-            // Recomenda-se redirecionar com um parâmetro de erro
-            // header("Location: /caminho/para/login.php?erro=1");
+            // Em caso de erro, redirecione para a página de login com uma mensagem
+            // Você pode usar um parâmetro na URL para exibir a mensagem na página de login
+            header("Location: indexlogin.php?erro=" . urlencode("E-mail ou senha inválidos."));
             exit();
         }
-        // --- FIM DA MUDANÇA ---
     } else {
-        // Campos ausentes, redirecione de volta com erro
-        echo "O campo de e-mail e senha são obrigatórios!";
-        // header("Location: /caminho/para/login.php?erro=2");
+        header("Location: indexlogin.php?erro=" . urlencode("O campo de e-mail e senha são obrigatórios!"));
         exit();
     }
 } else {
-    // Requisição inválida, redirecione
-    header("Location: /caminho/para/login.php");
+    header("Location: indexlogin.php");
     exit();
 }
-?>

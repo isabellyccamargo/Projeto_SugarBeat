@@ -14,7 +14,7 @@ class ClienteRepository implements IClienteRepository
 
     public function getById($id)
     {
-        echo "Buscando cliente com ID: $id no banco de dados...\n";
+        // echo "Buscando cliente com ID: $id no banco de dados...\n";
         $stmt = $this->db->prepare("SELECT * FROM cliente WHERE id_cliente = :id");
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

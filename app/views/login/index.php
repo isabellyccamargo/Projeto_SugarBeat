@@ -44,7 +44,7 @@
             <button type="submit" class="access-button">Acessar</button>
         </form>
         <div class="signup-link">
-            Não existe cadastro? <a href="cadastro.php">Clique aqui.</a>
+            Não existe cadastro? <a href="../cadastro/index.php">Clique aqui.</a>
         </div>
     </div>
 

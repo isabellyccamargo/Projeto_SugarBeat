@@ -30,11 +30,28 @@
 
             <!-- Dropdown escondido -->
             <div class="dropdown" id="perfilDropdown">
-                <a href="#">Minhas Compras</a>
-                <a href="#">Meus Dados</a>
+                <a href="#">Meus Pedidos</a>
+
+                <?php
+                // Inicie a sessão se ainda não tiver sido iniciada.
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+
+                // Verifique se o usuário está logado (se o id_cliente existe na sessão)
+                if (isset($_SESSION['cliente_id'])) {
+                    // Se estiver logado, o link "Meus Dados" redireciona para a página de cadastro com o parâmetro de edição
+                    echo '<a href="../cadastro?editar=true">Meus Dados</a>';
+                     echo '<a href="../../controllers/longout.php">Sair</a>';
+                } else {
+                    // Se não estiver logado, o link redireciona para a página de login
+                    echo '<a href="../login">Meus Dados</a>';
+                }
+                ?>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script>
@@ -42,7 +59,7 @@
     const perfilDropdown = document.getElementById("perfilDropdown");
 
     perfilIcon.addEventListener("click", () => {
-        perfilDropdown.style.display = 
+        perfilDropdown.style.display =
             perfilDropdown.style.display === "block" ? "none" : "block";
     });
 
