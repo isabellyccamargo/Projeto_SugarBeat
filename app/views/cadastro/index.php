@@ -4,33 +4,34 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Inicializa a variável $cliente como nula
 $cliente = null;
 
-// Inclui a conexão e as classes necessárias apenas se a lógica de edição for acionada
+// inclui sempre
+require_once '../../config/connection.php';
+require_once '../../models/Cliente.php';
+require_once '../../repositories/IClienteRepository.php';
+require_once '../../repositories/ClienteRepository.php';
+require_once '../../services/ClienteService.php';
+require_once '../../controllers/ClienteController.php';
+
+// cria conexões e objetos
+$conexao = Connection::connect();
+$clienteRepository = new ClienteRepository($conexao);
+$clienteService = new ClienteService($clienteRepository);
+$controller = new ClienteController($clienteService);
+
+// 1. Se enviou formulário, decide se é cadastro ou atualização
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!empty($_POST['id_cliente'])) {
+        $controller->put($_POST['id_cliente']);
+    } else {
+        $controller->post();
+    }
+}
+
+// 2. Se já tem cliente logado, busca os dados
 if (isset($_SESSION['cliente_id'])) {
-
-    require_once '../../config/connection.php';
-    require_once '../../models/Cliente.php';
-    require_once '../../repositories/IClienteRepository.php';
-    require_once '../../repositories/ClienteRepository.php';
-    require_once '../../services/ClienteService.php';
-    require_once '../../controllers/ClienteController.php';
-
     try {
-        $conexao = Connection::connect();
-        $clienteRepository = new ClienteRepository($conexao);
-        $clienteService = new ClienteService($clienteRepository);
-        $controller = new ClienteController($clienteService); // <- criar o controller aqui
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!empty($_POST['id_cliente'])) {
-                $controller->put($_POST['id_cliente']);
-            } else {
-                $controller->post();
-            }
-        }
-
         $cliente = $clienteService->getCliente($_SESSION['cliente_id']);
     } catch (Exception $e) {
         error_log("Erro ao buscar dados do cliente: " . $e->getMessage());

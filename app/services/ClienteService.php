@@ -7,19 +7,19 @@ class ClienteService {
         $this->clienteRepository = $clienteRepository;
     }
 
-    public function criarNovoCliente(Cliente $cliente) {
-        // Exemplo de regra de negócio: validação de CPF ou email
-        if (empty($cliente->getNome()) || empty($cliente->getEmail())) {
-            throw new Exception("Nome e email são obrigatórios.");
-        }
-        return $this->clienteRepository->save($cliente);
+   public function criarNovoCliente(Cliente $cliente) {
+    if (empty($cliente->getNome()) || empty($cliente->getEmail())) {
+        throw new Exception("Nome e email são obrigatórios.");
     }
+
+    return $this->clienteRepository->save($cliente);
+}
 
     public function getCliente($id) {
         return $this->clienteRepository->getById($id);
     }
     
-    public function getClienteByEmailAndSenha($email, $senha): Cliente{
+    public function getClienteByEmailAndSenha($email, $senha): Cliente {
         return $this->clienteRepository->getClienteByEmailAndSenha($email, $senha);
     }
 
