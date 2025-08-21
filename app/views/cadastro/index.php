@@ -37,12 +37,9 @@ if (isset($_SESSION['cliente_id'])) {
     }
 }
 
-if(!empty($_POST['senha'])) {
-    // Atualiza a senha (hash antes!)
-    $senhaHash = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-    $stmt = $db->prepare("UPDATE cliente SET senha = ? WHERE id = ?");
-    $stmt->execute([$senhaHash, $id]);
-} 
+     $senha_digitada = $_POST['senha'];
+     // Crie o hash da senha de forma segura
+     $hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
 ?>
 
 <!DOCTYPE html>

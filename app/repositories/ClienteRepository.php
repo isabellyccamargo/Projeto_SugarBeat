@@ -34,34 +34,61 @@ class ClienteRepository implements IClienteRepository
             ) : null ;
     }
 
-    public function getClienteByEmailAndSenha($email, $senha): Cliente
-{
-    echo "Validando login do usuário \n";
-    $stmt = $this->db->prepare("SELECT * FROM cliente WHERE email = :email and senha = :senha");
-    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-    $stmt->bindValue(':senha', $senha, PDO::PARAM_STR);
-    $stmt->execute();
-    $clienteData = $stmt->fetch(PDO::FETCH_ASSOC);
+//     public function getClienteByEmailAndSenha($email, $senha): Cliente
+// {
+//     echo "Validando login do usuário \n";
+//     $stmt = $this->db->prepare("SELECT * FROM cliente WHERE email = :email and senha = :senha");
+//     $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+//     $stmt->bindValue(':senha', $senha, PDO::PARAM_STR);
+//     $stmt->execute();
+//     $clienteData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$clienteData) {
-        // Se os dados não forem encontrados, lance uma exceção.
-        throw new Exception("E-mail ou senha inválidos.");
+//     if (!$clienteData) {
+//         // Se os dados não forem encontrados, lance uma exceção.
+//         throw new Exception("E-mail ou senha inválidos.");
+//     }
+
+
+//     // Se os dados forem encontrados, retorne o objeto Cliente.
+//     return new Cliente(
+//         $clienteData['id_cliente'],
+//         $clienteData['nome'],
+//         $clienteData['cpf'],
+//         $clienteData['email'],
+//         $clienteData['senha'],
+//         $clienteData['cidade'],
+//         $clienteData['bairro'],
+//         $clienteData['rua'],
+//         $clienteData['numero_da_casa'],
+//         $clienteData['data_cadastro']
+//     ); 
+// }
+
+
+public function getClienteByEmail($email)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM cliente WHERE email = :email");
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $clienteData = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if (!$clienteData) {
+            return null; // Retorne null se o cliente não for encontrado
+        }
+    
+        return new Cliente(
+            $clienteData['id_cliente'],
+            $clienteData['nome'],
+            $clienteData['cpf'],
+            $clienteData['email'],
+            $clienteData['senha'],  
+            $clienteData['cidade'],
+            $clienteData['bairro'],
+            $clienteData['rua'],
+            $clienteData['numero_da_casa'],
+            $clienteData['data_cadastro']
+        );
     }
-
-    // Se os dados forem encontrados, retorne o objeto Cliente.
-    return new Cliente(
-        $clienteData['id_cliente'],
-        $clienteData['nome'],
-        $clienteData['cpf'],
-        $clienteData['email'],
-        $clienteData['senha'],
-        $clienteData['cidade'],
-        $clienteData['bairro'],
-        $clienteData['rua'],
-        $clienteData['numero_da_casa'],
-        $clienteData['data_cadastro']
-    ); 
-}
 
     public function getAll()
     {
@@ -87,6 +114,7 @@ class ClienteRepository implements IClienteRepository
 
         return $clientes;
     }
+    
 
     public function save($cliente)
     {

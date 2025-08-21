@@ -25,18 +25,18 @@ class ClienteController
         }
     }
 
-    public function getClienteByEmailAndSenha($email, $senha): Cliente
-    {
-        if (empty($email) || empty($senha)) {
-            throw new Exception("Nome e email são obrigatórios.");
-        }
+    // public function getClienteByEmailAndSenha($email, $senha): Cliente
+    // {
+    //     if (empty($email) || empty($senha)) {
+    //         throw new Exception("Nome e email são obrigatórios.");
+    //     }
 
-        try {
-            return $this->clienteService->getClienteByEmailAndSenha($email, $senha);
-        } catch (Exception $e) {
-            throw new Exception("Cliente não encontrado.");
-        }
-    }
+    //     try {
+    //         return $this->clienteService->getClienteByEmailAndSenha($email, $senha);
+    //     } catch (Exception $e) {
+    //         throw new Exception("Cliente não encontrado.");
+    //     }
+    // }
 
     public function post()
 {
@@ -55,7 +55,7 @@ class ClienteController
 
         if ($novoCliente) {
             $_SESSION['cliente_id'] = $novoCliente->getIdCliente();
-            header("Location: ../views/cadastro/index.php");
+            header("Location: index.php");
             exit;
         } else {
             echo "Erro ao cadastrar cliente.";

@@ -1,10 +1,8 @@
 <?php
-
-// ... (código de inclusão de arquivos, como já está) ...
+// processa.login.php
 require_once '../../config/connection.php';
 require_once '../../repositories/ClienteRepository.php';
 require_once '../../services/ClienteService.php';
-require_once '../../controllers/ClienteController.php';
 require_once '../../models/Cliente.php'; 
 
 // Verifique se a requisição é do tipo POST
@@ -14,36 +12,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["email"]) && isset($_POST["password"])) {
         
         $email = $_POST["email"];
-        $senha = $_POST["password"]; 
+        $senha_digitada = $_POST["password"]; 
 
         try {
             $conexao = Connection::connect();
             $clienteRepository = new ClienteRepository($conexao);
             $clienteService = new ClienteService($clienteRepository);
-            $clienteController = new ClienteController($clienteService);
 
-            $cliente = $clienteController->getClienteByEmailAndSenha($email, $senha);
+            // 1. Busque o cliente pelo email
+            $cliente = $clienteService->getClienteByEmail($email);
 
-            // Inicie a sessão e armazene os dados do cliente
-            session_start();
-            $_SESSION['cliente_id'] = $cliente->getIdCliente();
-            $_SESSION['cliente_email'] = $cliente->getEmail();
-            
-            // Redireciona para a página de "Meus Dados" com o parâmetro para carregar os dados
-            header("Location: ../cadastro/index.php?editar=true");
-            exit();
+            // 2. Verifique se o cliente existe e se a senha está correta
+            if ($cliente && password_verify($senha_digitada, $cliente->getSenha())) {
+                // Login bem-sucedido!
+                session_start();
+                $_SESSION['cliente_id'] = $cliente->getIdCliente();
+                $_SESSION['cliente_email'] = $cliente->getEmail();
+                
+                header("Location: ../cadastro/index.php?editar=true");
+                exit();
+            } else {
+                // Se o cliente não foi encontrado ou a senha está incorreta
+                header("Location: index.php?erro=" . urlencode("E-mail ou senha inválidos."));
+                exit();
+            }
 
         } catch (Exception $e) {
             // Em caso de erro, redirecione para a página de login com uma mensagem
-            // Você pode usar um parâmetro na URL para exibir a mensagem na página de login
-            header("Location: indexlogin.php?erro=" . urlencode("E-mail ou senha inválidos."));
+            error_log("Erro de login: " . $e->getMessage());
+            header("Location: index.php?erro=" . urlencode("Ocorreu um erro no servidor."));
             exit();
         }
     } else {
-        header("Location: indexlogin.php?erro=" . urlencode("O campo de e-mail e senha são obrigatórios!"));
+        header("Location: index.php?erro=" . urlencode("O campo de e-mail e senha são obrigatórios!"));
         exit();
     }
 } else {
-    header("Location: indexlogin.php");
+    header("Location: index.php");
     exit();
-}   
+}

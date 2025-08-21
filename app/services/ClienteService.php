@@ -19,8 +19,11 @@ class ClienteService {
         return $this->clienteRepository->getById($id);
     }
     
-    public function getClienteByEmailAndSenha($email, $senha): Cliente {
-        return $this->clienteRepository->getClienteByEmailAndSenha($email, $senha);
+    // public function getClienteByEmailAndSenha($email, $senha): Cliente {
+    //     return $this->clienteRepository->getClienteByEmailAndSenha($email, $senha);
+    // }
+     public function getClienteByEmail(string $email): ?Cliente {
+        return $this->clienteRepository->getClienteByEmail($email);
     }
 
     public function listarClientes() {
