@@ -13,7 +13,6 @@ class ClienteController
         if ($id) {
             try {
                 $cliente = $this->clienteService->getCliente($id);
-                //header('Content-Type: application/json');
                 echo json_encode($cliente);
             } catch (Exception $e) {
                 http_response_code(404);
@@ -34,11 +33,8 @@ class ClienteController
 
         try {
             return $this->clienteService->getClienteByEmailAndSenha($email, $senha);
-            //echo json_encode($cliente);
         } catch (Exception $e) {
             throw new Exception("Cliente não encontrado.");
-            //return http_response_code(404);
-            //echo json_encode(['error' => $e->getMessage()]);
         }
     }
 
@@ -59,38 +55,44 @@ class ClienteController
 
         if ($novoCliente) {
             $_SESSION['cliente_id'] = $novoCliente->getIdCliente();
-            header("Location: index.php");
+            header("Location: ../views/cadastro/index.php");
             exit;
         } else {
             echo "Erro ao cadastrar cliente.";
         }
     }
-
-
         
     }
 
-    public function put($id)
-    {
-        $data = $_POST;
-        $cliente = new Cliente(
-            $id,
-            $data['nome'] ?? null,
-            $data['cpf'] ?? null,
-            $data['email'] ?? null,
-            $data['senha'] ?? null,
-            $data['cidade'] ?? null,
-            $data['bairro'] ?? null,
-            $data['rua'] ?? null,
-            $data['numero_da_casa'] ?? null
-        );
-        try {
-            $this->clienteService->atualizarCliente($cliente);
-            http_response_code(200);
-            echo json_encode(['message' => 'Cliente atualizado com sucesso.']);
-        } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(['error' => $e->getMessage()]);
-        }
+   public function put($id)
+{
+    $data = $_POST;
+
+    // Buscar o cliente atual para não perder a senha existente
+    $clienteAtual = $this->clienteService->getCliente($id);
+
+    // Se o usuário digitou uma senha, gerar hash; senão, manter a antiga
+    $senhaHash = !empty($data['senha']) ? password_hash($data['senha'], PASSWORD_DEFAULT) : $clienteAtual->getSenha();
+
+    $cliente = new Cliente(
+        $id,
+        $data['nome'] ?? $clienteAtual->getNome(),
+        $data['cpf'] ?? $clienteAtual->getCpf(),
+        $data['email'] ?? $clienteAtual->getEmail(),
+        $senhaHash,
+        $data['cidade'] ?? $clienteAtual->getCidade(),
+        $data['bairro'] ?? $clienteAtual->getBairro(),
+        $data['rua'] ?? $clienteAtual->getRua(),
+        $data['numero_da_casa'] ?? $clienteAtual->getNumeroDaCasa()
+    );
+
+    try {
+        $this->clienteService->atualizarCliente($cliente);
+        http_response_code(200);
+        echo json_encode(['message' => 'Cliente atualizado com sucesso.']);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
     }
+}
 }

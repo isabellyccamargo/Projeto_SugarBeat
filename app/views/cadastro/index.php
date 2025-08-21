@@ -14,7 +14,6 @@ require_once '../../repositories/ClienteRepository.php';
 require_once '../../services/ClienteService.php';
 require_once '../../controllers/ClienteController.php';
 
-// cria conexões e objetos
 $conexao = Connection::connect();
 $clienteRepository = new ClienteRepository($conexao);
 $clienteService = new ClienteService($clienteRepository);
@@ -37,6 +36,13 @@ if (isset($_SESSION['cliente_id'])) {
         error_log("Erro ao buscar dados do cliente: " . $e->getMessage());
     }
 }
+
+if(!empty($_POST['senha'])) {
+    // Atualiza a senha (hash antes!)
+    $senhaHash = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+    $stmt = $db->prepare("UPDATE cliente SET senha = ? WHERE id = ?");
+    $stmt->execute([$senhaHash, $id]);
+} 
 ?>
 
 <!DOCTYPE html>
