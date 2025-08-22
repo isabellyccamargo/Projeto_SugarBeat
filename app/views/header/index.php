@@ -24,8 +24,18 @@
         </div>
 
         <div class="icon perfil-menu">
-            <div class="icon" id="perfilIcon" title="Perfil">
+            <div class="icon user-profile-info" id="perfilIcon" title="Perfil">
                 <i class="fas fa-user-circle avatar-icon"></i>
+                <?php
+                // Verifique se o usuário está logado
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+                if (isset($_SESSION['cliente_nome'])) {
+                    // Se estiver, mostre o nome dele
+                    echo '<span class="nome-usuario"> Olá, ' . htmlspecialchars(explode(' ', $_SESSION['cliente_nome'])[0]) . '</span>';
+                }
+                ?>
             </div>
 
             <!-- Dropdown escondido -->
@@ -56,7 +66,7 @@
                 if (isset($_SESSION['cliente_id'])) {
                     // Se estiver logado, o link "Meus Dados" redireciona para a página de cadastro com o parâmetro de edição
                     echo '<a href="../cadastro?editar=true">Meus Dados</a>';
-                     echo '<a href="../../controllers/longout.php">Sair</a>';
+                    echo '<a href="../../controllers/longout.php">Sair</a>';
                 } else {
                     // Se não estiver logado, o link redireciona para a página de login
                     echo '<a href="../login">Meus Dados</a>';

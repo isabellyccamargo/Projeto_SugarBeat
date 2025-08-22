@@ -52,17 +52,15 @@ body {
 .icons {
     display: flex;
     gap: 45px;
-    margin-right: 40px;
+    margin-right: 10px;
+    align-items: center;
 }
 
 .icon {
-    width: 15px;
-    height: 15px;
     border-radius: 50%;
 }
 
 .carrinho-icon {
-  margin-top: 4px;
   font-size: 20px;
   color:var(--cor-secundaria); 
 }
@@ -71,6 +69,19 @@ body {
   font-size: 30px; 
   color:var(--cor-terceira);
   cursor: pointer;
+}
+
+.user-profile-info {
+    display: flex;
+    align-items: center; /* Alinha verticalmente os itens no centro */
+    gap: 8px; /* Adiciona um espaço entre o ícone e o nome */
+    cursor: pointer;
+}
+
+.nome-usuario {
+    font-size: 16px;
+    color: var(--cor-secundaria); 
+    font-weight: 500;
 }
 
 .historico-icon {
@@ -87,7 +98,7 @@ body {
     display: none;
     position: absolute;
     top: 40px; /* distância abaixo do ícone */
-    right: -40px;
+    right: -20px;
     background: var(--cor-terceira);
     border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);

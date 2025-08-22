@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 session_start();
                 $_SESSION['cliente_id'] = $cliente->getIdCliente();
                 $_SESSION['cliente_email'] = $cliente->getEmail();
+                $_SESSION['cliente_nome'] = $cliente->getNome();
                 
                 header("Location: ../cadastro/index.php?editar=true");
                 exit();
