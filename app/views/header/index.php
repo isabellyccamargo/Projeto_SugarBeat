@@ -28,9 +28,6 @@
                 <i class="fas fa-user-circle avatar-icon"></i>
                 <?php
                 // Verifique se o usuário está logado
-                if (session_status() == PHP_SESSION_NONE) {
-                    session_start();
-                }
                 if (isset($_SESSION['cliente_nome'])) {
                     // Se estiver, mostre o nome dele
                     echo '<span class="nome-usuario"> Olá, ' . htmlspecialchars(explode(' ', $_SESSION['cliente_nome'])[0]) . '</span>';
@@ -39,40 +36,26 @@
             </div>
 
             <!-- Dropdown escondido -->
-            <div class="dropdown" id="perfilDropdown">
-                <?php
-                // Inicie a sessão se ainda não tiver sido iniciada.
-                if (session_status() == PHP_SESSION_NONE) {
-                    session_start();
-                }
+           <div class="dropdown" id="perfilDropdown">
+    <?php
+    // Inicie a sessão se ainda não tiver sido iniciada.
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
 
-                // Verifique se o usuário está logado (se o id_cliente existe na sessão)
-                if (isset($_SESSION['cliente_id'])) {
-                    // Se estiver logado, o link "Meus Pedidos" redireciona para a página de meus pedidos com o parâmetro de edição
-                    echo '<a href="../pedidos?editar=true">Meus Pedidos</a>';
-                } else {
-                    // Se não estiver logado, o link redireciona para a página de login
-                    echo '<a href="../login">Meus Pedidos</a>';
-                }
-                ?>
-
-                <?php
-                // Inicie a sessão se ainda não tiver sido iniciada.
-                if (session_status() == PHP_SESSION_NONE) {
-                    session_start();
-                }
-
-                // Verifique se o usuário está logado (se o id_cliente existe na sessão)
-                if (isset($_SESSION['cliente_id'])) {
-                    // Se estiver logado, o link "Meus Dados" redireciona para a página de cadastro com o parâmetro de edição
-                    echo '<a href="../cadastro?editar=true">Meus Dados</a>';
-                    echo '<a href="../../controllers/longout.php">Sair</a>';
-                } else {
-                    // Se não estiver logado, o link redireciona para a página de login
-                    echo '<a href="../login">Meus Dados</a>';
-                }
-                ?>
-            </div>
+    // Verifique se o usuário está logado (se o id_cliente existe na sessão)
+    if (isset($_SESSION['cliente_id'])) {
+        // LINKS PARA QUANDO O USUÁRIO ESTÁ LOGADO
+        echo '<a href="../pedidos?editar=true">Meus Pedidos</a>';
+        echo '<a href="../cadastro?editar=true">Meus Dados</a>';
+        echo '<a href="../../controllers/longout.php">Sair</a>';
+    } else {
+        // LINKS PARA QUANDO O USUÁRIO NÃO ESTÁ LOGADO
+        echo '<a href="../login?origem=pedidos">Meus Pedidos</a>';
+        echo '<a href="../login?origem=dados">Meus Dados</a>';
+    }
+    ?>
+</div>
         </div>
     </div>
 </div>

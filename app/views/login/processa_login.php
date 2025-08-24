@@ -3,16 +3,16 @@
 require_once '../../config/connection.php';
 require_once '../../repositories/ClienteRepository.php';
 require_once '../../services/ClienteService.php';
-require_once '../../models/Cliente.php'; 
+require_once '../../models/Cliente.php';
 
 // Verifique se a requisição é do tipo POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+
     // Verifique se os campos de email e senha foram enviados
     if (isset($_POST["email"]) && isset($_POST["password"])) {
-        
+
         $email = $_POST["email"];
-        $senha_digitada = $_POST["password"]; 
+        $senha_digitada = $_POST["password"];
 
         try {
             $conexao = Connection::connect();
@@ -29,9 +29,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['cliente_id'] = $cliente->getIdCliente();
                 $_SESSION['cliente_email'] = $cliente->getEmail();
                 $_SESSION['cliente_nome'] = $cliente->getNome();
-                
-                header("Location: ../cadastro/index.php?editar=true");
-                exit();
+
+                if (isset($_POST['origem']) && $_POST['origem'] === 'pedidos') {
+                    // Redireciona para a página de pedidos
+                    header("Location: ../pedidos");
+                    exit();
+                } else {
+                    // Se não houver origem, redireciona para a página padrão (Meus Dados)
+                    header("Location: ../cadastro/index.php?editar=true");
+                    exit();
+                }
             } else {
                 // Se o cliente não foi encontrado ou a senha está incorreta
                 header("Location: index.php?erro=" . urlencode("E-mail ou senha inválidos."));
@@ -52,3 +59,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: index.php");
     exit();
 }
+
