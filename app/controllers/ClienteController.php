@@ -59,13 +59,16 @@ class ClienteController
         $data = $_POST;
 
         $cliente = new Cliente(
+            $data['id'] ?? $clienteAtual->getIdCliente(),
             $data['nome'] ?? $clienteAtual->getNome(),
             $data['cpf'] ?? $clienteAtual->getCpf(),
             $data['email'] ?? $clienteAtual->getEmail(),
+            null,
             $data['cidade'] ?? $clienteAtual->getCidade(),
             $data['bairro'] ?? $clienteAtual->getBairro(),
             $data['rua'] ?? $clienteAtual->getRua(),
-            $data['numero_da_casa'] ?? $clienteAtual->getNumeroDaCasa()
+            $data['numero_da_casa'] ?? $clienteAtual->getNumeroDaCasa(),
+            null
         );
 
         try {

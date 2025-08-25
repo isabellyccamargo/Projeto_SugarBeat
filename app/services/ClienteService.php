@@ -9,7 +9,7 @@ class ClienteService
         $this->clienteRepository = $clienteRepository;
     }
 
-    public function getCliente($id)
+    public function getCliente($id): ?Cliente
     {
         return $this->clienteRepository->getById($id);
     }
@@ -19,17 +19,20 @@ class ClienteService
         return $this->clienteRepository->getClienteByEmail($email);
     }
 
-    public function criarNovoCliente(Cliente $cliente)
+    public function criarNovoCliente(Cliente $cliente): Cliente
     {
-        if (empty($cliente->getNome()) || empty($cliente->getEmail())) {
-            throw new Exception("Nome e e-mail são obrigatórios.");
-        }
-
+        $cliente->setCpf($this->removerMascaraCpf($cliente->getCpf()));
         return $this->clienteRepository->save($cliente);
     }
 
-    public function atualizarCliente(Cliente $cliente)
+    public function atualizarCliente(Cliente $cliente): Cliente
     {
+        $cliente->setCpf($this->removerMascaraCpf($cliente->getCpf()));
         return $this->clienteRepository->update($cliente);
+    }
+
+    private function removerMascaraCpf(string $texto): string
+    {
+        return str_replace(['.', '-'], '', $texto);
     }
 }

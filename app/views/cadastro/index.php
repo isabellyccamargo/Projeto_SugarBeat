@@ -37,9 +37,9 @@ if (isset($_SESSION['cliente_id'])) {
     }
 }
 
-$senha_digitada = $_POST['senha'];
+//$senha_digitada = $_POST['senha'];
 // Crie o hash da senha de forma segura
-$hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
+//$hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +68,7 @@ $hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
             <div class="window-control maximize"></div>
         </div>
         <div class="form-container">
-            <form action="../cadastro/index.php" method="POSt">
+            <form id="formCadastro" action="../cadastro/index.php" method="POSt">
                 <?php if ($cliente): ?>
                     <input type="hidden" name="id_cliente" value="<?php echo $cliente->getIdCliente(); ?>">
                 <?php endif; ?>
@@ -107,20 +107,21 @@ $hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
 
                 </div>
 
-
                 <div class="form-row">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" value="<?php echo $cliente ? htmlspecialchars($cliente->getEmail()) : ""; ?>" required />
                     </div>
-                    <div class="form-group">
-                        <label for="senha">Senha</label>
-                        <input type="password" id="senha" name="senha" value="<?php echo $cliente ? htmlspecialchars($cliente->getSenha()) : ""; ?>" <?php echo $cliente ? 'disabled' : null; ?> required />
-                        <div class="show-password">
-                            <input type="checkbox" id="show-password-checkbox" <?php echo $cliente ? 'disabled' : null; ?> />
-                            <label for="show-password-checkbox">Mostrar senha</label>
+                    <?php if (!$cliente) : ?>
+                        <div class="form-group">
+                            <label for="senha">Senha</label>
+                            <input type="password" id="senha" name="senha" value="<?php echo $cliente ? htmlspecialchars($cliente->getSenha()) : ""; ?>" <?php echo $cliente ? 'disabled' : null; ?> required />
+                            <div class="show-password">
+                                <input type="checkbox" id="show-password-checkbox" <?php echo $cliente ? 'disabled' : null; ?> />
+                                <label for="show-password-checkbox">Mostrar senha</label>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
 
                 <button type="submit" class="cadastrar-btn"> <?php echo $cliente ? 'Atualizar Dados' : 'Cadastrar'; ?> </button>
@@ -133,6 +134,22 @@ $hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
     ?>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('formCadastro');
+            if (form) {
+                // Máscara cpf: 123.456.789-00
+                document.getElementById('cpf').addEventListener('input', function(e) {
+                    let v = e.target.value.replace(/\D/g, '');
+                    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+                    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                    e.target.value = v;
+                });
+            }
+        });
+    </script>
+
+    <script>
         // Mostrar/ocultar senha
         const checkbox = document.getElementById('show-password-checkbox');
         const senhaInput = document.getElementById('senha');
@@ -141,6 +158,7 @@ $hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
             senhaInput.type = checkbox.checked ? 'text' : 'password';
         });
     </script>
+
 </body>
 
 </html>

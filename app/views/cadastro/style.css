@@ -1,5 +1,5 @@
-:root{
-    --fontfamily:'Caalibri', serif;
+:root {
+    --fontfamily: 'Caalibri', serif;
 }
 
 body {
@@ -15,15 +15,15 @@ body {
 
 
 .window-container {
-    width: 90vw;            
-    max-width: 900px;    
+    width: 90vw;
+    max-width: 900px;
     background-color: #3b2500ff;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     border: 1px solid #2b1c00;
-    overflow: visible;     
+    overflow: visible;
     padding: 30px 40px;
-    margin-top: 550px;
+    margin-top: 400px;
     margin-bottom: 20px;
 }
 
@@ -46,23 +46,23 @@ body {
 }
 
 .window-control.close {
-    background-color: rgb(252, 218, 143); 
+    background-color: rgb(252, 218, 143);
 }
 
 .window-control.minimize,
 .window-control.maximize {
-    background-color: #fff0d0ff; 
+    background-color: #fff0d0ff;
 }
 
 .form-group {
-    margin-bottom: 35px; 
+    margin-bottom: 35px;
     margin-left: 20px;
     margin-right: 20px;
 }
 
 .form-group label {
     display: block;
-    color: #fff0d0ff; 
+    color: #fff0d0ff;
     font-size: 1.1em;
     font-weight: bold;
     margin-bottom: 8px;
@@ -72,12 +72,12 @@ body {
 .form-group select {
     width: 100%;
     padding: 10px;
-    background-color: #fff0d0ff; 
+    background-color: #fff0d0ff;
     border: 1px solid rgb(252, 218, 143);
     border-radius: 5px;
     font-size: 1em;
     box-sizing: border-box;
-    color: #3b2500ff; 
+    color: #3b2500ff;
 }
 
 .form-row {
@@ -121,8 +121,8 @@ body {
 .cadastrar-btn {
     width: 300px;
     padding: 15px;
-    background-color: rgb(252, 218, 143); 
-    color: #3b2500ff; 
+    background-color: rgb(252, 218, 143);
+    color: #3b2500ff;
     font-size: 1.2em;
     font-weight: bold;
     border: 1px solid rgb(252, 218, 143);
@@ -135,7 +135,7 @@ body {
 
 /* Efeito hover no botão */
 .cadastrar-btn:hover {
-    background-color: #fcd08f; 
+    background-color: #fcd08f;
 }
 
 /* a {

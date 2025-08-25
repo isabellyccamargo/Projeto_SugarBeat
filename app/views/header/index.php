@@ -20,10 +20,12 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 
 <div class="topo">
-    <div class="logo-area">
-        <img src="../../../fotos/logo.jpg" alt="Logo da Empresa" class="logo">
-        <span class="nome-empresa">SugarBeat</span>
-    </div>
+    <a href="../home/" style="text-decoration: none;">
+        <div class="logo-area">
+            <img src="../../../fotos/logo.jpg" alt="Logo da Empresa" class="logo">
+            <span class="nome-empresa">SugarBeat</span>
+        </div>
+    </a>
 
     <div class="icons">
         <div class="icon" title="Carrinho">
