@@ -130,7 +130,6 @@ body {
     cursor: pointer;
     display: block;
     margin: 30px auto 0;
-    text-transform: lowercase;
     transition: background-color 0.3s ease;
 }
 
@@ -139,14 +138,14 @@ body {
     background-color: #fcd08f; 
 }
 
-a {
+/* a {
     display: block;
     text-align: center;
     margin-top: 15px;
     color: #fff0d0ff;
     text-decoration: none;
     font-size: 0.9em;
-}
+} */
 
 a:hover {
     text-decoration: underline;

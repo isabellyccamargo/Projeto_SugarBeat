@@ -42,7 +42,7 @@
             <?php endif; ?>
             <div class="input-group">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" placeholder=" ">
+                <input type="email" id="email" name="email" placeholder=" " value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>">
             </div>
             <div class="input-group">
                 <div class="input-group">
@@ -54,15 +54,19 @@
                     </div>
                 </div>
             </div>
+            <?php
+            // CÓDIGO PARA EXIBIR A MENSAGEM DE ERRO
+            if (isset($_GET['erro'])) {
+                $mensagem_erro = htmlspecialchars(urldecode($_GET['erro']));
+                echo '<div style="color: red; text-align: center; margin-bottom: 15px;">' . $mensagem_erro . '</div>';
+            }
+            ?>
             <button type="submit" class="access-button">Acessar</button>
         </form>
         <div class="signup-link">
             Não existe cadastro? <a href="../cadastro/index.php">Clique aqui.</a>
         </div>
     </div>
-
-
-
 </body>
 
 <?php

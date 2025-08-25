@@ -27,7 +27,7 @@
                 <h3 class="siga">Siga-nos</h3>
                 <div class="insta">
                     <h2 class="insta">Instagram:</h2>
-                   <h2 class="insta">@SugarBeatDoces</h2>
+                    <h2 class="insta">@SugarBeatDoces</h2>
                 </div>
             </div>
 
@@ -35,7 +35,7 @@
                 <div class="logo-rodape">
                     <img src="../../../fotos/imgsite.jpg" alt="Logo da Empresa" class="logo">
                 </div>
-                <p class="slogan">"O Doce que marca momentos!"</p>
+                <p class="slogan">"O doce que marca momentos!"</p>
             </div>
 
             <div class="secao contato-secao">

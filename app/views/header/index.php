@@ -1,3 +1,10 @@
+<?php
+// Garanta que a sessão seja iniciada em todas as páginas que incluírem este arquivo.
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -36,26 +43,26 @@
             </div>
 
             <!-- Dropdown escondido -->
-           <div class="dropdown" id="perfilDropdown">
-    <?php
-    // Inicie a sessão se ainda não tiver sido iniciada.
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
+            <div class="dropdown" id="perfilDropdown">
+                <?php
+                // Inicie a sessão se ainda não tiver sido iniciada.
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
 
-    // Verifique se o usuário está logado (se o id_cliente existe na sessão)
-    if (isset($_SESSION['cliente_id'])) {
-        // LINKS PARA QUANDO O USUÁRIO ESTÁ LOGADO
-        echo '<a href="../pedidos?editar=true">Meus Pedidos</a>';
-        echo '<a href="../cadastro?editar=true">Meus Dados</a>';
-        echo '<a href="../../controllers/longout.php">Sair</a>';
-    } else {
-        // LINKS PARA QUANDO O USUÁRIO NÃO ESTÁ LOGADO
-        echo '<a href="../login?origem=pedidos">Meus Pedidos</a>';
-        echo '<a href="../login?origem=dados">Meus Dados</a>';
-    }
-    ?>
-</div>
+                // Verifique se o usuário está logado (se o id_cliente existe na sessão)
+                if (isset($_SESSION['cliente_id'])) {
+                    // LINKS PARA QUANDO O USUÁRIO ESTÁ LOGADO
+                    echo '<a href="../pedidos?editar=true">Meus Pedidos</a>';
+                    echo '<a href="../cadastro?editar=true">Meus Dados</a>';
+                    echo '<a href="../login/logout.php">Sair</a>';
+                } else {
+                    // LINKS PARA QUANDO O USUÁRIO NÃO ESTÁ LOGADO
+                    echo '<a href="../login?origem=pedidos">Meus Pedidos</a>';
+                    echo '<a href="../login?origem=dados">Meus Dados</a>';
+                }
+                ?>
+            </div>
         </div>
     </div>
 </div>

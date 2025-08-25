@@ -3,13 +3,14 @@
 require_once '../../config/connection.php';
 require_once '../../repositories/ClienteRepository.php';
 require_once '../../services/ClienteService.php';
+require_once '../../controllers/ClienteController.php';
 require_once '../../models/Cliente.php';
 
 // Verifique se a requisição é do tipo POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verifique se os campos de email e senha foram enviados
-    if (isset($_POST["email"]) && isset($_POST["password"])) {
+    if (isset($_POST["email"]) && isset($_POST["password"]) && (!empty($_POST["email"]) && !empty($_POST["password"]))) {
 
         $email = $_POST["email"];
         $senha_digitada = $_POST["password"];
@@ -18,9 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conexao = Connection::connect();
             $clienteRepository = new ClienteRepository($conexao);
             $clienteService = new ClienteService($clienteRepository);
+            $clienteController = new ClienteController($clienteService);
 
             // 1. Busque o cliente pelo email
-            $cliente = $clienteService->getClienteByEmail($email);
+            $cliente = $clienteController->getClienteByEmail($email);
 
             // 2. Verifique se o cliente existe e se a senha está correta
             if ($cliente && password_verify($senha_digitada, $cliente->getSenha())) {
@@ -41,10 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             } else {
                 // Se o cliente não foi encontrado ou a senha está incorreta
-                header("Location: index.php?erro=" . urlencode("E-mail ou senha inválidos."));
+                header("Location: index.php?erro=" . urlencode("E-mail ou senha inválidos.") . "&email=" . urlencode($email));
                 exit();
             }
-
         } catch (Exception $e) {
             // Em caso de erro, redirecione para a página de login com uma mensagem
             error_log("Erro de login: " . $e->getMessage());
@@ -52,11 +53,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } else {
-        header("Location: index.php?erro=" . urlencode("O campo de e-mail e senha são obrigatórios!"));
+        header("Location: index.php?erro=" . urlencode("Os campos e-mail e senha são obrigatórios!") . "&email=" . urlencode($_POST["email"]));
         exit();
     }
 } else {
     header("Location: index.php");
     exit();
 }
-

@@ -37,9 +37,9 @@ if (isset($_SESSION['cliente_id'])) {
     }
 }
 
-     $senha_digitada = $_POST['senha'];
-     // Crie o hash da senha de forma segura
-     $hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
+$senha_digitada = $_POST['senha'];
+// Crie o hash da senha de forma segura
+$hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
 ?>
 
 <!DOCTYPE html>
@@ -111,13 +111,13 @@ if (isset($_SESSION['cliente_id'])) {
                 <div class="form-row">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="<?php echo $cliente ? htmlspecialchars($cliente->getEmail()) : ''; ?>" required />
+                        <input type="email" id="email" name="email" value="<?php echo $cliente ? htmlspecialchars($cliente->getEmail()) : ""; ?>" required />
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha</label>
-                        <input type="password" id="senha" name="senha" required />
+                        <input type="password" id="senha" name="senha" value="<?php echo $cliente ? htmlspecialchars($cliente->getSenha()) : ""; ?>" <?php echo $cliente ? 'disabled' : null; ?> required />
                         <div class="show-password">
-                            <input type="checkbox" id="show-password-checkbox" />
+                            <input type="checkbox" id="show-password-checkbox" <?php echo $cliente ? 'disabled' : null; ?> />
                             <label for="show-password-checkbox">Mostrar senha</label>
                         </div>
                     </div>
