@@ -14,16 +14,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<body>
-    <div class="conteudo-principal">
-        <!-- Aqui vai o conteúdo da sua página -->
-    </div>
-
-    <!-- Rodapé -->
+<!-- Rodapé -->
+<!-- <footer> -->
     <div class="rodape-container">
         <div class="rodape-conteudo">
 
-            <div class="secao redes-sociais-secao">
+            <div class="secao">
                 <h3 class="siga">Siga-nos</h3>
                 <div class="insta">
                     <h2 class="insta">Instagram:</h2>
@@ -50,6 +46,6 @@
             <p>© 2025 Desenvolvido por SugarBeat. Todos os direitos reservados.</p>
         </div>
     </div>
-</body>
+<!-- </footer> -->
 
 </html>

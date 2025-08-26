@@ -1,10 +1,10 @@
 :root {
 
-    --fontfamily:'Caalibri', serif;
+    --fontfamily: 'Caalibri', serif;
     --cor-primaria: #3b2500ff;
     --cor-secundaria: #fff0d0ff;
-    --cor-terceira:rgb(252, 218, 143);
-    --TamanhoFont-Titulo:  60px;
+    --cor-terceira: rgb(252, 218, 143);
+    --TamanhoFont-Titulo: 60px;
 }
 
 body {
@@ -22,7 +22,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: none; 
+    background: none;
 }
 
 .banner-img {
@@ -33,22 +33,21 @@ body {
     display: block;
 }
 
- /* PREÇOS */
+/* PREÇOS */
 
 .tabela-precos {
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 120px;
     font-family: 'Marcellus', serif;
 }
 
 .titulo-precos {
     font-size: var(--TamanhoFont-Titulo);
     color: #3c230d;
-    margin-bottom:60px;
+    margin-bottom: 80px;
     font-family: var(--fontfamily);
     margin-top: 60px;
-   
+
 }
 
 .precos-grid {
@@ -62,7 +61,7 @@ body {
     background-color: var(--cor-terceira);
     border-radius: 7px;
     padding: 15px 25px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-size: 18px;
     color: #3c230d;
 }
@@ -71,13 +70,12 @@ body {
     font-weight: bold;
     margin-bottom: 8px;
 }
- 
+
 /* PRODUTOS */
 
 .produtos {
     background-color: var(--cor-secundaria);
     text-align: center;
-    margin-bottom: 50px;
 }
 
 .sabores {
@@ -100,7 +98,7 @@ body {
 
 .card {
     width: 150px;
-    background-color:var(--cor-terceira);
+    background-color: var(--cor-terceira);
     padding: 15px;
     border-radius: 7px;
 }
@@ -126,4 +124,3 @@ body {
     cursor: pointer;
     border-radius: 7px;
 }
-

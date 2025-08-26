@@ -19,56 +19,59 @@ if (session_status() == PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<div class="topo">
-    <a href="../home/" style="text-decoration: none;">
-        <div class="logo-area">
-            <img src="../../../fotos/logo.jpg" alt="Logo da Empresa" class="logo">
-            <span class="nome-empresa">SugarBeat</span>
-        </div>
-    </a>
-
-    <div class="icons">
-        <div class="icon" title="Carrinho">
-            <i class="icon fas fa-shopping-cart carrinho-icon"></i>
-        </div>
-
-        <div class="icon perfil-menu">
-            <div class="icon user-profile-info" id="perfilIcon" title="Perfil">
-                <i class="fas fa-user-circle avatar-icon"></i>
-                <?php
-                // Verifique se o usuário está logado
-                if (isset($_SESSION['cliente_nome'])) {
-                    // Se estiver, mostre o nome dele
-                    echo '<span class="nome-usuario"> Olá, ' . htmlspecialchars(explode(' ', $_SESSION['cliente_nome'])[0]) . '</span>';
-                }
-                ?>
+<header>
+    <div class="topo">
+        <a href="../home/" style="text-decoration: none;">
+            <div class="logo-area">
+                <img src="../../../fotos/logo.jpg" alt="Logo da Empresa" class="logo" />
+                <span class="nome-empresa">SugarBeat</span>
             </div>
+        </a>
 
-            <!-- Dropdown escondido -->
-            <div class="dropdown" id="perfilDropdown">
-                <?php
-                // Inicie a sessão se ainda não tiver sido iniciada.
-                if (session_status() == PHP_SESSION_NONE) {
-                    session_start();
-                }
+        <div class="icons">
+            <a href="../carrinho/" style="text-decoration: none;">
+                <div class="icon" title="Carrinho">
+                    <i class="icon fas fa-shopping-cart carrinho-icon"></i>
+                </div>
+            </a>
 
-                // Verifique se o usuário está logado (se o id_cliente existe na sessão)
-                if (isset($_SESSION['cliente_id'])) {
-                    // LINKS PARA QUANDO O USUÁRIO ESTÁ LOGADO
-                    echo '<a href="../pedidos?editar=true">Meus Pedidos</a>';
-                    echo '<a href="../cadastro?editar=true">Meus Dados</a>';
-                    echo '<a href="../login/logout.php">Sair</a>';
-                } else {
-                    // LINKS PARA QUANDO O USUÁRIO NÃO ESTÁ LOGADO
-                    echo '<a href="../login?origem=pedidos">Meus Pedidos</a>';
-                    echo '<a href="../login?origem=dados">Meus Dados</a>';
-                }
-                ?>
+            <div class="icon perfil-menu">
+                <div class="icon user-profile-info" id="perfilIcon" title="Perfil">
+                    <i class="fas fa-user-circle avatar-icon"></i>
+                    <?php
+                    // Verifique se o usuário está logado
+                    if (isset($_SESSION['cliente_nome'])) {
+                        // Se estiver, mostre o nome dele
+                        echo '<span class="nome-usuario"> Olá, ' . htmlspecialchars(explode(' ', $_SESSION['cliente_nome'])[0]) . '</span>';
+                    }
+                    ?>
+                </div>
+
+                <!-- Dropdown escondido -->
+                <div class="dropdown" id="perfilDropdown">
+                    <?php
+                    // Inicie a sessão se ainda não tiver sido iniciada.
+                    if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                    }
+
+                    // Verifique se o usuário está logado (se o id_cliente existe na sessão)
+                    if (isset($_SESSION['cliente_id'])) {
+                        // LINKS PARA QUANDO O USUÁRIO ESTÁ LOGADO
+                        echo '<a href="../pedidos?editar=true">Meus Pedidos</a>';
+                        echo '<a href="../cadastro?editar=true">Meus Dados</a>';
+                        echo '<a href="../login/logout.php">Sair</a>';
+                    } else {
+                        // LINKS PARA QUANDO O USUÁRIO NÃO ESTÁ LOGADO
+                        echo '<a href="../login?origem=pedidos">Meus Pedidos</a>';
+                        echo '<a href="../login?origem=dados">Meus Dados</a>';
+                    }
+                    ?>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
+</header>
 
 <script>
     const perfilIcon = document.getElementById("perfilIcon");

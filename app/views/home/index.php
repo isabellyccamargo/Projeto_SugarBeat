@@ -43,24 +43,6 @@ $produtos = $produtoController->get();
         <img src="../../../fotos/banner4.jpg" alt="Banner" class="banner-img">
     </div>
 
-    <div class="tabela-precos">
-        <h2 class="titulo-precos">Tabela de Preços</h2>
-        <div class="precos-grid">
-            <div class="preco-item">
-                <h3>Unidade</h3>
-                <p>R$ 1,30</p>
-            </div>
-            <div class="preco-item">
-                <h3>Meio Cento</h3>
-                <p>R$ 65,00</p>
-            </div>
-            <div class="preco-item">
-                <h3>Um Cento</h3>
-                <p>R$130,00</p>
-            </div>
-        </div>
-    </div>
-
     <div class="produtos">
         <h2 class="sabores">Nossos Sabores</h2>
         <div class="grid">
@@ -85,8 +67,26 @@ $produtos = $produtoController->get();
         </div>
     </div>
 
+    <div class="tabela-precos">
+        <h2 class="titulo-precos">Tabela de Preços</h2>
+        <div class="precos-grid">
+            <div class="preco-item">
+                <h3>Unidade</h3>
+                <p>R$ 1,30</p>
+            </div>
+            <div class="preco-item">
+                <h3>Meio Cento</h3>
+                <p>R$ 65,00</p>
+            </div>
+            <div class="preco-item">
+                <h3>Um Cento</h3>
+                <p>R$130,00</p>
+            </div>
+        </div>
+    </div>
+
     <?php
-     include '../footer/index.php'
+    include '../footer/index.php'
     ?>
 
 </body>

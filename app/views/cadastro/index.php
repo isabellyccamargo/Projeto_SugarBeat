@@ -61,7 +61,7 @@ if (isset($_SESSION['cliente_id'])) {
     include '../header/index.php';
     ?>
 
-    <div class="window-container">
+    <div class="window-container conteudo-principal">
         <div class="window-header">
             <div class="window-control close"></div>
             <div class="window-control minimize"></div>
