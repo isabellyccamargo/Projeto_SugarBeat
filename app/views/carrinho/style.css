@@ -5,7 +5,7 @@
 }
 
 body {
-    /* font-family: Arial, sans-serif; */
+    font-family:'Caalibri', serif;
     background-color: var(--cor-secundaria);
     /* justify-content: center; */
     /* align-items: center; */
@@ -145,9 +145,10 @@ body {
 /* --- Seção de Resumo do Pedido --- */
 .order-summary {
     flex: 1;
-    background-color: var(--cor-secundaria);
+    background-color: var(--cor-primaria);
     padding: 40px;
     border-left: 1px solid #eee;
+    color: var(--cor-secundaria);
 }
 
 .summary-title {
@@ -208,8 +209,8 @@ body {
 .checkout-btn {
     width: 100%;
     padding: 15px;
-    background-color: var(--cor-primaria);
-    color: #fff;
+    background-color: var(--cor-secundaria);
+    color: var(--cor-primaria);
     border: none;
     cursor: pointer;
     font-size: 1.2em;
