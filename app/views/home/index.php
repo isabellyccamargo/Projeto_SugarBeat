@@ -158,20 +158,5 @@ $produtos = $produtoController->get();
         botoesAdicionar.forEach(botao => {
             botao.addEventListener('click', handleAdicionarClick);
         });
-
-        // Scripts do menu de perfil
-        const perfilIcon = document.getElementById("perfilIcon");
-        const perfilDropdown = document.getElementById("perfilDropdown");
-
-        perfilIcon.addEventListener("click", () => {
-            perfilDropdown.style.display =
-                perfilDropdown.style.display === "block" ? "none" : "block";
-        });
-
-        document.addEventListener("click", (event) => {
-            if (!perfilIcon.contains(event.target) && !perfilDropdown.contains(event.target)) {
-                perfilDropdown.style.display = "none";
-            }
-        });
     });
 </script>

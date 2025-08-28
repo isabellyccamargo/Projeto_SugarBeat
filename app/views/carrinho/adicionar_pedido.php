@@ -18,7 +18,7 @@ if (isset($_POST['id_produto'])) {
         $produtoRepository = new ProdutoRepository($conexao);
         $produtoService = new ProdutoService($produtoRepository);
 
-       // chama a regra de negocio do  ProdutoService
+        // chama a regra de negocio do  ProdutoService
         $resultado = $produtoService->adicionarAoCarrinho($_POST['id_produto']);
 
         // se o seriço disser que deu certo entra no if
@@ -26,7 +26,7 @@ if (isset($_POST['id_produto'])) {
             $response['success'] = true;
             $response['message'] = $resultado['message'];
             //Atualiza a quantidade de itens
-            $response['total_items'] = $produtoService->getQuantidadeTotalCarrinho();
+            $response['total_items'] = count($_SESSION['carrinho'] ?? []);
         } else {
             $response['message'] = $resultado['message'];
         }

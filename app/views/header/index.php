@@ -57,6 +57,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 </div>
 
                 <!-- Dropdown escondido -->
+
                 <div class="dropdown" id="perfilDropdown">
                     <?php
                     // Inicie a sessão se ainda não tiver sido iniciada.
