@@ -62,6 +62,10 @@ body {
     color: var(--cor-secundaria);
 }
 
+.carrinho-contador {
+    color: var(--cor-secundaria);
+}
+
 .avatar-icon {
     font-size: 30px;
     color: var(--cor-terceira);

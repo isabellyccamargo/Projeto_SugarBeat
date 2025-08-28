@@ -1,4 +1,8 @@
 <?php
+
+
+session_start();
+
 // Inclua os arquivos de classe
 require_once '../../config/connection.php';
 require_once '../../repositories/ProdutoRepository.php';
@@ -53,16 +57,12 @@ $produtos = $produtoController->get();
                     echo '<div class="card">';
                     echo '<img src="' . htmlspecialchars($produto->getImagem()) . '" alt="' . htmlspecialchars($produto->getNome()) . '">';
                     echo '<p>' . htmlspecialchars($produto->getNome()) . '</p>';
-                    echo '<form method="post" action="adicionar_pedido.php">';
-                    echo '<input type="hidden" name="produto" value="' . htmlspecialchars($produto->getIdProduto()) . '">';
-                    echo '<button type="submit">Adicionar</button>';
-                    echo '</form>';
+                    echo '<button class="adicionar-btn" data-id="' . htmlspecialchars($produto->getIdProduto()) . '">Adicionar</button>';
                     echo '</div>';
                 }
             } else {
                 echo '<p>Nenhum produto encontrado.</p>';
             }
-
             ?>
         </div>
     </div>
@@ -92,3 +92,86 @@ $produtos = $produtoController->get();
 </body>
 
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Scripts do carrinho
+        const botoesAdicionar = document.querySelectorAll('div.grid .adicionar-btn');
+        const contadorCarrinho = document.querySelector('.carrinho-contador');
+        const iconeCarrinho = document.querySelector('.carrinho-icon');
+
+        async function handleAdicionarClick(event) {
+            const idProduto = event.target.dataset.id;
+            const cardProduto = event.target.closest('.card');
+            const imagemProduto = cardProduto.querySelector('img');
+
+            // Animação de arrastar
+            const imagemAnimada = imagemProduto.cloneNode(true);
+            imagemAnimada.style.position = 'fixed';
+            imagemAnimada.style.transition = 'all 1s ease-in-out';
+            imagemAnimada.style.width = '100px'; 
+            imagemAnimada.style.zIndex = '1000'; 
+
+            const rectBotao = event.target.getBoundingClientRect();
+            imagemAnimada.style.left = rectBotao.left + 'px';
+            imagemAnimada.style.top = rectBotao.top + 'px';
+
+            document.body.appendChild(imagemAnimada);
+
+            const rectCarrinho = iconeCarrinho.getBoundingClientRect();
+
+            setTimeout(() => {
+                imagemAnimada.style.left = (rectCarrinho.left + rectCarrinho.width / 2 - 20) + 'px';
+                imagemAnimada.style.top = (rectCarrinho.top + rectCarrinho.height / 2 - 20) + 'px';
+                imagemAnimada.style.opacity = '0';
+                imagemAnimada.style.transform = 'scale(0.1)';
+            }, 100);
+            
+            setTimeout(() => {
+                imagemAnimada.remove();
+            }, 1100);
+
+            // Lógica AJAX
+            try {
+                const response = await fetch('../carrinho/adicionar_pedido.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `id_produto=${idProduto}`
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    if (contadorCarrinho) {
+                        contadorCarrinho.textContent = result.total_items;
+                    }
+                } else {
+                    console.error(result.message);
+                }
+            } catch (error) {
+                console.error('Erro na requisição AJAX:', error);
+            }
+        }
+
+        botoesAdicionar.forEach(botao => {
+            botao.addEventListener('click', handleAdicionarClick);
+        });
+
+        // Scripts do menu de perfil
+        const perfilIcon = document.getElementById("perfilIcon");
+        const perfilDropdown = document.getElementById("perfilDropdown");
+
+        perfilIcon.addEventListener("click", () => {
+            perfilDropdown.style.display =
+                perfilDropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!perfilIcon.contains(event.target) && !perfilDropdown.contains(event.target)) {
+                perfilDropdown.style.display = "none";
+            }
+        });
+    });
+</script>

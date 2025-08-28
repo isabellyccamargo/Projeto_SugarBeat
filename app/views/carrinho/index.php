@@ -1,3 +1,20 @@
+<?php
+session_start();
+
+require_once '../../config/connection.php';
+require_once '../../models/Produto.php';
+require_once '../../repositories/ProdutoRepository.php';
+require_once '../../services/ProdutoService.php';
+
+$conexao = Connection::connect();
+$produtoRepository = new ProdutoRepository($conexao);
+$produtoService = new ProdutoService($produtoRepository);
+
+$carrinho = $produtoService->getCarrinho();
+$num_itens = $produtoService->getQuantidadeTotalCarrinho();
+$total_carrinho = $produtoService->getValorTotalCarrinho();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -6,82 +23,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho de Compras</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&family=Bitter:ital,wght@0,100..900;1,100..900&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Marcellus&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Padauk:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Adiciona CSS para remover as setas dos inputs de tipo "number" -->
+    <style>
+        /* Oculta as setas para cima/baixo nos campos de número para navegadores baseados em WebKit (Chrome, Safari) */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* Oculta as setas para cima/baixo nos campos de número para o Firefox */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
 </head>
 
 <body>
-    <?php
-    include '../header/index.php';
-    ?>
+    <?php include '../header/index.php'; ?>
+
     <main class="main-content">
         <div class="container">
             <div class="shopping-cart">
                 <h1 class="cart-title">Carrinho de Compras</h1>
-                <p class="items-count">3 Itens</p>
-                <div class="cart-items">
-                    <div class="cart-item">
-                        <div class="product-details">
-                            <img src="https://via.placeholder.com/100" alt="Fifa 19">
-                            <div class="product-info">
-                                <h3 class="product-name">Fifa 19</h3>
-                                <p class="product-category">PS4</p>
-                                <a href="#" class="remove-link">Remover</a>
-                            </div>
-                        </div>
-                        <div class="item-controls">
-                            <div class="quantity-control">
-                                <button class="quantity-btn">-</button>
-                                <input type="text" value="2" class="quantity-input">
-                                <button class="quantity-btn">+</button>
-                            </div>
-                            <p class="item-price">£44.00</p>
-                            <p class="item-total">£88.00</p>
-                        </div>
-                    </div>
+                <p class="items-count"><?php echo count($carrinho); ?> Itens</p>
 
-                    <div class="cart-item">
-                        <div class="product-details">
-                            <img src="https://via.placeholder.com/100" alt="Glacier White 500GB">
-                            <div class="product-info">
-                                <h3 class="product-name">Glacier White 500GB</h3>
-                                <p class="product-category">PS4</p>
-                                <a href="#" class="remove-link">Remover</a>
-                            </div>
-                        </div>
-                        <div class="item-controls">
-                            <div class="quantity-control">
-                                <button class="quantity-btn">-</button>
-                                <input type="text" value="1" class="quantity-input">
-                                <button class="quantity-btn">+</button>
-                            </div>
-                            <p class="item-price">£249.99</p>
-                            <p class="item-total">£249.99</p>
-                        </div>
-                    </div>
-
-                    <div class="cart-item">
-                        <div class="product-details">
-                            <img src="https://via.placeholder.com/100" alt="Platinum Headset">
-                            <div class="product-info">
-                                <h3 class="product-name">Platinum Headset</h3>
-                                <p class="product-category">PS4</p>
-                                <a href="#" class="remove-link">Remover</a>
-                            </div>
-                        </div>
-                        <div class="item-controls">
-                            <div class="quantity-control">
-                                <button class="quantity-btn">-</button>
-                                <input type="text" value="1" class="quantity-input">
-                                <button class="quantity-btn">+</button>
-                            </div>
-                            <p class="item-price">£119.99</p>
-                            <p class="item-total">£119.99</p>
-                        </div>
-                    </div>
+                <!-- Seção para os títulos "Unitário" e "Subtotal" -->
+                <div class="cart-labels">
+                    <p class="label-unitario">Unitário</p>
+                    <p class="label-subtotal">Subtotal</p>
                 </div>
-                <a href="#" class="continue-shopping">
+                <!-- Fim da nova seção -->
+
+                <div class="cart-items">
+                    <?php if (!empty($carrinho)) : ?>
+                        <?php foreach ($carrinho as $item): ?>
+                            <div class="cart-item">
+                                <div class="product-details">
+                                    <img src="<?php echo htmlspecialchars($item['imagem']); ?>" alt="<?php echo htmlspecialchars($item['nome']); ?>">
+                                    <div class="product-info">
+                                        <h3 class="product-name"><?php echo htmlspecialchars($item['nome']); ?></h3>
+                                        <a href="../carrinho/remover_produto.php?id=<?php echo $item['id']; ?>" class="remove-link">Remover</a>
+                                    </div>
+                                </div>
+                                <div class="item-controls">
+                                    <div class="quantity-control">
+                                        <button class="quantity-btn" data-action="decrement" data-id="<?php echo $item['id']; ?>">-</button>
+                                        <!-- ATENÇÃO: removi o atributo 'readonly' aqui -->
+                                        <input type="number" value="<?php echo $item['quantidade']; ?>" class="quantity-input" data-id="<?php echo $item['id']; ?>">
+                                        <button class="quantity-btn" data-action="increment" data-id="<?php echo $item['id']; ?>">+</button>
+                                    </div>
+                                    <p class="item-price" data-id="<?php echo $item['id']; ?>">R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></p>
+                                    <p class="item-total" data-id="<?php echo $item['id']; ?>">R$ <?php echo number_format($item['preco'] * $item['quantidade'], 2, ',', '.'); ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>Seu carrinho está vazio.</p>
+                    <?php endif; ?>
+                </div>
+
+                <a href="../home/index.php" class="continue-shopping">
                     <i class="fas fa-arrow-left"></i> Continuar Comprando
                 </a>
             </div>
@@ -89,16 +91,10 @@
             <div class="order-summary">
                 <h2 class="summary-title">Resumo do Pedido</h2>
                 <div class="summary-details">
+                    <p class="summary-items-count"> ITENS : <?php echo count($carrinho); ?></p>
                     <div class="summary-row">
-                        <span>ITENS 3</span>
-                        <span>£457.98</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>FRETE</span>
-                        <select name="shipping" id="shipping-select">
-                            <option value="standard">Standard Delivery - £5.00</option>
-                            <option value="express">Express Delivery - £15.00</option>
-                        </select>
+                        <span id="summary-items-count">QUANTIDADE TOTAL :  <?php echo $num_itens; ?></span>
+                        <span id="summary-total-price">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
                     <div class="promo-code">
                         <span>CÓDIGO PROMOCIONAL</span>
@@ -109,17 +105,121 @@
                     </div>
                     <div class="summary-row total-row">
                         <span>TOTAL</span>
-                        <span>£462.98</span>
+                        <span id="final-total">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
-                    <button class="checkout-btn">Finalizar Compra</button>
+                    <a href="finalizar_compra_gateway.php" class="checkout-btn">Finalizar Compra</a>
                 </div>
             </div>
         </div>
     </main>
-    <?php
-    include '../footer/index.php';
-    ?>
-</body>
 
+    <?php include '../footer/index.php'; ?>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cartItemsContainer = document.querySelector('.cart-items');
+        const summaryItemsCount = document.getElementById('summary-items-count');
+        const summaryTotalPrice = document.getElementById('summary-total-price');
+        const finalTotal = document.getElementById('final-total');
+
+        // Função para formatar o preço em moeda brasileira
+        const formatPrice = (price) => {
+            return `R$ ${parseFloat(price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        };
+
+        // Função para enviar a requisição AJAX ao servidor
+        const updateServerCart = async (id, newQuantity) => {
+            try {
+                const formData = new FormData();
+                formData.append('id_produto', id);
+                formData.append('quantidade', newQuantity);
+
+                const response = await fetch('atualizar_quantidade.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro na comunicação com o servidor.');
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Atualiza os totais do resumo com os dados do servidor
+                    summaryItemsCount.textContent = `ITENS ${data.total_items}`;
+                    summaryTotalPrice.textContent = formatPrice(data.total_price);
+                    finalTotal.textContent = formatPrice(data.total_price);
+                } else {
+                    console.error('Erro ao atualizar o carrinho:', data.message);
+                }
+            } catch (error) {
+                console.error('Falha na requisição:', error);
+            }
+        };
+
+        // Adiciona um listener de evento para o container de itens
+        cartItemsContainer.addEventListener('click', (event) => {
+            // A delegação de eventos é mais eficiente que adicionar um listener para cada botão
+            const target = event.target;
+            const isButton = target.classList.contains('quantity-btn');
+            
+            if (isButton) {
+                const cartItem = target.closest('.cart-item');
+                const quantityInput = cartItem.querySelector('.quantity-input');
+                const idProduto = target.dataset.id;
+                let currentQuantity = parseInt(quantityInput.value, 10);
+                
+                if (target.dataset.action === 'increment') {
+                    currentQuantity++;
+                } else if (target.dataset.action === 'decrement' && currentQuantity > 1) {
+                    currentQuantity--;
+                }
+                
+                // Atualiza o valor do input na interface
+                quantityInput.value = currentQuantity;
+                
+                // Atualiza o subtotal do item localmente para dar um feedback rápido ao usuário
+                const itemTotalElement = cartItem.querySelector('.item-total');
+                const itemPriceElement = cartItem.querySelector('.item-price');
+                const priceText = itemPriceElement.textContent.replace('R$', '').replace('.', '').replace(',', '.');
+                const price = parseFloat(priceText);
+                const newSubtotal = currentQuantity * price;
+                itemTotalElement.textContent = formatPrice(newSubtotal);
+
+                // Envia a requisição para o servidor
+                updateServerCart(idProduto, currentQuantity);
+            }
+        });
+        
+        cartItemsContainer.addEventListener('input', (event) => {
+             // Lida com a mudança manual no input de texto
+            const target = event.target;
+            if (target.classList.contains('quantity-input')) {
+                const cartItem = target.closest('.cart-item');
+                const idProduto = target.dataset.id;
+                let newQuantity = parseInt(target.value, 10);
+                
+                // Valida a quantidade
+                if (isNaN(newQuantity) || newQuantity < 1) {
+                    newQuantity = 1;
+                    target.value = 1; // Corrige o valor no input
+                }
+                
+                // Atualiza o subtotal do item localmente
+                const itemTotalElement = cartItem.querySelector('.item-total');
+                const itemPriceElement = cartItem.querySelector('.item-price');
+                const priceText = itemPriceElement.textContent.replace('R$', '').replace('.', '').replace(',', '.');
+                const price = parseFloat(priceText);
+                const newSubtotal = newQuantity * price;
+                itemTotalElement.textContent = formatPrice(newSubtotal);
+
+                // Envia a requisição para o servidor
+                updateServerCart(idProduto, newQuantity);
+            }
+        });
+    });
+</script>
+</body>
 
 </html>

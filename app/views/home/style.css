@@ -115,7 +115,7 @@ body {
     font-weight: bold;
 }
 
-.card form button {
+.adicionar-btn {
     background-color: var(--cor-primaria);
     color: #fff;
     border: none;

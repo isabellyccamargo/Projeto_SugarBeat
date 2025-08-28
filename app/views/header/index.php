@@ -1,5 +1,5 @@
 <?php
-// Garanta que a sessão seja iniciada em todas as páginas que incluírem este arquivo.
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -32,6 +32,15 @@ if (session_status() == PHP_SESSION_NONE) {
             <a href="../carrinho/" style="text-decoration: none;">
                 <div class="icon" title="Carrinho">
                     <i class="icon fas fa-shopping-cart carrinho-icon"></i>
+                    <span class="carrinho-contador" id="contador-carrinho">
+                        <?php
+                        if (session_status() == PHP_SESSION_NONE) {
+                            session_start();
+                        }
+                        // Mostra a quantidade total de itens no carrinho
+                        echo count($_SESSION['carrinho'] ?? []);
+                        ?>
+                    </span>
                 </div>
             </a>
 
@@ -89,3 +98,4 @@ if (session_status() == PHP_SESSION_NONE) {
         }
     });
 </script>
+
