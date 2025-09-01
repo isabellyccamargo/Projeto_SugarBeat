@@ -47,7 +47,7 @@ class ProdutoService
         }
 
         // verifica se o carrinho não foi criado
-        if (!isset($_SESSION['carrinho'])) {
+        if (!isset($_SESSION['carrinho'] )) {
             $_SESSION['carrinho'] = [];
         }
 

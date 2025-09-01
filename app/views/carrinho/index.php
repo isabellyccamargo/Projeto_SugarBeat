@@ -31,7 +31,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
             -webkit-appearance: none;
             margin: 0;
         }
-        
+
         /* Oculta as setas para cima/baixo nos campos de número para o Firefox */
         input[type="number"] {
             -moz-appearance: textfield;
@@ -93,7 +93,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                 <div class="summary-details">
                     <p class="summary-items-count"> ITENS : <?php echo count($carrinho); ?></p>
                     <div class="summary-row">
-                        <span id="summary-items-count">QUANTIDADE TOTAL :  <?php echo $num_itens; ?></span>
+                        <span id="summary-items-count">QUANTIDADE TOTAL : <?php echo $num_itens; ?></span>
                         <span id="summary-total-price">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
                     <div class="promo-code">
@@ -107,7 +107,10 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                         <span>TOTAL</span>
                         <span id="final-total">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
-                   <a href="../carrinho/finalizar_compra_gateway.php" class="btn">Finalizar Pedido</a>
+                    <div class="summary-details">
+                        <button id="finalizar-pedido-btn" class="checkout-btn">Finalizar Pedido</button>
+                        <div id="mensagem-erro-carrinho" style="color: red; margin-top: 20px; display: none; text-align: center;">O carrinho está vazio.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,110 +119,137 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
     <?php include '../footer/index.php'; ?>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const cartItemsContainer = document.querySelector('.cart-items');
-        const summaryItemsCount = document.getElementById('summary-items-count');
-        const summaryTotalPrice = document.getElementById('summary-total-price');
-        const finalTotal = document.getElementById('final-total');
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartItemsContainer = document.querySelector('.cart-items');
+            const summaryItemsCount = document.getElementById('summary-items-count');
+            const summaryTotalPrice = document.getElementById('summary-total-price');
+            const finalTotal = document.getElementById('final-total');
 
-        // Função para formatar o preço em moeda brasileira
-        const formatPrice = (price) => {
-            return `R$ ${parseFloat(price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        };
+            // Função para formatar o preço em moeda brasileira
+            const formatPrice = (price) => {
+                return `R$ ${parseFloat(price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            };
 
-        // Função para enviar a requisição AJAX ao servidor
-        const updateServerCart = async (id, newQuantity) => {
-            try {
-                const formData = new FormData();
-                formData.append('id_produto', id);
-                formData.append('quantidade', newQuantity);
+            // Função para enviar a requisição AJAX ao servidor
+            const updateServerCart = async (id, newQuantity) => {
+                try {
+                    const formData = new FormData();
+                    formData.append('id_produto', id);
+                    formData.append('quantidade', newQuantity);
 
-                const response = await fetch('atualizar_quantidade.php', {
-                    method: 'POST',
-                    body: formData
+                    const response = await fetch('atualizar_quantidade.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Erro na comunicação com o servidor.');
+                    }
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Atualiza os totais do resumo com os dados do servidor
+                        summaryItemsCount.textContent = `ITENS ${data.total_items}`;
+                        summaryTotalPrice.textContent = formatPrice(data.total_price);
+                        finalTotal.textContent = formatPrice(data.total_price);
+                    } else {
+                        console.error('Erro ao atualizar o carrinho:', data.message);
+                    }
+                } catch (error) {
+                    console.error('Falha na requisição:', error);
+                }
+            };
+
+            // Adiciona um listener de evento para o container de itens
+            cartItemsContainer.addEventListener('click', (event) => {
+                // A delegação de eventos é mais eficiente que adicionar um listener para cada botão
+                const target = event.target;
+                const isButton = target.classList.contains('quantity-btn');
+
+                if (isButton) {
+                    const cartItem = target.closest('.cart-item');
+                    const quantityInput = cartItem.querySelector('.quantity-input');
+                    const idProduto = target.dataset.id;
+                    let currentQuantity = parseInt(quantityInput.value, 10);
+
+                    if (target.dataset.action === 'increment') {
+                        currentQuantity++;
+                    } else if (target.dataset.action === 'decrement' && currentQuantity > 1) {
+                        currentQuantity--;
+                    }
+
+                    // Atualiza o valor do input na interface
+                    quantityInput.value = currentQuantity;
+
+                    // Atualiza o subtotal do item localmente para dar um feedback rápido ao usuário
+                    const itemTotalElement = cartItem.querySelector('.item-total');
+                    const itemPriceElement = cartItem.querySelector('.item-price');
+                    const priceText = itemPriceElement.textContent.replace('R$', '').replace('.', '').replace(',', '.');
+                    const price = parseFloat(priceText);
+                    const newSubtotal = currentQuantity * price;
+                    itemTotalElement.textContent = formatPrice(newSubtotal);
+
+                    // Envia a requisição para o servidor
+                    updateServerCart(idProduto, currentQuantity);
+                }
+            });
+
+            cartItemsContainer.addEventListener('input', (event) => {
+                // Lida com a mudança manual no input de texto
+                const target = event.target;
+                if (target.classList.contains('quantity-input')) {
+                    const cartItem = target.closest('.cart-item');
+                    const idProduto = target.dataset.id;
+                    let newQuantity = parseInt(target.value, 10);
+
+                    // Valida a quantidade
+                    if (isNaN(newQuantity) || newQuantity < 1) {
+                        newQuantity = 1;
+                        target.value = 1; // Corrige o valor no input
+                    }
+
+                    // Atualiza o subtotal do item localmente
+                    const itemTotalElement = cartItem.querySelector('.item-total');
+                    const itemPriceElement = cartItem.querySelector('.item-price');
+                    const priceText = itemPriceElement.textContent.replace('R$', '').replace('.', '').replace(',', '.');
+                    const price = parseFloat(priceText);
+                    const newSubtotal = newQuantity * price;
+                    itemTotalElement.textContent = formatPrice(newSubtotal);
+
+                    // Envia a requisição para o servidor
+                    updateServerCart(idProduto, newQuantity);
+                }
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... (restante do seu código JS) ...
+
+            const finalizarBtn = document.getElementById('finalizar-pedido-btn');
+            const mensagemErro = document.getElementById('mensagem-erro-carrinho');
+
+            if (finalizarBtn) {
+                finalizarBtn.addEventListener('click', (event) => {
+                    // Pega o número de itens do PHP usando o elemento HTML
+                    const numItens = parseInt(document.querySelector('.items-count').textContent, 10);
+
+                    if (numItens === 0) {
+                        // Se o carrinho estiver vazio, impede o envio do formulário/link
+                        event.preventDefault();
+                        mensagemErro.style.display = 'block'; // Exibe a mensagem de erro
+                    } else {
+                        // Se o carrinho tem itens, redireciona o usuário
+                        mensagemErro.style.display = 'none'; // Esconde a mensagem de erro, caso esteja visível
+                        window.location.href = '../carrinho/finalizar_compra_gateway.php';
+                    }
                 });
-
-                if (!response.ok) {
-                    throw new Error('Erro na comunicação com o servidor.');
-                }
-
-                const data = await response.json();
-                
-                if (data.success) {
-                    // Atualiza os totais do resumo com os dados do servidor
-                    summaryItemsCount.textContent = `ITENS ${data.total_items}`;
-                    summaryTotalPrice.textContent = formatPrice(data.total_price);
-                    finalTotal.textContent = formatPrice(data.total_price);
-                } else {
-                    console.error('Erro ao atualizar o carrinho:', data.message);
-                }
-            } catch (error) {
-                console.error('Falha na requisição:', error);
-            }
-        };
-
-        // Adiciona um listener de evento para o container de itens
-        cartItemsContainer.addEventListener('click', (event) => {
-            // A delegação de eventos é mais eficiente que adicionar um listener para cada botão
-            const target = event.target;
-            const isButton = target.classList.contains('quantity-btn');
-            
-            if (isButton) {
-                const cartItem = target.closest('.cart-item');
-                const quantityInput = cartItem.querySelector('.quantity-input');
-                const idProduto = target.dataset.id;
-                let currentQuantity = parseInt(quantityInput.value, 10);
-                
-                if (target.dataset.action === 'increment') {
-                    currentQuantity++;
-                } else if (target.dataset.action === 'decrement' && currentQuantity > 1) {
-                    currentQuantity--;
-                }
-                
-                // Atualiza o valor do input na interface
-                quantityInput.value = currentQuantity;
-                
-                // Atualiza o subtotal do item localmente para dar um feedback rápido ao usuário
-                const itemTotalElement = cartItem.querySelector('.item-total');
-                const itemPriceElement = cartItem.querySelector('.item-price');
-                const priceText = itemPriceElement.textContent.replace('R$', '').replace('.', '').replace(',', '.');
-                const price = parseFloat(priceText);
-                const newSubtotal = currentQuantity * price;
-                itemTotalElement.textContent = formatPrice(newSubtotal);
-
-                // Envia a requisição para o servidor
-                updateServerCart(idProduto, currentQuantity);
             }
         });
-        
-        cartItemsContainer.addEventListener('input', (event) => {
-             // Lida com a mudança manual no input de texto
-            const target = event.target;
-            if (target.classList.contains('quantity-input')) {
-                const cartItem = target.closest('.cart-item');
-                const idProduto = target.dataset.id;
-                let newQuantity = parseInt(target.value, 10);
-                
-                // Valida a quantidade
-                if (isNaN(newQuantity) || newQuantity < 1) {
-                    newQuantity = 1;
-                    target.value = 1; // Corrige o valor no input
-                }
-                
-                // Atualiza o subtotal do item localmente
-                const itemTotalElement = cartItem.querySelector('.item-total');
-                const itemPriceElement = cartItem.querySelector('.item-price');
-                const priceText = itemPriceElement.textContent.replace('R$', '').replace('.', '').replace(',', '.');
-                const price = parseFloat(priceText);
-                const newSubtotal = newQuantity * price;
-                itemTotalElement.textContent = formatPrice(newSubtotal);
+    </script>
 
-                // Envia a requisição para o servidor
-                updateServerCart(idProduto, newQuantity);
-            }
-        });
-    });
-</script>
+
 </body>
 
 </html>

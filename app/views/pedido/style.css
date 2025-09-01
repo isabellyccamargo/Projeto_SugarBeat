@@ -1,0 +1,120 @@
+:root {
+    --fontfamily:'Caalibri', serif;
+    --cor-primaria: #3b2500ff;
+    --cor-secundaria: #fff0d0ff;
+    --cor-terceira:rgb(252, 218, 143);
+}
+
+body {
+    background-color: #f7f3e9;
+    font-family:var(--fontfamily);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.finalizar-container {
+    margin-top: 230px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 40px;
+    background-color: #f7f3e9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    min-width: 1000px;
+    width: 100%;
+     max-height: 620px; /* Define uma altura máxima para a área dos itens */
+    overflow-y: auto;  /* Habilita a barra de rolagem vertical quando o conteúdo ultrapassa a altura máxima */
+    padding-right: 25px; /* Adiciona um espaço para que o texto não cole na barra de rolagem */
+}
+
+
+.pedido-info, .pagamento-info {
+    flex: 1;
+    
+}
+
+.pedido-info h2, .pagamento-info h2 {
+    color: var(--cor-primaria);
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 10px;
+}
+
+.item-resumo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #d4c8b0;
+}
+
+.item-nome {
+    font-weight: 500;
+}
+
+.resumo-total {
+    margin-top: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-top: 2px solid var(--cor-primaria);
+    padding-top: 15px;
+}
+
+.resumo-total p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.opcoes-pagamento {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    width: 300px;
+}
+
+.opcao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #e4e1d1;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.opcao:hover {
+    background-color: #d4c8b0;
+}
+
+.opcao input[type="radio"] {
+    accent-color: var(--cor-primaria);
+}
+
+.opcao img {
+    width: 30px;
+    height: 30px;
+}
+
+.btn-finalizar {
+    width: 100%;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: var(--cor-primaria);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* .btn-finalizar:hover {
+    background-color: #382d2a;
+} */
