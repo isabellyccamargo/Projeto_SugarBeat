@@ -32,9 +32,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['cliente_email'] = $cliente->getEmail();
                 $_SESSION['cliente_nome'] = $cliente->getNome();
 
-                if (isset($_POST['origem']) && $_POST['origem'] === 'pedidos') {
-                    // Redireciona para a página de pedidos
-                    header("Location: ../pedidos");
+                if (isset($_POST['origem'])) {
+                    switch ($_POST['origem']) {
+                        case 'pedidos':
+                            header("Location: ../pedidos");
+                            break;
+                        case 'carrinho':
+                            // Após o login, retorna para o guardião que, por sua vez, levará para a finalização.
+                            header("Location: ../carrinho/finalizar_compra_gateway.php");
+                            break;
+                        default:
+                            header("Location: ../cadastro/index.php?editar=true");
+                            break;
+                    }
                     exit();
                 } else {
                     // Se não houver origem, redireciona para a página padrão (Meus Dados)

@@ -23,8 +23,9 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho de Compras</title>
     <link rel="stylesheet" href="style.css">
-
+    <!-- Adiciona CSS para remover as setas dos inputs de tipo "number" -->
     <style>
+        /* Oculta as setas para cima/baixo nos campos de número para navegadores baseados em WebKit (Chrome, Safari) */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -106,7 +107,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                         <span>TOTAL</span>
                         <span id="final-total">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
-                    <a href="finalizar_compra_gateway.php" class="checkout-btn">Finalizar Compra</a>
+                   <a href="../carrinho/finalizar_compra_gateway.php" class="btn">Finalizar Pedido</a>
                 </div>
             </div>
         </div>

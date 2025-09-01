@@ -5,6 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $cliente = null;
+// ADICIONADO: Captura o parâmetro 'origem' da URL, se existir.
+$origem = $_GET['origem'] ?? null;
 
 // inclui sempre
 require_once '../../config/connection.php';
@@ -23,8 +25,23 @@ $controller = new ClienteController($clienteService);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['id_cliente'])) {
         $controller->put($_POST['id_cliente']);
+        // Se a atualização for bem-sucedida, não há redirecionamento especial.
     } else {
-        $controller->post();
+        // Lógica para novo cadastro
+       $cliente_cadastrado = $controller->post();
+
+        // ADICIONADO: Lógica de redirecionamento após o cadastro.
+        // Verifica se a origem foi passada pelo formulário
+       if ($cliente_cadastrado) {
+        
+          $_SESSION['cliente_id'] = $cliente_cadastrado->getIdCliente();
+            $_SESSION['cliente_nome'] = $cliente_cadastrado->getNome();
+            $_SESSION['cliente_email'] = $cliente_cadastrado->getEmail();
+        } else {
+            // Se não houver origem, redireciona para a página principal (ou onde preferir)
+            header("Location: ../home/");
+            exit();
+        }
     }
 }
 
@@ -37,9 +54,6 @@ if (isset($_SESSION['cliente_id'])) {
     }
 }
 
-//$senha_digitada = $_POST['senha'];
-// Crie o hash da senha de forma segura
-//$hash_da_senha = password_hash($senha_digitada, PASSWORD_DEFAULT);
 ?>
 
 <!DOCTYPE html>
@@ -68,10 +82,14 @@ if (isset($_SESSION['cliente_id'])) {
             <div class="window-control maximize"></div>
         </div>
         <div class="form-container">
-            <form id="formCadastro" action="../cadastro/index.php" method="POSt">
+            <form id="formCadastro" action="../cadastro/index.php" method="POST">
                 <?php if ($cliente): ?>
                     <input type="hidden" name="id_cliente" value="<?php echo $cliente->getIdCliente(); ?>">
                 <?php endif; ?>
+                <?php if ($origem): ?>
+                    <input type="hidden" name="origem" value="<?php echo htmlspecialchars($origem); ?>">
+                <?php endif; ?>
+                
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" id="nome" name="nome" value="<?php echo $cliente ? htmlspecialchars($cliente->getNome()) : ''; ?>" required />
@@ -104,7 +122,6 @@ if (isset($_SESSION['cliente_id'])) {
                         <label for="cidade">Cidade</label>
                         <input type="text" id="cidade" name="cidade" value="<?php echo $cliente ? htmlspecialchars($cliente->getCidade()) : ''; ?>" required />
                     </div>
-
                 </div>
 
                 <div class="form-row">

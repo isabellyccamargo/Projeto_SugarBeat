@@ -4,7 +4,6 @@ class Connection
 {
     public static function connect()
     {
-        // Exemplo de conexão PDO
         $dsn = 'mysql:host=localhost;dbname=sugarbeat';
         $user = 'root';
         $password = 'ADMIN';

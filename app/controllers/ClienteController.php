@@ -27,29 +27,31 @@ class ClienteController
     }
 
     public function post()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $cliente = new Cliente();
-            $cliente->setNome($_POST['nome']);
-            $cliente->setCpf($_POST['cpf']);
-            $cliente->setEmail($_POST['email']);
-            $cliente->setSenha(password_hash($_POST['senha'], PASSWORD_DEFAULT));
-            $cliente->setCidade($_POST['cidade']);
-            $cliente->setBairro($_POST['bairro']);
-            $cliente->setRua($_POST['rua']);
-            $cliente->setNumeroDaCasa($_POST['numero_da_casa']);
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $cliente = new Cliente();
+        $cliente->setNome($_POST['nome']);
+        $cliente->setCpf($_POST['cpf']);
+        $cliente->setEmail($_POST['email']);
+        $cliente->setSenha(password_hash($_POST['senha'], PASSWORD_DEFAULT));
+        $cliente->setCidade($_POST['cidade']);
+        $cliente->setBairro($_POST['bairro']);
+        $cliente->setRua($_POST['rua']);
+        $cliente->setNumeroDaCasa($_POST['numero_da_casa']);
 
-            $novoCliente = $this->clienteService->criarNovoCliente($cliente);
+        $novoCliente = $this->clienteService->criarNovoCliente($cliente);
 
-            if ($novoCliente) {
-                $_SESSION['cliente_id'] = $novoCliente->getIdCliente();
-                header("Location: index.php");
-                exit;
-            } else {
-                echo "Erro ao cadastrar cliente.";
-            }
+        if ($novoCliente) {
+            // ADICIONADO: Preenche a sessão com o nome do cliente
+            $_SESSION['cliente_id'] = $novoCliente->getIdCliente();
+            $_SESSION['cliente_nome'] = $novoCliente->getNome();
+            
+
+        } else {
+            echo "Erro ao cadastrar cliente.";
         }
     }
+}
 
     public function put($id)
     {
