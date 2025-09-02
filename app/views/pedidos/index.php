@@ -46,7 +46,7 @@ if (!empty($carrinho)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar Pedido</title>
     <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
-    <link rel="stylesheet" href="../pedido/style.css">
+    <link rel="stylesheet" href="../pedidos/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&family=Bitter:ital,wght@0,100..900;1,100..900&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Marcellus&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Padauk:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -65,7 +65,7 @@ if (!empty($carrinho)) {
         </div>
         <div class="window-body">
             <h1 class="titulo">Finalizar Pedido</h1>
-            
+
             <div class="finalizar-container">
                 <div class="pedido-info">
                     <h2>Detalhes do Pedido</h2>
@@ -73,8 +73,10 @@ if (!empty($carrinho)) {
                     <?php if (!empty($itens_detalhes)): ?>
                         <?php foreach ($itens_detalhes as $item): ?>
                             <div class="item-resumo">
-                                <span class="item-nome"><?php echo htmlspecialchars($item['produto']->getNome()); ?></span>
-                                <span class="item-quantidade">x<?php echo $item['quantidade']; ?></span>
+                                <div>
+                                    <span class="item-nome"><?php echo htmlspecialchars($item['produto']->getNome()); ?></span>
+                                    <span class="item-quantidade">x<?php echo $item['quantidade']; ?></span>
+                                </div>
                                 <span class="item-preco">R$ <?php echo number_format($item['subtotal'], 2, ',', '.'); ?></span>
                             </div>
                         <?php endforeach; ?>
@@ -89,9 +91,9 @@ if (!empty($carrinho)) {
                 </div>
 
                 <div class="pagamento-info">
-                    <h2>Forma de Pagamento</h2>
+                    <h2 class="forma">Forma de Pagamento</h2>
                     <hr>
-                    <p>Selecione uma opção de pagamento:</p>
+                    <p class="selecione">Selecione uma opção de pagamento:</p>
                     <div class="opcoes-pagamento">
                         <div class="opcao">
                             <input type="radio" id="pix" name="metodo_pagamento" value="pix" checked>
@@ -109,7 +111,7 @@ if (!empty($carrinho)) {
                             <i class="fas fa-barcode"></i>
                         </div>
                     </div>
-                    
+                    <hr>
                     <button class="btn-finalizar">Confirmar Pagamento</button>
                 </div>
             </div>

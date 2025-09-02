@@ -82,4 +82,5 @@ class PedidoRepository implements IPedidoRepository
         $stmt->bindValue(':descricao_pedido', $pedido->getDescricaoPedido());
         return $stmt->execute();
     }
+    
 }

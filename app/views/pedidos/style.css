@@ -1,0 +1,144 @@
+:root {
+    --fontfamily: 'Caalibri', serif;
+    --cor-primaria: #3b2500ff;
+    --cor-secundaria: #fff0d0ff;
+    --cor-terceira: rgb(252, 218, 143);
+}
+
+body {
+    background-color: #f7f3e9;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.finalizar-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f7f3e9;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 1400px;
+    width: 100%;
+    min-height: 650px;
+    height: 100%;
+    margin-top: 230px;
+    margin-bottom: 30px;
+}
+
+.pagamento-info {
+    width: 400px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-secundaria);
+    padding: 40px;
+}
+
+.selecione {
+    font-size: 20px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.pedido-info {
+    background-color: white;
+    flex: 1;
+    width: 600px;
+    padding: 40px;
+}
+
+.forma {
+    margin-bottom: 40px;
+}
+
+.item-resumo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.item-nome {
+    font-weight: bold;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Alinha o texto ao centro */
+    /* text-align: center; */
+}
+
+.item-quantidade {
+    font-size: 0.9em;
+    /* align-items: center; */
+    margin-left: 10px;
+}
+
+
+.resumo-total {
+    margin-top: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-top: 2px solid #4b3832;
+    padding-top: 15px;
+}
+
+.resumo-total p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+
+}
+
+.opcoes-pagamento {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+.opcao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--cor-terceira);
+    color: var(--cor-primaria);
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.opcao:hover {
+    background-color: var(--cor-secundaria);
+}
+
+.opcao input[type="radio"] {
+    accent-color: #4b3832;
+}
+
+.opcao img {
+    width: 30px;
+    height: 30px;
+}
+
+.btn-finalizar {
+    width: 100%;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: var(--cor-secundaria);
+    color: var(--cor-primaria);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    margin-top: 40px;
+}

@@ -68,7 +68,7 @@ if (session_status() == PHP_SESSION_NONE) {
                     // Verifique se o usuário está logado (se o id_cliente existe na sessão)
                     if (isset($_SESSION['cliente_id'])) {
                         // LINKS PARA QUANDO O USUÁRIO ESTÁ LOGADO
-                        echo '<a href="../pedidos?editar=true">Meus Pedidos</a>';
+                        echo '<a href="../meus_pedidos?editar=true">Meus Pedidos</a>';
                         echo '<a href="../cadastro?editar=true">Meus Dados</a>';
                         echo '<a href="../login/logout.php">Sair</a>';
                     } else {

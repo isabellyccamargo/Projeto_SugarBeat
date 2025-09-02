@@ -42,9 +42,12 @@ class PedidoService
         return $this->pedidoRepository->getAll();
     }
 
+
+
     public function atualizarPedido(Pedido $pedido)
     {
         return $this->pedidoRepository->update($pedido);
     }
+    
 
 }

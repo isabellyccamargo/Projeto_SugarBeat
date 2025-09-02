@@ -1,0 +1,64 @@
+/* Fundo da página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5e6c4; /* Bege claro */
+    /* margin: 0;
+    padding: 30px; */
+}
+
+/* Container centralizado */
+.container {
+    max-width: 1200px;
+    max-height: 300px;
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    background-color: #3d2500; /* Marrom escuro */
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    color: #f5d38b; /* Dourado claro */
+    margin-bottom: 20px;
+}
+
+/* Tabela */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; /* Espaço entre linhas */
+}
+
+/* Cabeçalho */
+thead tr {
+    background-color: #f5d38b; /* Dourado */
+    color: #3d2500; /* Marrom escuro */
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+th {
+    padding: 12px;
+    text-align: center;
+}
+
+/* Linhas */
+tbody tr {
+    background-color: #a18965; /* Marrom mais claro */
+    color: #fff;
+    border-radius: 8px;
+}
+
+tbody td {
+    padding: 12px;
+    text-align: center;
+}
+
+/* Efeito ao passar o mouse */
+tbody tr:hover {
+    background-color: #8c7350;
+}
