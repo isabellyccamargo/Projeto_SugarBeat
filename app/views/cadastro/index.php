@@ -24,22 +24,65 @@ $controller = new ClienteController($clienteService);
 // 1. Se enviou formulário, decide se é cadastro ou atualização
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['id_cliente'])) {
-        $controller->put($_POST['id_cliente']);
-        // Se a atualização for bem-sucedida, não há redirecionamento especial.
+        // Lógica de atualização
+        try {
+            $controller->put($_POST['id_cliente']);
+            $_SESSION['alert_message'] = [
+                'type' => 'success',
+                'title' => 'Sucesso!',
+                'text' => 'Seus dados foram atualizados com sucesso.'
+            ];
+        } catch (Exception $e) {
+            $_SESSION['alert_message'] = [
+                'type' => 'error',
+                'title' => 'Erro!',
+                'text' => 'Não foi possível atualizar seus dados. Por favor, tente novamente.'
+            ];
+        }
+        // Redireciona para evitar reenvio do formulário ao recarregar a página
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
     } else {
         // Lógica para novo cadastro
-       $cliente_cadastrado = $controller->post();
+        try {
+            $cliente_cadastrado = $controller->post();
 
-        // ADICIONADO: Lógica de redirecionamento após o cadastro.
-        // Verifica se a origem foi passada pelo formulário
-       if ($cliente_cadastrado) {
-        
-          $_SESSION['cliente_id'] = $cliente_cadastrado->getIdCliente();
-            $_SESSION['cliente_nome'] = $cliente_cadastrado->getNome();
-            $_SESSION['cliente_email'] = $cliente_cadastrado->getEmail();
-        } else {
-            // Se não houver origem, redireciona para a página principal (ou onde preferir)
-            header("Location: ../home/");
+            if ($cliente_cadastrado) {
+                $_SESSION['cliente_id'] = $cliente_cadastrado->getIdCliente();
+                $_SESSION['cliente_nome'] = $cliente_cadastrado->getNome();
+                $_SESSION['cliente_email'] = $cliente_cadastrado->getEmail();
+
+                $_SESSION['alert_message'] = [
+                    'type' => 'success',
+                    'title' => 'Bem-vindo!',
+                    'text' => 'Seu cadastro foi realizado com sucesso!'
+                ];
+
+                // Redirecionamento após o cadastro
+                if (isset($_POST['origem'])) {
+                    // Se a origem veio do formulário, redireciona para lá
+                    header("Location: " . $_POST['origem']);
+                } else {
+                    // Caso contrário, redireciona para a home
+                    header("Location: ../home/");
+                }
+                exit();
+            } else {
+                $_SESSION['alert_message'] = [
+                    'type' => 'error',
+                    'title' => 'Erro!',
+                    'text' => 'Não foi possível realizar o cadastro. Tente novamente mais tarde.'
+                ];
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        } catch (Exception $e) {
+            $_SESSION['alert_message'] = [
+                'type' => 'error',
+                'title' => 'Erro!',
+                'text' => 'Erro ao processar o cadastro: ' . $e->getMessage()
+            ];
+            header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
     }
@@ -67,6 +110,7 @@ if (isset($_SESSION['cliente_id'])) {
     <link href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&family=Bitter:ital,wght@0,100..900;1,100..900&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Marcellus&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Padauk:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -89,7 +133,7 @@ if (isset($_SESSION['cliente_id'])) {
                 <?php if ($origem): ?>
                     <input type="hidden" name="origem" value="<?php echo htmlspecialchars($origem); ?>">
                 <?php endif; ?>
-                
+
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" id="nome" name="nome" value="<?php echo $cliente ? htmlspecialchars($cliente->getNome()) : ''; ?>" required />
@@ -174,6 +218,38 @@ if (isset($_SESSION['cliente_id'])) {
         checkbox.addEventListener('change', () => {
             senhaInput.type = checkbox.checked ? 'text' : 'password';
         });
+    </script>
+
+
+    <script>
+        function mostrarMensagem(tipo, titulo, mensagem) {
+            const cores = {
+                success: '#2f3e1d',
+                error: '#a94442',
+                warning: '#8a6d3b',
+                info: '#31708f'
+            };
+
+            Swal.fire({
+                icon: tipo,
+                title: titulo,
+                text: mensagem,
+                confirmButtonColor: cores[tipo] || '#2f3e1d',
+                background: '#fdfae5',
+                color: '#2f3e1d',
+                heightAuto: false
+            });
+        }
+
+        <?php
+        if (isset($_SESSION['alert_message'])) {
+            $msg = $_SESSION['alert_message'];
+            echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
+
+            // Limpa a mensagem da sessão após exibir
+            unset($_SESSION['alert_message']);
+        }
+        ?>
     </script>
 
 </body>

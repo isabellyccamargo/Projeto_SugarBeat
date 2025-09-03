@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 // Inclua todos os arquivos necessários
 require_once '../../config/connection.php';
 require_once '../../models/Pedido.php';
-require_once '../../models/ItemPedido.php'; // Adicionei este
+require_once '../../models/ItemPedido.php';
 require_once '../../repositories/PedidoRepository.php';
 require_once '../../repositories/ItemPedidoRepository.php';
 require_once '../../services/PedidoService.php';
@@ -22,16 +22,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pedidoController = new PedidoController($pedidoService);
 
     try {
-        // Agora, chamamos o método post() do controller
+        // Chame o método post() do controller
         $pedidoController->post();
-        // Redireciona o usuário para uma página de sucesso
-        header('Location: ../../views/pedidos/index.php?status=sucesso');
+
+        // Se a operação for bem-sucedida, configure a mensagem de sucesso na sessão
+        $_SESSION['alert_message'] = [
+            'type' => 'success',
+            'title' => 'Sucesso!',
+            'text' => 'Seu pedido foi finalizado com sucesso. Agradecemos a preferência!'
+        ];
+
+        // Redirecione de volta para a página do carrinho para mostrar a mensagem
+        header('Location: ../../views/pedidos/index.php');
         exit();
+
     } catch (Exception $e) {
-        // Em caso de erro, você pode redirecionar para uma página de erro
-        echo "Erro ao salvar o pedido: " . urlencode($e->getMessage());
-        // header('Location: ../views/erro/pedido_falhou.php?mensagem=' . urlencode($e->getMessage()));
-        // exit();
+        // Em caso de erro, configure a mensagem de erro na sessão
+        $_SESSION['alert_message'] = [
+            'type' => 'error',
+            'title' => 'Erro!',
+            'text' => 'Não foi possível processar o seu pedido. Por favor, tente novamente.'
+        ];
+
+        // Redirecione de volta para a página do carrinho para mostrar a mensagem
+        header('Location: ../../views/pedidos/index.php');
+        exit();
     }
 } else {
     // Se não for um POST, redirecione para a página do carrinho

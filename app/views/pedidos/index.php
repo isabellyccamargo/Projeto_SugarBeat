@@ -43,6 +43,7 @@ if (!empty($carrinho)) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&family=Bitter:ital,wght@0,100..900;1,100..900&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Marcellus&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Padauk:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -138,6 +139,36 @@ if (!empty($carrinho)) {
             });
         });
     </script>
+
+    <script>
+    // Utilidade para exibir mensagens personalizadas com SweetAlert2
+    function mostrarMensagem(tipo, titulo, mensagem) {
+        const cores = {
+            success: '#2f3e1d',
+            error: '#a94442',
+            warning: '#8a6d3b',
+            info: '#31708f'
+        };
+
+        Swal.fire({
+            icon: tipo,
+            title: titulo,
+            text: mensagem,
+            confirmButtonColor: cores[tipo] || '#2f3e1d',
+            background: '#fdfae5',
+            color: '#2f3e1d',
+            heightAuto: false // Adicione esta linha
+        });
+    }
+
+    <?php
+    if (isset($_SESSION['alert_message'])) {
+        $msg = $_SESSION['alert_message'];
+        echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
+        unset($_SESSION['alert_message']);
+    }
+    ?>
+</script>
 
 </body>
 
