@@ -15,7 +15,7 @@ class PedidoController
     {
         if ($id) {
             try {
-                $pedido = $this->pedidoService->getPedidoComItens($id);
+                return $this->pedidoService->getPedidoComItens($id);
                 header('Content-Type: application/json');
                 echo json_encode($pedido);
             } catch (Exception $e) {
@@ -68,7 +68,7 @@ class PedidoController
         }
 
         try {
-            $novoPedido = $this->pedidoService->criarNovoPedido($pedido, $itens);
+            return $this->pedidoService->criarNovoPedido($pedido, $itens);
             http_response_code(201);
         } catch (Exception $e) {
             throw $e;
