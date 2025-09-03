@@ -24,65 +24,22 @@ $controller = new ClienteController($clienteService);
 // 1. Se enviou formulário, decide se é cadastro ou atualização
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['id_cliente'])) {
-        // Lógica de atualização
-        try {
-            $controller->put($_POST['id_cliente']);
-            $_SESSION['alert_message'] = [
-                'type' => 'success',
-                'title' => 'Sucesso!',
-                'text' => 'Seus dados foram atualizados com sucesso.'
-            ];
-        } catch (Exception $e) {
-            $_SESSION['alert_message'] = [
-                'type' => 'error',
-                'title' => 'Erro!',
-                'text' => 'Não foi possível atualizar seus dados. Por favor, tente novamente.'
-            ];
-        }
-        // Redireciona para evitar reenvio do formulário ao recarregar a página
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit();
+        $controller->put($_POST['id_cliente']);
+        // Se a atualização for bem-sucedida, não há redirecionamento especial.
     } else {
         // Lógica para novo cadastro
-        try {
-            $cliente_cadastrado = $controller->post();
+       $cliente_cadastrado = $controller->post();
 
-            if ($cliente_cadastrado) {
-                $_SESSION['cliente_id'] = $cliente_cadastrado->getIdCliente();
-                $_SESSION['cliente_nome'] = $cliente_cadastrado->getNome();
-                $_SESSION['cliente_email'] = $cliente_cadastrado->getEmail();
-
-                $_SESSION['alert_message'] = [
-                    'type' => 'success',
-                    'title' => 'Bem-vindo!',
-                    'text' => 'Seu cadastro foi realizado com sucesso!'
-                ];
-
-                // Redirecionamento após o cadastro
-                if (isset($_POST['origem'])) {
-                    // Se a origem veio do formulário, redireciona para lá
-                    header("Location: " . $_POST['origem']);
-                } else {
-                    // Caso contrário, redireciona para a home
-                    header("Location: ../home/");
-                }
-                exit();
-            } else {
-                $_SESSION['alert_message'] = [
-                    'type' => 'error',
-                    'title' => 'Erro!',
-                    'text' => 'Não foi possível realizar o cadastro. Tente novamente mais tarde.'
-                ];
-                header("Location: " . $_SERVER['PHP_SELF']);
-                exit();
-            }
-        } catch (Exception $e) {
-            $_SESSION['alert_message'] = [
-                'type' => 'error',
-                'title' => 'Erro!',
-                'text' => 'Erro ao processar o cadastro: ' . $e->getMessage()
-            ];
-            header("Location: " . $_SERVER['PHP_SELF']);
+        // ADICIONADO: Lógica de redirecionamento após o cadastro.
+        // Verifica se a origem foi passada pelo formulário
+       if ($cliente_cadastrado) {
+        
+          $_SESSION['cliente_id'] = $cliente_cadastrado->getIdCliente();
+            $_SESSION['cliente_nome'] = $cliente_cadastrado->getNome();
+            $_SESSION['cliente_email'] = $cliente_cadastrado->getEmail();
+        } else {
+            // Se não houver origem, redireciona para a página principal (ou onde preferir)
+            header("Location: ../home/");
             exit();
         }
     }
@@ -133,7 +90,7 @@ if (isset($_SESSION['cliente_id'])) {
                 <?php if ($origem): ?>
                     <input type="hidden" name="origem" value="<?php echo htmlspecialchars($origem); ?>">
                 <?php endif; ?>
-
+                
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" id="nome" name="nome" value="<?php echo $cliente ? htmlspecialchars($cliente->getNome()) : ''; ?>" required />
@@ -220,37 +177,38 @@ if (isset($_SESSION['cliente_id'])) {
         });
     </script>
 
-
     <script>
-        function mostrarMensagem(tipo, titulo, mensagem) {
-            const cores = {
-                success: '#2f3e1d',
-                error: '#a94442',
-                warning: '#8a6d3b',
-                info: '#31708f'
-            };
+    // Utilidade para exibir mensagens personalizadas com SweetAlert2
+    function mostrarMensagem(tipo, titulo, mensagem) {
+        const cores = {
+            success: '#2f3e1d',
+            error: '#a94442',
+            warning: '#8a6d3b',
+            info: '#31708f'
+        };
 
-            Swal.fire({
-                icon: tipo,
-                title: titulo,
-                text: mensagem,
-                confirmButtonColor: cores[tipo] || '#2f3e1d',
-                background: '#fdfae5',
-                color: '#2f3e1d',
-                heightAuto: false
-            });
-        }
+        Swal.fire({
+            icon: tipo,
+            title: titulo,
+            text: mensagem,
+            confirmButtonColor: cores[tipo] || '#2f3e1d',
+            background: '#fdfae5',
+            color: '#2f3e1d',
+            heightAuto: false 
+        });
+    }
 
-        <?php
-        if (isset($_SESSION['alert_message'])) {
-            $msg = $_SESSION['alert_message'];
-            echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
-
-            // Limpa a mensagem da sessão após exibir
-            unset($_SESSION['alert_message']);
-        }
-        ?>
-    </script>
+    <?php
+    // Verifica se há uma mensagem de alerta na sessão
+    if (isset($_SESSION['alert_message'])) {
+        $msg = $_SESSION['alert_message'];
+        // Chama a função JavaScript com os dados da sessão
+        echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
+        // Limpa a mensagem da sessão para que não seja exibida novamente
+        unset($_SESSION['alert_message']);
+    }
+    ?>
+</script>
 
 </body>
 

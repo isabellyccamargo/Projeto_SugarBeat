@@ -114,9 +114,9 @@ if (!empty($carrinho)) {
                                 <i class="fas fa-credit-card"></i>
                             </div>
                             <div class="opcao">
-                                <input type="radio" id="boleto" name="metodo_pagamento" value="boleto">
-                                <label for="boleto">Boleto</label>
-                                <i class="fas fa-barcode"></i>
+                                <input type="radio" id="dinheiro" name="metodo_pagamento" value="dinheiro">
+                                <label for="dinheiro">Dinheiro</label>
+                                <i class="fas fa-money-bill-wave"></i>
                             </div>
                         </div>
                         <hr>
@@ -141,34 +141,35 @@ if (!empty($carrinho)) {
     </script>
 
     <script>
-    // Utilidade para exibir mensagens personalizadas com SweetAlert2
-    function mostrarMensagem(tipo, titulo, mensagem) {
-        const cores = {
-            success: '#2f3e1d',
-            error: '#a94442',
-            warning: '#8a6d3b',
-            info: '#31708f'
-        };
+        // Utilidade para exibir mensagens personalizadas com SweetAlert2
+        function mostrarMensagem(tipo, titulo, mensagem) {
+            const cores = {
+                success: '#2f3e1d',
+                error: '#a94442',
+                warning: '#8a6d3b',
+                info: '#31708f'
+            };
 
-        Swal.fire({
-            icon: tipo,
-            title: titulo,
-            text: mensagem,
-            confirmButtonColor: cores[tipo] || '#2f3e1d',
-            background: '#fdfae5',
-            color: '#2f3e1d',
-            heightAuto: false // Adicione esta linha
-        });
-    }
+            Swal.fire({
+                icon: tipo,
+                title: titulo,
+                // Use 'html' em vez de 'text' para renderizar tags HTML
+                html: mensagem,
+                confirmButtonColor: cores[tipo] || '#2f3e1d',
+                background: '#fdfae5',
+                color: '#2f3e1d',
+                heightAuto: false
+            });
+        }
 
-    <?php
-    if (isset($_SESSION['alert_message'])) {
-        $msg = $_SESSION['alert_message'];
-        echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
-        unset($_SESSION['alert_message']);
-    }
-    ?>
-</script>
+        <?php
+        if (isset($_SESSION['alert_message'])) {
+            $msg = $_SESSION['alert_message'];
+            echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
+            unset($_SESSION['alert_message']);
+        }
+        ?>
+    </script>
 
 </body>
 
