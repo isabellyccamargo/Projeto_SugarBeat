@@ -1,15 +1,11 @@
 <?php
-
+// Certifique-se de que a sessão foi iniciada no topo de todos os arquivos.
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// Incluir apenas os arquivos necessários para a lógica da view
 require_once '../../config/connection.php';
-require_once '../../models/Pedido.php';
-require_once '../../repositories/PedidoRepository.php';
-require_once '../../repositories/ItemPedidoRepository.php';
-require_once '../../services/PedidoService.php';
-require_once '../../controllers/PedidoController.php';
 require_once '../../models/Produto.php';
 require_once '../../repositories/ProdutoRepository.php';
 require_once '../../services/ProdutoService.php';
@@ -17,30 +13,19 @@ require_once '../../services/ProdutoService.php';
 $conexao = Connection::connect();
 $produtoRepository = new ProdutoRepository($conexao);
 $produtoService = new ProdutoService($produtoRepository);
-$pedidoRepository = new PedidoRepository($conexao);
-$itemPedidoRepository = new ItemPedidoRepository($conexao);
-$pedidoService = new PedidoService($pedidoRepository, $itemPedidoRepository);
-$pedidoController = new PedidoController($pedidoService);
-$pedidoController->post();
 
 $carrinho = $produtoService->getCarrinho();
 $num_itens = $produtoService->getQuantidadeTotalCarrinho();
 $total_carrinho = $produtoService->getValorTotalCarrinho();
 
-$pedido = [];
-$itens_detalhes = [];
-
+$itens = [];
 if (!empty($carrinho)) {
     foreach ($carrinho as $id_produto => $item) {
-        try {
-            $itens_detalhes[] = [
-                'produto' => new Produto($item['id'], $item['nome'], $item['preco'], $item['imagem']),
-                'quantidade' => $item['quantidade'],
-                'subtotal' => $item['preco'] * $item['quantidade'],
-            ];
-        } catch (Exception $e) {
-            error_log("Erro ao buscar produto no carrinho: " . $e->getMessage());
-        }
+        $itens[] = [
+            'produto' => new Produto($item['id'], $item['nome'], $item['preco'], $item['imagem']),
+            'quantidade' => $item['quantidade'],
+            'subtotal' => $item['preco'] * $item['quantidade'],
+        ];
     }
 }
 ?>
@@ -77,10 +62,11 @@ if (!empty($carrinho)) {
                 <div class="pedido-info">
                     <h2>Detalhes do Pedido</h2>
                     <hr>
-                    <?php if (!empty($itens_detalhes)): ?>
-                        <?php foreach ($itens_detalhes as $item): ?>
+                    <?php if (!empty($itens)): ?>
+                        <?php foreach ($itens as $item): ?>
                             <div class="item-resumo">
                                 <div>
+                                    <span class="id"><?php echo htmlspecialchars($item['produto']->getIdProduto()); ?></span>
                                     <span class="item-nome"><?php echo htmlspecialchars($item['produto']->getNome()); ?></span>
                                     <span class="item-quantidade">x<?php echo $item['quantidade']; ?></span>
                                 </div>
@@ -103,14 +89,12 @@ if (!empty($carrinho)) {
                     <p class="selecione">Selecione uma opção de pagamento:</p>
 
                     <!-- FORM INICIADO -->
-                    <form action="../../controllers/PedidoController.php" method="POST">
+                    <form action="processar_pedido.php" method="POST">
                         <!-- Dados do pedido -->
-                        <input type="hidden" name="pedido[id_cliente]" value='<?php echo $_SESSION['cliente_id']; ?>'>
+                        <input type="hidden" name="pedido[id_cliente]" value="<?php echo $_SESSION['cliente_id']; ?>">
                         <input type="hidden" name="pedido[forma_de_pagamento]" id="forma_de_pagamento" value="pix">
-                        <input type="hidden" name="pedido[descricao_pedido]" value="Compra via site">
 
-                        <!-- Itens -->
-                        <?php foreach ($itens_detalhes as $index => $item): ?>
+                        <?php foreach ($itens as $index => $item): ?>
                             <input type="hidden" name="itens[<?php echo $index; ?>][id_produto]" value="<?php echo $item['produto']->getIdProduto(); ?>">
                             <input type="hidden" name="itens[<?php echo $index; ?>][quantidade]" value="<?php echo $item['quantidade']; ?>">
                             <input type="hidden" name="itens[<?php echo $index; ?>][preco_unitario]" value="<?php echo $item['produto']->getPreco(); ?>">
@@ -156,4 +140,5 @@ if (!empty($carrinho)) {
     </script>
 
 </body>
+
 </html>

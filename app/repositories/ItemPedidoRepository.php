@@ -58,7 +58,10 @@ class ItemPedidoRepository implements IItemPedidoRepository
 
     public function save($itemPedido)
     {
-        echo "Salvando item de pedido: " . $itemPedido->getId() . " no banco de dados...\n";
+        echo "Salvando item de pedido: " . $itemPedido->getIdPedido() . " no banco de dados...\n";
+
+        echo "ID do produto dentro do ItemPedido: " . $itemPedido->getIdProduto() . "\n";
+
         $stmt = $this->db->prepare("INSERT INTO item_pedido (id_pedido, id_produto, quantidade, preco_unitario, sub_total) VALUES (:id_pedido, :id_produto, :quantidade, :preco_unitario, :sub_total)");
         $stmt->bindValue(':id_pedido', $itemPedido->getIdPedido());
         $stmt->bindValue(':id_produto', $itemPedido->getIdProduto());

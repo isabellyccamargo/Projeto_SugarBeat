@@ -8,7 +8,6 @@ class Pedido implements JsonSerializable
     private $data;
     private $total;
     private $forma_de_pagamento;
-    private $descricao_pedido;
 
     public function __construct(
         $id_pedido,
@@ -16,14 +15,12 @@ class Pedido implements JsonSerializable
         $data,
         $total,
         $forma_de_pagamento,
-        $descricao_pedido
     ) {
         $this->id_pedido = $id_pedido;
         $this->id_cliente = $id_cliente;
         $this->data = $data;
         $this->total = $total;
         $this->forma_de_pagamento = $forma_de_pagamento;
-        $this->descricao_pedido = $descricao_pedido;
     }
 
     public function getIdPedido()
@@ -71,15 +68,6 @@ class Pedido implements JsonSerializable
         $this->forma_de_pagamento = $forma_de_pagamento;
     }
 
-    public function getDescricaoPedido()
-    {
-        return $this->descricao_pedido;
-    }
-     public function setDescricaoPedido($descricao_pedido): void
-    {
-        $this->descricao_pedido = $descricao_pedido;
-    }
-
     public function jsonSerialize(): mixed
     {
 
@@ -88,8 +76,7 @@ class Pedido implements JsonSerializable
             'id_cliente' => $this->id_cliente,
             'data_pedido' => $this->data,
             'total' => $this->total,
-            'forma_de_pagamento' => $this->forma_de_pagamento,
-            'descricao_pedido' => $this->descricao_pedido
+            'forma_de_pagamento' => $this->forma_de_pagamento
         ];
 
     }

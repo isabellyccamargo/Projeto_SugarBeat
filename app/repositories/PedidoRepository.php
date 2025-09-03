@@ -28,7 +28,6 @@ class PedidoRepository implements IPedidoRepository
                 $pedidodata['data_pedido'],
                 $pedidodata['total'],
                 $pedidodata['forma_de_pagamento'],
-                $pedidodata['descricao_pedido']
             );
         }
 
@@ -49,7 +48,6 @@ class PedidoRepository implements IPedidoRepository
                 $data['data_pedido'],
                 $data['total'],
                 $data['forma_de_pagamento'],
-                $data['descricao_pedido']
             );
         }
 
@@ -59,13 +57,12 @@ class PedidoRepository implements IPedidoRepository
     public function save($pedido)
     {
         echo "Salvando pedido: " . $pedido->getIdCliente() . " no banco de dados...\n";
-        $stmt = $this->db->prepare("INSERT INTO pedido (id_cliente, data_pedido, total, forma_de_pagamento, descricao_pedido) VALUES (:id_cliente, :data_pedido, :total, :forma_de_pagamento, :descricao_pedido)");
+        $stmt = $this->db->prepare("INSERT INTO pedido (id_cliente, data_pedido, total, forma_de_pagamento) VALUES (:id_cliente, :data_pedido, :total, :forma_de_pagamento)");
 
         $stmt->bindValue(':id_cliente', $pedido->getIdCliente());
         $stmt->bindValue(':data_pedido', $pedido->getData());
         $stmt->bindValue(':total', $pedido->getTotal());
         $stmt->bindValue(':forma_de_pagamento', $pedido->getFormaDePagamento());
-        $stmt->bindValue(':descricao_pedido', $pedido->getDescricaoPedido());
 
         $stmt->execute();
         
@@ -76,12 +73,11 @@ class PedidoRepository implements IPedidoRepository
     public function update($pedido)
     {
         echo "Atualizando pedido com ID: " . $pedido->getIdPedido() . " no banco de dados...\n";
-        $stmt = $this->db->prepare("UPDATE pedido SET total = :total, forma_de_pagamento = :forma_de_pagamento, descricao_pedido = :descricao_pedido WHERE id_pedido = :id");
+        $stmt = $this->db->prepare("UPDATE pedido SET total = :total, forma_de_pagamento = :forma_de_pagamento WHERE id_pedido = :id");
 
         $stmt->bindValue(':data_pedido', $pedido->getData());
         $stmt->bindValue(':total', $pedido->getTotal());
         $stmt->bindValue(':forma_de_pagamento', $pedido->getFormaDePagamento());
-        $stmt->bindValue(':descricao_pedido', $pedido->getDescricaoPedido());
         return $stmt->execute();
     }
     

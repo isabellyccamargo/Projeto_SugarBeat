@@ -1,5 +1,7 @@
 <?php
 
+require_once '../../models/ItemPedido.php';
+
 class PedidoController
 {
     private $pedidoService;
@@ -31,20 +33,26 @@ class PedidoController
     {
 
         // Assumindo que a requisição POST envia os dados do pedido e os itens
-        $pedidoData = $_POST['pedido'] ?? [];
-        $itensData = $_POST['itens'] ?? [];
+        $pedidoData = filter_input(INPUT_POST, 'pedido', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
+        $itensData = filter_input(INPUT_POST, 'itens', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
 
-        //echo "<pre>";
-        print_r('Dados do Pedido:' .  $pedidoData->getIdCliente());
-        //echo "</pre>";
+        // O id_cliente agora vem do formulário, que é preenchido pela sessão
+        $id_cliente = $pedidoData['id_cliente'] ?? null;
+        $forma_de_pagamento = $pedidoData['forma_de_pagamento'] ?? null;
+        $descricao_pedido = $pedidoData['descricao_pedido'] ?? null;
+
+        if (empty($id_cliente) || empty($forma_de_pagamento) || empty($itensData)) {
+            // Se algum dado crucial estiver faltando, lance uma exceção
+            throw new Exception("Dados de pedido incompletos.");
+        }
 
         $pedido = new Pedido(
             null,
-            $pedidoData['id_cliente'] ?? null,
-            $pedidoData['data_pedido'] ?? null,
+            $id_cliente,
+            date('Y-m-d H:i:s'), // data e hora atuais
             0, // O total será calculado no serviço
-            $pedidoData['forma_de_pagamento'] ?? null,
-            $pedidoData['descricao_pedido'] ?? null
+            $forma_de_pagamento,
+            $descricao_pedido
         );
 
         $itens = [];
@@ -62,10 +70,10 @@ class PedidoController
         try {
             $novoPedido = $this->pedidoService->criarNovoPedido($pedido, $itens);
             http_response_code(201);
-            echo json_encode($novoPedido);
         } catch (Exception $e) {
+            throw $e;
             http_response_code(400);
-            echo json_encode(['error' => $e->getMessage()]);
+            
         }
     }
 
@@ -77,8 +85,7 @@ class PedidoController
             $data['id_cliente'] ?? null,
             $data['data_pedido'] ?? null,
             $data['total'] ?? null,
-            $data['forma_de_pagamento'] ?? null,
-            $data['descricao_pedido'] ?? null
+            $data['forma_de_pagamento'] ?? null
         );
         try {
             $this->pedidoService->atualizarPedido($pedido);

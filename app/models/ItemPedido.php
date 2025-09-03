@@ -2,19 +2,30 @@
 
 class ItemPedido implements JsonSerializable
 {
+    private $id; 
     private $id_pedido;
     private $id_produto;
     private $quantidade;
     private $preco_unitario;
     private $sub_total;
 
-    public function __construct($id_pedido,  $id_produto,  $quantidade,  $preco_unitario,  $sub_total)
+    public function __construct($id, $id_pedido,  $id_produto,  $quantidade,  $preco_unitario,  $sub_total)
     {
+        $this->id = $id;
         $this->id_pedido = $id_pedido;
         $this->id_produto = $id_produto;
         $this->quantidade = $quantidade;
         $this->preco_unitario = $preco_unitario;
         $this->sub_total = $sub_total;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getIdPedido()
