@@ -69,16 +69,5 @@ class PedidoRepository implements IPedidoRepository
         $pedido->setIdPedido($this->db->lastInsertId());
         return $pedido;
     }
-
-    public function update($pedido)
-    {
-        echo "Atualizando pedido com ID: " . $pedido->getIdPedido() . " no banco de dados...\n";
-        $stmt = $this->db->prepare("UPDATE pedido SET total = :total, forma_de_pagamento = :forma_de_pagamento WHERE id_pedido = :id");
-
-        $stmt->bindValue(':data_pedido', $pedido->getData());
-        $stmt->bindValue(':total', $pedido->getTotal());
-        $stmt->bindValue(':forma_de_pagamento', $pedido->getFormaDePagamento());
-        return $stmt->execute();
-    }
     
 }

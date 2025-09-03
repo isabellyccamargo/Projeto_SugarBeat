@@ -42,11 +42,6 @@ class PedidoService
         return $this->pedidoRepository->getAll();
     }
 
-    public function atualizarPedido(Pedido $pedido)
-    {
-        return $this->pedidoRepository->update($pedido);
-    }
-
     public function getCarrinho()
     {
         return isset($_SESSION['carrinho']) ? $_SESSION['carrinho'] : [];

@@ -76,24 +76,4 @@ class PedidoController
             
         }
     }
-
-    public function put($id)
-    {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $pedido = new Pedido(
-            $id,
-            $data['id_cliente'] ?? null,
-            $data['data_pedido'] ?? null,
-            $data['total'] ?? null,
-            $data['forma_de_pagamento'] ?? null
-        );
-        try {
-            $this->pedidoService->atualizarPedido($pedido);
-            http_response_code(200);
-            echo json_encode(['message' => 'Pedido atualizado com sucesso.']);
-        } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(['error' => $e->getMessage()]);
-        }
-    }
 }
