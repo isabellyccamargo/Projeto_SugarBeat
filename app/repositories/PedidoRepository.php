@@ -1,5 +1,7 @@
 <?php
 
+require_once 'IPedidoRepository.php';
+
 class PedidoRepository implements IPedidoRepository
 {
 
@@ -56,11 +58,11 @@ class PedidoRepository implements IPedidoRepository
 
     public function save($pedido)
     {
-        echo "Salvando pedido: " . $pedido->getNome() . " no banco de dados...\n";
+        echo "Salvando pedido: " . $pedido->getIdCliente() . " no banco de dados...\n";
         $stmt = $this->db->prepare("INSERT INTO pedido (id_cliente, data_pedido, total, forma_de_pagamento, descricao_pedido) VALUES (:id_cliente, :data_pedido, :total, :forma_de_pagamento, :descricao_pedido)");
 
         $stmt->bindValue(':id_cliente', $pedido->getIdCliente());
-        $stmt->bindValue(':data_pedido', $pedido->getDataPedido());
+        $stmt->bindValue(':data_pedido', $pedido->getData());
         $stmt->bindValue(':total', $pedido->getTotal());
         $stmt->bindValue(':forma_de_pagamento', $pedido->getFormaDePagamento());
         $stmt->bindValue(':descricao_pedido', $pedido->getDescricaoPedido());
@@ -76,7 +78,7 @@ class PedidoRepository implements IPedidoRepository
         echo "Atualizando pedido com ID: " . $pedido->getIdPedido() . " no banco de dados...\n";
         $stmt = $this->db->prepare("UPDATE pedido SET total = :total, forma_de_pagamento = :forma_de_pagamento, descricao_pedido = :descricao_pedido WHERE id_pedido = :id");
 
-        $stmt->bindValue(':data_pedido', $pedido->getDataPedido());
+        $stmt->bindValue(':data_pedido', $pedido->getData());
         $stmt->bindValue(':total', $pedido->getTotal());
         $stmt->bindValue(':forma_de_pagamento', $pedido->getFormaDePagamento());
         $stmt->bindValue(':descricao_pedido', $pedido->getDescricaoPedido());

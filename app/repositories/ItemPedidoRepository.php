@@ -1,5 +1,7 @@
 <?php
 
+require_once 'IItemPedidoRepository.php';
+
 class ItemPedidoRepository implements IItemPedidoRepository
 {
     private $db;

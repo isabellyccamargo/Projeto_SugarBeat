@@ -5,6 +5,11 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 require_once '../../config/connection.php';
+require_once '../../models/Pedido.php';
+require_once '../../repositories/PedidoRepository.php';
+require_once '../../repositories/ItemPedidoRepository.php';
+require_once '../../services/PedidoService.php';
+require_once '../../controllers/PedidoController.php';
 require_once '../../models/Produto.php';
 require_once '../../repositories/ProdutoRepository.php';
 require_once '../../services/ProdutoService.php';
@@ -12,20 +17,22 @@ require_once '../../services/ProdutoService.php';
 $conexao = Connection::connect();
 $produtoRepository = new ProdutoRepository($conexao);
 $produtoService = new ProdutoService($produtoRepository);
+$pedidoRepository = new PedidoRepository($conexao);
+$itemPedidoRepository = new ItemPedidoRepository($conexao);
+$pedidoService = new PedidoService($pedidoRepository, $itemPedidoRepository);
+$pedidoController = new PedidoController($pedidoService);
+$pedidoController->post();
 
-// Use as variáveis preenchidas pelo ProdutoService
 $carrinho = $produtoService->getCarrinho();
 $num_itens = $produtoService->getQuantidadeTotalCarrinho();
 $total_carrinho = $produtoService->getValorTotalCarrinho();
 
+$pedido = [];
 $itens_detalhes = [];
 
-// Se o carrinho não estiver vazio, percorra os itens para obter os detalhes
 if (!empty($carrinho)) {
     foreach ($carrinho as $id_produto => $item) {
         try {
-            // A sua classe ProdutoService está retornando um array de itens
-            // Então, em vez de buscar o produto novamente, use o que já está no array $item
             $itens_detalhes[] = [
                 'produto' => new Produto($item['id'], $item['nome'], $item['preco'], $item['imagem']),
                 'quantidade' => $item['quantidade'],
@@ -94,33 +101,59 @@ if (!empty($carrinho)) {
                     <h2 class="forma">Forma de Pagamento</h2>
                     <hr>
                     <p class="selecione">Selecione uma opção de pagamento:</p>
-                    <div class="opcoes-pagamento">
-                        <div class="opcao">
-                            <input type="radio" id="pix" name="metodo_pagamento" value="pix" checked>
-                            <label for="pix">Pix</label>
-                            <i class="fab fa-pix"></i>
+
+                    <!-- FORM INICIADO -->
+                    <form action="../../controllers/PedidoController.php" method="POST">
+                        <!-- Dados do pedido -->
+                        <input type="hidden" name="pedido[id_cliente]" value='<?php echo $_SESSION['cliente_id']; ?>'>
+                        <input type="hidden" name="pedido[forma_de_pagamento]" id="forma_de_pagamento" value="pix">
+                        <input type="hidden" name="pedido[descricao_pedido]" value="Compra via site">
+
+                        <!-- Itens -->
+                        <?php foreach ($itens_detalhes as $index => $item): ?>
+                            <input type="hidden" name="itens[<?php echo $index; ?>][id_produto]" value="<?php echo $item['produto']->getIdProduto(); ?>">
+                            <input type="hidden" name="itens[<?php echo $index; ?>][quantidade]" value="<?php echo $item['quantidade']; ?>">
+                            <input type="hidden" name="itens[<?php echo $index; ?>][preco_unitario]" value="<?php echo $item['produto']->getPreco(); ?>">
+                            <input type="hidden" name="itens[<?php echo $index; ?>][sub_total]" value="<?php echo $item['subtotal']; ?>">
+                        <?php endforeach; ?>
+
+                        <div class="opcoes-pagamento">
+                            <div class="opcao">
+                                <input type="radio" id="pix" name="metodo_pagamento" value="pix" checked>
+                                <label for="pix">Pix</label>
+                                <i class="fab fa-pix"></i>
+                            </div>
+                            <div class="opcao">
+                                <input type="radio" id="cartao" name="metodo_pagamento" value="cartao">
+                                <label for="cartao">Cartão de Crédito</label>
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="opcao">
+                                <input type="radio" id="boleto" name="metodo_pagamento" value="boleto">
+                                <label for="boleto">Boleto</label>
+                                <i class="fas fa-barcode"></i>
+                            </div>
                         </div>
-                        <div class="opcao">
-                            <input type="radio" id="cartao" name="metodo_pagamento" value="cartao">
-                            <label for="cartao">Cartão de Crédito</label>
-                            <i class="fas fa-credit-card"></i>
-                        </div>
-                        <div class="opcao">
-                            <input type="radio" id="boleto" name="metodo_pagamento" value="boleto">
-                            <label for="boleto">Boleto</label>
-                            <i class="fas fa-barcode"></i>
-                        </div>
-                    </div>
-                    <hr>
-                    <button class="btn-finalizar">Confirmar Pagamento</button>
+                        <hr>
+                        <button type="submit" class="btn-finalizar">Confirmar Pagamento</button>
+                    </form>
+                    <!-- FORM FINALIZADO -->
+
                 </div>
             </div>
         </div>
     </div>
 
     <?php include '../footer/index.php'; ?>
-    <script src="script.js"></script>
+
+    <script>
+        // Atualiza o campo hidden com a forma de pagamento selecionada
+        document.querySelectorAll("input[name=metodo_pagamento]").forEach(el => {
+            el.addEventListener("change", function() {
+                document.getElementById("forma_de_pagamento").value = this.value;
+            });
+        });
+    </script>
 
 </body>
-
 </html>

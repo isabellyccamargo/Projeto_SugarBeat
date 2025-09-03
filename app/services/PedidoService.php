@@ -42,12 +42,38 @@ class PedidoService
         return $this->pedidoRepository->getAll();
     }
 
-
-
     public function atualizarPedido(Pedido $pedido)
     {
         return $this->pedidoRepository->update($pedido);
     }
-    
 
+    public function getCarrinho()
+    {
+        return isset($_SESSION['carrinho']) ? $_SESSION['carrinho'] : [];
+    }
+
+    // Retorna a quantidade total de itens (somando as quantidades)
+    public function getQuantidadeTotalCarrinho()
+    {
+        $total = 0;
+        //verifica se existe o carrinho na sessão e isset retorna true
+        if (isset($_SESSION['carrinho'])) {
+            foreach ($_SESSION['carrinho'] as $item) {
+                $total += $item['quantidade'];
+            }
+        }
+        return $total;
+    }
+
+    // Retorna o valor total do carrinho
+    public function getValorTotalCarrinho()
+    {
+        $total = 0;
+        if (isset($_SESSION['carrinho'])) {
+            foreach ($_SESSION['carrinho'] as $item) {
+                $total += $item['preco'] * $item['quantidade'];
+            }
+        }
+        return $total;
+    }
 }

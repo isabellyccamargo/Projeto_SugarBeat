@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-class PedidoController 
+class PedidoController
 {
     private $pedidoService;
 
@@ -9,7 +9,8 @@ class PedidoController
         $this->pedidoService = $pedidoService;
     }
 
-    public function get($id = null) {
+    public function get($id = null)
+    {
         if ($id) {
             try {
                 $pedido = $this->pedidoService->getPedidoComItens($id);
@@ -26,12 +27,16 @@ class PedidoController
         }
     }
 
-    public function post() {
-        $data = json_decode(file_get_contents('php://input'), true);
+    public function post()
+    {
 
         // Assumindo que a requisição POST envia os dados do pedido e os itens
-        $pedidoData = $data['pedido'];
-        $itensData = $data['itens'];
+        $pedidoData = $_POST['pedido'] ?? [];
+        $itensData = $_POST['itens'] ?? [];
+
+        //echo "<pre>";
+        print_r('Dados do Pedido:' .  $pedidoData->getIdCliente());
+        //echo "</pre>";
 
         $pedido = new Pedido(
             null,
@@ -64,7 +69,8 @@ class PedidoController
         }
     }
 
-    public function put($id) {
+    public function put($id)
+    {
         $data = json_decode(file_get_contents('php://input'), true);
         $pedido = new Pedido(
             $id,
@@ -83,4 +89,4 @@ class PedidoController
             echo json_encode(['error' => $e->getMessage()]);
         }
     }
-}  
+}
