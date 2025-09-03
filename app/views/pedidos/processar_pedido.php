@@ -23,13 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // Chame o método post() do controller
-        $pedidoController->post();
+        $pedido = $pedidoController->post();
 
         // Se a operação for bem-sucedida, configure a mensagem de sucesso na sessão
         $_SESSION['alert_message'] = [
             'type' => 'success',
             'title' => 'Sucesso!',
-            'text' => 'Seu pedido foi finalizado com sucesso. Agradecemos a preferência!'
+            'text' => 'Seu pedido foi finalizado com sucesso. Agradecemos a preferência!<br>' . '<span style="font-weight:bold;">#' . $pedido->getIdPedido() . '</span>'
         ];
 
         // Redirecione de volta para a página do carrinho para mostrar a mensagem
