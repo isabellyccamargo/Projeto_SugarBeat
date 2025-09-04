@@ -26,7 +26,7 @@ body {
 /* Título */
 h1 {
     text-align: center;
-    color: #f5d38b; /* Dourado claro */
+    color: #f5e6c4; /* Dourado claro */
     margin-bottom: 20px;
 }
 
@@ -39,7 +39,7 @@ table {
 
 /* Cabeçalho */
 thead tr {
-    background-color: #f5d38b; /* Dourado */
+    background-color: #f5e6c4; /* Dourado */
     color: #3d2500; /* Marrom escuro */
     font-weight: bold;
     border-radius: 8px;
@@ -52,17 +52,12 @@ th {
 
 /* Linhas */
 tbody tr {
-    background-color: #a18965; /* Marrom mais claro */
-    color: #fff;
+    background-color: white; /* Marrom mais claro */
+    color: #3d2500;
     border-radius: 8px;
 }
 
 tbody td {
     padding: 12px;
     text-align: center;
-}
-
-/* Efeito ao passar o mouse */
-tbody tr:hover {
-    background-color: #8c7350;
 }

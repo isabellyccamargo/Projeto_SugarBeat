@@ -165,12 +165,25 @@ if (!empty($carrinho)) {
         <?php
         if (isset($_SESSION['alert_message'])) {
             $msg = $_SESSION['alert_message'];
+
+            // Exibe o pop-up
             echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
+
+            // Agora, adicione a lógica de redirecionamento para o caso de sucesso
+            if ($msg['type'] === 'success') {
+                echo "
+                // Cria um evento de 'click' para o botão de confirmação do pop-up
+                Swal.getConfirmButton().onclick = function() {
+                    window.location.href = '../../views/home/index.php';
+                };
+            ";
+            }
+
+            // Limpa a variável de sessão para que a mensagem não apareça novamente
             unset($_SESSION['alert_message']);
         }
         ?>
     </script>
-
 </body>
 
 </html>

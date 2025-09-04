@@ -72,8 +72,8 @@ body {
 .form-group select {
     width: 100%;
     padding: 10px;
-    background-color: #fff0d0ff;
-    border: 1px solid rgb(252, 218, 143);
+    background-color: white;
+    border: none;
     border-radius: 5px;
     font-size: 1em;
     box-sizing: border-box;
@@ -121,11 +121,11 @@ body {
 .cadastrar-btn {
     width: 300px;
     padding: 15px;
-    background-color: rgb(252, 218, 143);
+    background-color: #fff0d0ff;
     color: #3b2500ff;
     font-size: 1.2em;
     font-weight: bold;
-    border: 1px solid rgb(252, 218, 143);
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     display: block;
@@ -133,20 +133,4 @@ body {
     transition: background-color 0.3s ease;
 }
 
-/* Efeito hover no botão */
-.cadastrar-btn:hover {
-    background-color: #fcd08f;
-}
 
-/* a {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    color: #fff0d0ff;
-    text-decoration: none;
-    font-size: 0.9em;
-} */
-
-a:hover {
-    text-decoration: underline;
-}

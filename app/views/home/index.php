@@ -160,3 +160,4 @@ $produtos = $produtoController->get();
         });
     });
 </script>
+

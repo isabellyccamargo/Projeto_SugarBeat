@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Chame o método post() do controller
         $pedido = $pedidoController->post();
 
+        unset($_SESSION['carrinho']);
         // Formata o ID do pedido com 5 dígitos, preenchendo com zeros à esquerda
         $pedidoIdFormatado = str_pad($pedido->getIdPedido(), 5, '0', STR_PAD_LEFT);
 
