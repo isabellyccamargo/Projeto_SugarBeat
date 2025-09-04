@@ -8,6 +8,5 @@ $produtoController = new ProdutoController($produtoService);
 // Chama o método que retorna os produtos e armazena na variável $produtos
 $produtos = $produtoController->get();
 
-
 include '../home/index.php';
 ?>

@@ -9,14 +9,18 @@ body {
 /* Container centralizado */
 .container {
     max-width: 1200px;
-    max-height: 300px;
+    max-height: 500px;
     height: 100%;
     width: 100%;
     margin: auto;
+    margin-top: 60px;
+    margin-bottom: 10px;
     background-color: #3d2500; /* Marrom escuro */
     padding: 20px 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    overflow-y: auto; /* Adiciona a barra de rolagem vertical */
+    padding-right: 20px; 
 }
 
 /* Título */

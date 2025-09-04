@@ -76,4 +76,8 @@ class PedidoController
             
         }
     }
+
+     public function getPedidosPorCliente($clienteId) {
+        return $this->pedidoService->getPedidosPorCliente($clienteId);
+    }
 }

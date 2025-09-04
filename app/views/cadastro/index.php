@@ -28,13 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Se a atualização for bem-sucedida, não há redirecionamento especial.
     } else {
         // Lógica para novo cadastro
-       $cliente_cadastrado = $controller->post();
+        $cliente_cadastrado = $controller->post();
 
         // ADICIONADO: Lógica de redirecionamento após o cadastro.
         // Verifica se a origem foi passada pelo formulário
-       if ($cliente_cadastrado) {
-        
-          $_SESSION['cliente_id'] = $cliente_cadastrado->getIdCliente();
+        if ($cliente_cadastrado) {
+
+            $_SESSION['cliente_id'] = $cliente_cadastrado->getIdCliente();
             $_SESSION['cliente_nome'] = $cliente_cadastrado->getNome();
             $_SESSION['cliente_email'] = $cliente_cadastrado->getEmail();
         } else {
@@ -90,7 +90,7 @@ if (isset($_SESSION['cliente_id'])) {
                 <?php if ($origem): ?>
                     <input type="hidden" name="origem" value="<?php echo htmlspecialchars($origem); ?>">
                 <?php endif; ?>
-                
+
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" id="nome" name="nome" value="<?php echo $cliente ? htmlspecialchars($cliente->getNome()) : ''; ?>" required />
@@ -178,37 +178,38 @@ if (isset($_SESSION['cliente_id'])) {
     </script>
 
     <script>
-    // Utilidade para exibir mensagens personalizadas com SweetAlert2
-    function mostrarMensagem(tipo, titulo, mensagem) {
-        const cores = {
-            success: '#2f3e1d',
-            error: '#a94442',
-            warning: '#8a6d3b',
-            info: '#31708f'
-        };
+        // Utilidade para exibir mensagens personalizadas com SweetAlert2
+        function mostrarMensagem(tipo, titulo, mensagem) {
+            const cores = {
+                success: '#2f3e1d',
+                error: '#a94442',
+                warning: '#8a6d3b',
+                info: '#31708f'
+            };
 
-        Swal.fire({
-            icon: tipo,
-            title: titulo,
-            text: mensagem,
-            confirmButtonColor: cores[tipo] || '#2f3e1d',
-            background: '#fdfae5',
-            color: '#2f3e1d',
-            heightAuto: false 
-        });
-    }
+            Swal.fire({
+                icon: tipo,
+                title: titulo,
+                text: mensagem,
+                html: mensagem,
+                confirmButtonColor: cores[tipo] || '#2f3e1d',
+                background: '#fdfae5',
+                color: '#2f3e1d',
+                heightAuto: false
+            });
+        }
 
-    <?php
-    // Verifica se há uma mensagem de alerta na sessão
-    if (isset($_SESSION['alert_message'])) {
-        $msg = $_SESSION['alert_message'];
-        // Chama a função JavaScript com os dados da sessão
-        echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
-        // Limpa a mensagem da sessão para que não seja exibida novamente
-        unset($_SESSION['alert_message']);
-    }
-    ?>
-</script>
+        <?php
+        // Verifica se há uma mensagem de alerta na sessão
+        if (isset($_SESSION['alert_message'])) {
+            $msg = $_SESSION['alert_message'];
+            // Chama a função JavaScript com os dados da sessão
+            echo "mostrarMensagem('{$msg['type']}', '{$msg['title']}', '{$msg['text']}');";
+            // Limpa a mensagem da sessão para que não seja exibida novamente
+            unset($_SESSION['alert_message']);
+        }
+        ?>
+    </script>
 
 </body>
 

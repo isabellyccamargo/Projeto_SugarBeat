@@ -71,4 +71,9 @@ class PedidoService
         }
         return $total;
     }
+
+    public function getPedidosPorCliente($clienteId) {
+        return $this->pedidoRepository->getPedidosPorCliente($clienteId);
+    }
+    
 }

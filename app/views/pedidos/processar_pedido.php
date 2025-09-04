@@ -25,11 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Chame o método post() do controller
         $pedido = $pedidoController->post();
 
+        // Formata o ID do pedido com 5 dígitos, preenchendo com zeros à esquerda
+        $pedidoIdFormatado = str_pad($pedido->getIdPedido(), 5, '0', STR_PAD_LEFT);
+
         // Se a operação for bem-sucedida, configure a mensagem de sucesso na sessão
         $_SESSION['alert_message'] = [
             'type' => 'success',
             'title' => 'Sucesso!',
-            'text' => 'Seu pedido foi finalizado com sucesso. Agradecemos a preferência!<br>' . '<span style="font-weight:bold;">#' . $pedido->getIdPedido() . '</span>'
+            'text' => 'Seu pedido foi finalizado com sucesso. Agradecemos a preferência!<br><br>' . '<span style="font-weight:bold; font-size:20px;">#' . $pedidoIdFormatado . '</span>'
         ];
 
         // Redirecione de volta para a página do carrinho para mostrar a mensagem

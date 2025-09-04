@@ -34,6 +34,32 @@ class PedidoRepository implements IPedidoRepository
         return null;
     }
 
+    public function getPedidosPorCliente($id_cliente)
+    {
+        echo "Buscando pedidos para o cliente ID: $id_cliente...\n";
+
+        $pedidos = [];
+
+        $stmt = $this->db->prepare("SELECT * FROM pedido WHERE id_cliente = :cliente_id");
+        $stmt->bindValue(':cliente_id', $id_cliente, PDO::PARAM_INT);
+        $stmt->execute();
+        $pedidodata = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($pedidodata) {
+            foreach ($pedidodata as $data) {
+                $pedidos[] = new Pedido(
+                    $data['id_pedido'],
+                    $data['id_cliente'],
+                    $data['data_pedido'],
+                    $data['total'],
+                    $data['forma_de_pagamento']
+                );
+            }
+        }
+
+        return $pedidos;
+    }
+
     public function getAll()
     {
         echo "Buscando todos os pedidos no banco de dados...\n";
@@ -65,9 +91,8 @@ class PedidoRepository implements IPedidoRepository
         $stmt->bindValue(':forma_de_pagamento', $pedido->getFormaDePagamento());
 
         $stmt->execute();
-        
+
         $pedido->setIdPedido($this->db->lastInsertId());
         return $pedido;
     }
-    
 }

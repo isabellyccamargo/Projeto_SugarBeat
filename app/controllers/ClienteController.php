@@ -49,11 +49,13 @@ class ClienteController
                     $_SESSION['cliente_email'] = $novoCliente->getEmail();
                 }
 
+                $clienteIdFormatado = str_pad($novoCliente->getIdCliente(), 5, '0', STR_PAD_LEFT);
+
                 // Define a mensagem de sucesso na sessão
                 $_SESSION['alert_message'] = [
                     'type' => 'success',
                     'title' => 'Sucesso!',
-                    'text' => 'Cliente cadastrado com sucesso.'
+                    'text' => 'Cliente cadastrado com sucesso.  <br><br>' . '<span style="font-weight:bold; font-size:20px;">#' . $clienteIdFormatado . '</span>'
                 ];
 
                 // Redireciona para o index para que a mensagem seja exibida
@@ -99,11 +101,13 @@ class ClienteController
 
             $this->clienteService->atualizarCliente($cliente);
 
+            $clienteIdFormatado = str_pad($clienteAtual->getIdCliente(), 5, '0', STR_PAD_LEFT);
+
             // Define a mensagem de sucesso na sessão
             $_SESSION['alert_message'] = [
                 'type' => 'success',
                 'title' => 'Sucesso!',
-                'text' => 'Dados atualizados com sucesso.'
+                'text' => 'Dados atualizados com sucesso. <br><br>' . '<span style="font-weight:bold; font-size:20px;">#' . $clienteIdFormatado . '</span>'
             ];
         } catch (Exception $e) {
             // Define a mensagem de erro na sessão
