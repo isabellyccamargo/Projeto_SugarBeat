@@ -137,7 +137,7 @@ body {
         width: 95vw;
         max-width: 600px;
         padding: 20px;
-        margin-top: 150px; /* Reduz a margem superior para a tela não ficar tão vazia */
+        margin-top: 90px; /* Reduz a margem superior para a tela não ficar tão vazia */
     }
 
     .form-group {
@@ -166,17 +166,14 @@ body {
     }
 }
 
-/* Telas para CELULARES (Largura máxima de 480px) */
 @media (max-width: 480px) {
     .window-container {
-        /* Ajusta o contêiner para telas de celular */
         width: 85%;
-        margin-top: 500px; /* Mais ajuste na margem superior */
-
+        margin-bottom: 30px;
     }
 
     .window-header {
-        padding: 8px 10px; /* Reduz o padding do cabeçalho */
+        padding: 8px 10px; 
     }
 
     .form-group {
@@ -184,9 +181,8 @@ body {
     }
 
     .form-row {
-        /* Faz com que os campos de formulário se empilhem verticalmente */
         flex-direction: column;
-        gap: 0; /* Remove o espaçamento entre os campos empilhados */
+        gap: 0; 
     }
     
     .form-row .form-group {
@@ -194,18 +190,18 @@ body {
     }
     
     .form-row .form-group.small {
-        max-width: 100%; /* Remove a restrição de largura para que ocupe a linha toda */
+        max-width: 100%;
     }
 
     .cadastrar-btn {
-        width: 100%; /* O botão ocupa toda a largura da tela */
+        width: 100%; 
         font-size: 1em;
         padding: 10px;
         margin-top: 20px;
     }
     
     .show-password label {
-        font-size: 0.8em; /* Fonte menor para a opção de mostrar senha */
+        font-size: 0.8em; 
     }
     
 }

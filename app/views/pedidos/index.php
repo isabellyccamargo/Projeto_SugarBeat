@@ -51,11 +51,6 @@ if (!empty($carrinho)) {
     <?php include '../header/index.php'; ?>
 
     <div class="window-container conteudo-principal">
-        <div class="window-header">
-            <div class="window-control close"></div>
-            <div class="window-control minimize"></div>
-            <div class="window-control maximize"></div>
-        </div>
         <div class="window-body">
             <h1 class="titulo">Finalizar Pedido</h1>
 

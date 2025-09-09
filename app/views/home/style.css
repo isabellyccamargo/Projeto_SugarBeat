@@ -1,5 +1,4 @@
 :root {
-
     --fontfamily: 'Caalibri', serif;
     --cor-primaria: #3b2500ff;
     --cor-secundaria: #fff0d0ff;
@@ -10,15 +9,18 @@
 body {
     background-color: var(--cor-secundaria);
     font-family: var(--fontfamily);
-    margin: 0;
-    padding: 0;
+}
+
+.main-content {
+    display: grid;
+    justify-content: center;
+    align-items: center;
 }
 
 /* BANNER  */
 
 .banner {
     width: 100%;
-    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -123,3 +125,71 @@ body {
     border-radius: 7px;
 }
 
+@media (max-width: 768px) {
+
+    /* Ajustes para o banner */
+    .banner-img {
+        height: 200px;
+        margin-top: 0;
+    }
+
+    /* Redução do tamanho da fonte dos títulos */
+    .sabores {
+        margin-top: 60px;
+        font-size: 40px;
+    }
+
+    .titulo-precos {
+        font-size: 40px;
+        margin-top: 20px;
+    }
+
+    /* Ajuste do grid de produtos */
+    .grid {
+        gap: 30px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    /* Ajuste do tamanho dos cartões de produto */
+    .card {
+        width: 130px;
+        padding: 10px;
+    }
+
+    .card img {
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-img {
+        height: 150px;
+    }
+
+    .sabores {
+        font-size: 30px;
+    }
+
+    .titulo-precos {
+        font-size: 30px;
+        margin-bottom: 50px;
+    }
+
+    .grid {
+        gap: 20px;
+    }
+
+    .card {
+        width: 100px;
+    }
+
+    .card img {
+        height: 90px;
+    }
+
+    .preco-item {
+        padding: 10px 15px;
+        font-size: 16px;
+    }
+}

@@ -22,6 +22,7 @@ $produtos = $produtoController->get();
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SugarBeat</title>
     <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
     <link rel="stylesheet" href="style.css">
@@ -33,57 +34,52 @@ $produtos = $produtoController->get();
 
 <body>
 
-    <?php
+    <?php include '../header/index.php'; ?>
 
-    include '../header/index.php';
+    <main class="main-content">
+        <div class="banner">
+            <img src="../../../fotos/banner4.jpg" alt="Banner" class="banner-img">
+        </div>
 
-    ?>
-
-    <div class="banner">
-        <img src="../../../fotos/banner4.jpg" alt="Banner" class="banner-img">
-    </div>
-
-    <div class="produtos">
-        <h2 class="sabores">Nossos Sabores</h2>
-        <div class="grid">
-            <?php
-            // A variável $produtos já foi carregada pelo PHP no início do arquivo
-            if (isset($produtos) && is_array($produtos)) {
-                foreach ($produtos as $produto) {
-                    echo '<div class="card">';
-                    echo '<img src="' . htmlspecialchars($produto->getImagem()) . '" alt="' . htmlspecialchars($produto->getNome()) . '">';
-                    echo '<p>' . htmlspecialchars($produto->getNome()) . '</p>';
-                    echo '<button class="adicionar-btn" data-id="' . htmlspecialchars($produto->getIdProduto()) . '">Adicionar</button>';
-                    echo '</div>';
+        <div class="produtos">
+            <h2 class="sabores">Nossos Sabores</h2>
+            <div class="grid">
+                <?php
+                // A variável $produtos já foi carregada pelo PHP no início do arquivo
+                if (isset($produtos) && is_array($produtos)) {
+                    foreach ($produtos as $produto) {
+                        echo '<div class="card">';
+                        echo '<img src="' . htmlspecialchars($produto->getImagem()) . '" alt="' . htmlspecialchars($produto->getNome()) . '">';
+                        echo '<p>' . htmlspecialchars($produto->getNome()) . '</p>';
+                        echo '<button class="adicionar-btn" data-id="' . htmlspecialchars($produto->getIdProduto()) . '">Adicionar</button>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<p>Nenhum produto encontrado.</p>';
                 }
-            } else {
-                echo '<p>Nenhum produto encontrado.</p>';
-            }
-            ?>
-        </div>
-    </div>
-
-    <div class="tabela-precos">
-        <h2 class="titulo-precos">Tabela de Preços</h2>
-        <div class="precos-grid">
-            <div class="preco-item">
-                <h3>Unidade</h3>
-                <p>R$ 1,30</p>
-            </div>
-            <div class="preco-item">
-                <h3>Meio Cento</h3>
-                <p>R$ 65,00</p>
-            </div>
-            <div class="preco-item">
-                <h3>Um Cento</h3>
-                <p>R$130,00</p>
+                ?>
             </div>
         </div>
-    </div>
 
-    <?php
-    include '../footer/index.php'
-    ?>
+        <div class="tabela-precos">
+            <h2 class="titulo-precos">Tabela de Preços</h2>
+            <div class="precos-grid">
+                <div class="preco-item">
+                    <h3>Unidade</h3>
+                    <p>R$ 1,30</p>
+                </div>
+                <div class="preco-item">
+                    <h3>Meio Cento</h3>
+                    <p>R$ 65,00</p>
+                </div>
+                <div class="preco-item">
+                    <h3>Um Cento</h3>
+                    <p>R$130,00</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <?php include '../footer/index.php' ?>
 
 </body>
 
@@ -105,8 +101,8 @@ $produtos = $produtoController->get();
             const imagemAnimada = imagemProduto.cloneNode(true);
             imagemAnimada.style.position = 'fixed';
             imagemAnimada.style.transition = 'all 1s ease-in-out';
-            imagemAnimada.style.width = '100px'; 
-            imagemAnimada.style.zIndex = '1000'; 
+            imagemAnimada.style.width = '100px';
+            imagemAnimada.style.zIndex = '1000';
 
             const rectBotao = event.target.getBoundingClientRect();
             imagemAnimada.style.left = rectBotao.left + 'px';
@@ -122,7 +118,7 @@ $produtos = $produtoController->get();
                 imagemAnimada.style.opacity = '0';
                 imagemAnimada.style.transform = 'scale(0.1)';
             }, 100);
-            
+
             setTimeout(() => {
                 imagemAnimada.remove();
             }, 1100);
@@ -156,4 +152,3 @@ $produtos = $produtoController->get();
         });
     });
 </script>
-

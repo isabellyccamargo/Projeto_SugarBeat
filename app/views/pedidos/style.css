@@ -7,7 +7,7 @@
 
 body {
     background-color: #f7f3e9;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--fontfamily);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,14 +19,16 @@ body {
     display: flex;
     justify-content: space-between;
     background-color: #f7f3e9;
-    border-radius: 20px !important;
+    border-radius: 7px !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    min-width: 1400px;
-    width: 100%;
-    min-height: 650px;
-    height: 100%;
-    margin-top: 230px;
+    max-width: 1400px;
+    width: 90%;
+    /* Ajustado para ser mais flexível */
+    height: auto;
+    /* Permite que o container cresça conforme necessário */
+    margin-top: 170px;
     margin-bottom: 30px;
+     overflow: hidden;
 }
 
 .pagamento-info {
@@ -146,7 +148,8 @@ body {
 /* adicione isso no seu style.css ou em um novo arquivo */
 
 .popup-container {
-    display: none; /* Começa oculto */
+    display: none;
+    /* Começa oculto */
     position: fixed;
     top: 0;
     left: 0;
@@ -203,6 +206,47 @@ p {
 }
 
 @keyframes popup-bounce {
-    0% { transform: scale(0.5); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .finalizar-container {
+        width: 100%;
+        height: auto;
+        margin-top: 300px;
+    }
+
+    .pagamento-info {
+width: 30%
+    }
+    .pedido-info {
+        width: 70%;    
+    }
+}
+
+@media (max-width: 480px) {
+    .finalizar-container {
+         flex-direction: column;
+        margin-top: 750px;
+    }
+
+    .pagamento-info {
+width: 77%;
+    }
+    .pedido-info {
+        width: 91%;
+        padding: 15px;
+    }
+
+    .selecione {
+        font-size: 18px;
+    }
 }
