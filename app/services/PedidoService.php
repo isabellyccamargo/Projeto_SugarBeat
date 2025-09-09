@@ -13,7 +13,6 @@ class PedidoService
 
     public function criarNovoPedido(Pedido $pedido, array $itens)
     {
-        // Exemplo de regra de negócio: calcular o total do pedido
         $total = 0;
         foreach ($itens as $item) {
             $total += $item->getSubTotal();
@@ -47,11 +46,9 @@ class PedidoService
         return isset($_SESSION['carrinho']) ? $_SESSION['carrinho'] : [];
     }
 
-    // Retorna a quantidade total de itens (somando as quantidades)
     public function getQuantidadeTotalCarrinho()
     {
         $total = 0;
-        //verifica se existe o carrinho na sessão e isset retorna true
         if (isset($_SESSION['carrinho'])) {
             foreach ($_SESSION['carrinho'] as $item) {
                 $total += $item['quantidade'];
@@ -60,7 +57,6 @@ class PedidoService
         return $total;
     }
 
-    // Retorna o valor total do carrinho
     public function getValorTotalCarrinho()
     {
         $total = 0;

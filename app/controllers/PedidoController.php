@@ -32,25 +32,22 @@ class PedidoController
     public function post()
     {
 
-        // Assumindo que a requisição POST envia os dados do pedido e os itens
         $pedidoData = filter_input(INPUT_POST, 'pedido', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
         $itensData = filter_input(INPUT_POST, 'itens', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
 
-        // O id_cliente agora vem do formulário, que é preenchido pela sessão
         $id_cliente = $pedidoData['id_cliente'] ?? null;
         $forma_de_pagamento = $pedidoData['forma_de_pagamento'] ?? null;
         $descricao_pedido = $pedidoData['descricao_pedido'] ?? null;
 
         if (empty($id_cliente) || empty($forma_de_pagamento) || empty($itensData)) {
-            // Se algum dado crucial estiver faltando, lance uma exceção
             throw new Exception("Dados de pedido incompletos.");
         }
 
         $pedido = new Pedido(
             null,
             $id_cliente,
-            date('Y-m-d H:i:s'), // data e hora atuais
-            0, // O total será calculado no serviço
+            date('Y-m-d H:i:s'),
+            0,
             $forma_de_pagamento,
             $descricao_pedido
         );

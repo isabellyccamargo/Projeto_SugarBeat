@@ -11,17 +11,12 @@ class ProdutoController {
         if ($id) {
             try {
                 return $this->produtoService->getProduto($id);
-                //header('Content-Type: application/json');
-                //echo json_encode($produto);
             } catch (Exception $e) {
                 http_response_code(404);
                 return json_encode(['error' => $e->getMessage()]);
             }
         } else {
             return $this->produtoService->listarProdutos();
-            //$produtos = $this->produtoService->listarProdutos();
-            //header('Content-Type: application/json');
-            //echo json_encode($produtos);
         }
     }
 

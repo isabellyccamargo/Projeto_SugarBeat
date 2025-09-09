@@ -121,3 +121,60 @@ body {
 .dropdown a:hover {
     color: rgb(139, 88, 0);
 }
+
+@media (max-width: 992px) {
+    .nome-empresa {
+        font-size: 26px;
+    }
+
+    .icons {
+        gap: 25px;
+    }
+
+    .avatar-icon {
+        font-size: 26px;
+    }
+
+    .historico-icon {
+        font-size: 22px;
+    }
+}
+
+/* Celulares */
+/* Ajustes só no mobile */
+@media (max-width: 600px) {
+    .topo {
+        height: 60px; /* um pouco menor */
+    }
+
+    .logo {
+        width: 35px;
+        height: 35px;
+    }
+
+    .nome-empresa {
+        font-size: 28px; /* menor pra caber melhor */
+        margin-right: 20px;
+    }
+
+    .icons {
+        gap: 15px; /* diminui o espaço entre os ícones */
+    }
+
+    .carrinho-icon {
+        font-size: 15px; /* aumenta */
+    }
+
+    .avatar-icon {
+        font-size: 22px; /* aumenta */
+    }
+
+    .nome-usuario {
+        font-size: 15px; /* maior pra enxergar melhor */
+    }
+
+    .carrinho-contador {
+        font-size: 15px;
+        font-weight: bold;
+    }
+}

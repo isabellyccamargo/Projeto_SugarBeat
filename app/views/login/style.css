@@ -111,3 +111,64 @@ body {
     color: var(--cor-terceira);
     text-decoration: none;
 }
+
+@media (max-width: 768px) {
+    .login-container {
+        /* Permite que o contêiner de login se ajuste a largura da tela */
+        width: 100%;
+        max-width: 400px;
+        padding: 30px; /* Reduz o padding para um melhor visual */
+
+    }
+
+    .textoLogin {
+        font-size: 30px; /* Reduz o tamanho da fonte do título */
+    }
+
+    .login-form label {
+        font-size: 18px; /* Ajusta o tamanho da fonte das labels */
+    }
+
+    .login-form input {
+        padding: 10px; /* Reduz o padding dos inputs */
+    }
+    
+    .access-button {
+        width: 80%; /* Aumenta a largura do botão para ocupar mais espaço */
+        font-size: 18px; /* Reduz o tamanho da fonte do botão */
+    }
+    
+    .signup-link {
+        font-size: 17px; /* Reduz o tamanho da fonte do link */
+    }
+}
+
+/* Telas para CELULARES (Largura máxima de 480px) */
+@media (max-width: 480px) {
+    .login-container {
+        /* Ocupa a maior parte da tela em celulares, mantendo uma pequena margem */
+        width: 80%;
+        margin-top: 280px;
+    }
+
+    .textoLogin {
+        font-size: 24px; /* O título fica menor para caber melhor na tela */
+    }
+
+    .login-form label {
+        font-size: 16px; /* Ajusta o tamanho da fonte das labels para caber */
+    }
+
+    .login-form input {
+        padding: 8px; /* Padding mínimo para os inputs */
+    }
+
+    .access-button {
+        width: 100%; /* O botão ocupa a largura total */
+        font-size: 16px; /* Fonte menor para caber no botão */
+    }
+
+    .signup-link {
+        font-size: 16px; /* Ajusta o tamanho da fonte do link */
+    }
+}

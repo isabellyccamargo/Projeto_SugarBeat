@@ -1,14 +1,11 @@
 <?php
-// Inicie a sessão para ter acesso aos dados do usuário
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 $cliente = null;
-// ADICIONADO: Captura o parâmetro 'origem' da URL, se existir.
 $origem = $_GET['origem'] ?? null;
 
-// inclui sempre
 require_once '../../config/connection.php';
 require_once '../../models/Cliente.php';
 require_once '../../repositories/IClienteRepository.php';
@@ -77,11 +74,6 @@ if (isset($_SESSION['cliente_id'])) {
     ?>
 
     <div class="window-container conteudo-principal">
-        <div class="window-header">
-            <div class="window-control close"></div>
-            <div class="window-control minimize"></div>
-            <div class="window-control maximize"></div>
-        </div>
         <div class="form-container">
             <form id="formCadastro" action="../cadastro/index.php" method="POST">
                 <?php if ($cliente): ?>

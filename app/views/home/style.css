@@ -3,7 +3,7 @@
     --fontfamily: 'Caalibri', serif;
     --cor-primaria: #3b2500ff;
     --cor-secundaria: #fff0d0ff;
-    --cor-terceira: rgb(252, 218, 143);
+    --cor-terceira: rgb(253, 230, 182);
     --TamanhoFont-Titulo: 60px;
 }
 
@@ -27,7 +27,6 @@ body {
 
 .banner-img {
     width: 100%;
-    height: 100%;
     object-fit: cover;
     box-shadow: 0 6px 18px rgb(76, 56, 0);
     display: block;
@@ -123,3 +122,4 @@ body {
     cursor: pointer;
     border-radius: 7px;
 }
+

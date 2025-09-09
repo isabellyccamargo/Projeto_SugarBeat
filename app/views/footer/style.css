@@ -100,3 +100,50 @@ body {
     line-height: 40px;
     text-decoration: none;
 }
+
+@media (max-width: 768px) {
+    .rodape-container {
+        padding: 20px 0;
+    }
+
+    .secao h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .secao {
+        font-size: 13px;
+    }
+
+    .slogan {
+        font-size: 16px;
+    }
+
+    .rodape-conteudo {
+        padding-bottom: 12px;
+    }
+
+    .aviso-direitos-autorais {
+        font-size: 12px;
+    }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+    .logo-rodape img {
+        width: 70px;
+    }
+
+    .insta {
+        font-size: 14px;
+        margin: 0 8px;
+    }
+
+    .siga {
+        font-size: 18px;
+    }
+
+    .slogan {
+        font-size: 14px;
+    }
+}
