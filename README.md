@@ -3,6 +3,8 @@
 O projeto SugarBeat foi criado com o propósito de facilitar a realização de pedidos de doces online. Ele oferece uma interface simples e intuitiva para o cliente,
 eliminando a necessidade de se deslocar até o local. Além disso, o sistema contribui para o aumento das vendas da empresa, proporcionando uma nova e eficiente forma de comercialização.
 
+
+
  Instalação e Execução
  
 Pré-requisitos
@@ -32,11 +34,15 @@ Execute o projeto:
 
 [Comando para rodar o projeto, por exemplo: npm start, python main.py]
 
+
+
  Integrantes da Dupla
  
 - Isabelly Caroline Camargo.
 
 - Jefferson dos Anjos.
+
+
 
 Diagrama de Entidade-Relacionamento (DER)
 
