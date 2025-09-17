@@ -15,7 +15,7 @@ Pré-requisitos
 Passo a Passo
 Clone o repositório para a sua máquina:
 
-git clone [https://docs.github.com/pt/repositories/creating-and-managing-repositories/about-repositories](https://docs.github.com/pt/repositories/creating-and-managing-repositories/about-repositories)
+git clone [https://github.com/isabellyccamargo/Projeto_SugarBeat.git]
 
 
 Navegue até a pasta do projeto:
