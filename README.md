@@ -28,10 +28,6 @@ Instale as dependências:
 [Comando para instalar as dependências, por exemplo: npm install, pip install -r requirements.txt]
 
 
-Execute o projeto:
-
-[Comando para rodar o projeto, por exemplo: npm start, python main.py]
-
 
 INTEGRANTES DA DUPLA
  
