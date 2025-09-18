@@ -36,7 +36,7 @@ class PedidoRepository implements IPedidoRepository
 
     public function getPedidosPorCliente($id_cliente)
     {
-        echo "Buscando pedidos para o cliente ID: $id_cliente...\n";
+        // echo "Buscando pedidos para o cliente ID: $id_cliente...\n";
 
         $pedidos = [];
 

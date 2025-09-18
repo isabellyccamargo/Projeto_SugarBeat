@@ -23,6 +23,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho de Compras</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
     <!-- Adiciona CSS para remover as setas dos inputs de tipo "number" -->
     <style>
         /* Oculta as setas para cima/baixo nos campos de número para navegadores baseados em WebKit (Chrome, Safari) */
@@ -96,13 +97,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                         <span id="summary-items-count">QUANTIDADE TOTAL : <?php echo $num_itens; ?></span>
                         <span id="summary-total-price">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
-                    <div class="promo-code">
-                        <span>CÓDIGO PROMOCIONAL</span>
-                        <div class="promo-input-group">
-                            <input type="text" placeholder="Digite seu código" class="promo-input">
-                            <button class="apply-btn">APLICAR</button>
-                        </div>
-                    </div>
+    
                     <div class="summary-row total-row">
                         <span>TOTAL</span>
                         <span id="final-total">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>

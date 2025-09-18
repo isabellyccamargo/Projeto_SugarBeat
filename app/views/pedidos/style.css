@@ -42,6 +42,7 @@ body {
     font-size: 20px;
     margin-top: 40px;
     margin-bottom: 30px;
+    color: var(--cor-secundaria);
 }
 
 .pedido-info {
@@ -53,6 +54,7 @@ body {
 
 .forma {
     margin-bottom: 40px;
+    color: var(--cor-secundaria);
 }
 
 .item-resumo {

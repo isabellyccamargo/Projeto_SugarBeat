@@ -62,7 +62,6 @@ if (!empty($carrinho)) {
                         <?php foreach ($itens as $item): ?>
                             <div class="item-resumo">
                                 <div>
-                                    <span class="id"><?php echo htmlspecialchars($item['produto']->getIdProduto()); ?></span>
                                     <span class="item-nome"><?php echo htmlspecialchars($item['produto']->getNome()); ?></span>
                                     <span class="item-quantidade">x<?php echo $item['quantidade']; ?></span>
                                 </div>

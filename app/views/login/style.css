@@ -5,7 +5,6 @@
     --cor-terceira:rgb(252, 218, 143);
 }
 
-
 body {
     background-color: var(--cor-secundaria); 
     font-family: var(--fontfamily);
