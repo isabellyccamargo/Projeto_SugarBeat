@@ -7,20 +7,20 @@ class Pedido implements JsonSerializable
     private $id_cliente;
     private $data;
     private $total;
-    private $forma_de_pagamento;
+    private $preference_id;
 
     public function __construct(
         $id_pedido,
         $id_cliente,
         $data,
         $total,
-        $forma_de_pagamento,
+        $preference_id,
     ) {
         $this->id_pedido = $id_pedido;
         $this->id_cliente = $id_cliente;
         $this->data = $data;
         $this->total = $total;
-        $this->forma_de_pagamento = $forma_de_pagamento;
+        $this->preference_id = $preference_id;
     }
 
     public function getIdPedido()
@@ -59,13 +59,13 @@ class Pedido implements JsonSerializable
         $this->total = $total;
     }
 
-    public function getFormaDePagamento()
+    public function getPreference_id()
     {
-        return $this->forma_de_pagamento;
+        return $this->preference_id;
     }
-    public function setFormaDePagamento($forma_de_pagamento): void
+    public function setPreference_id($preference_id): void
     {
-        $this->forma_de_pagamento = $forma_de_pagamento;
+        $this->preference_id = $preference_id;
     }
 
     public function jsonSerialize(): mixed
@@ -76,7 +76,7 @@ class Pedido implements JsonSerializable
             'id_cliente' => $this->id_cliente,
             'data_pedido' => $this->data,
             'total' => $this->total,
-            'forma_de_pagamento' => $this->forma_de_pagamento
+            'preference_id' => $this->preference_id
         ];
 
     }

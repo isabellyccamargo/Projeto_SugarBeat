@@ -5,12 +5,14 @@ class Produto {
     private $nome;
     private $preco;
     private $imagem;
+    private $id_categoria;
 
-    public function __construct($id_produto = null, $nome = null, $preco = null, $imagem = null) {
+    public function __construct($id_produto = null, $nome = null, $preco = null, $imagem = null, $id_categoria = null) {
         $this->id_produto = $id_produto;
         $this->nome = $nome;
         $this->preco = $preco;
         $this->imagem = $imagem;
+        $this->id_categoria = $id_categoria;
     }
 
     public function getIdProduto() { return $this->id_produto; }
@@ -24,4 +26,7 @@ class Produto {
 
     public function getImagem() { return $this->imagem; }
     public function setImagem($imagem) { $this->imagem = $imagem; }
+
+    public function getIdCategoria() { return $this->id_categoria; }
+    public function setIdCategoria($id_categoria) { $this->id_categoria = $id_categoria; }
 }

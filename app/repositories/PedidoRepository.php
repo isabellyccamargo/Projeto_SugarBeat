@@ -27,7 +27,7 @@ class PedidoRepository implements IPedidoRepository
                 $pedidodata['id_cliente'],
                 $pedidodata['data_pedido'],
                 $pedidodata['total'],
-                $pedidodata['forma_de_pagamento'],
+                $pedidodata['preference_id'],
             );
         }
 
@@ -40,7 +40,7 @@ class PedidoRepository implements IPedidoRepository
 
         $pedidos = [];
 
-        $stmt = $this->db->prepare("SELECT * FROM pedido WHERE id_cliente = :cliente_id");
+        $stmt = $this->db->prepare("SELECT * FROM pedido WHERE id_cliente = :cliente_id ORDER BY id_pedido DESC");
         $stmt->bindValue(':cliente_id', $id_cliente, PDO::PARAM_INT);
         $stmt->execute();
         $pedidodata = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -52,7 +52,7 @@ class PedidoRepository implements IPedidoRepository
                     $data['id_cliente'],
                     $data['data_pedido'],
                     $data['total'],
-                    $data['forma_de_pagamento']
+                    $data['preference_id']
                 );
             }
         }
@@ -73,7 +73,7 @@ class PedidoRepository implements IPedidoRepository
                 $data['id_cliente'],
                 $data['data_pedido'],
                 $data['total'],
-                $data['forma_de_pagamento'],
+                $data['preference_id'],
             );
         }
 
@@ -83,12 +83,12 @@ class PedidoRepository implements IPedidoRepository
     public function save($pedido)
     {
         echo "Salvando pedido: " . $pedido->getIdCliente() . " no banco de dados...\n";
-        $stmt = $this->db->prepare("INSERT INTO pedido (id_cliente, data_pedido, total, forma_de_pagamento) VALUES (:id_cliente, :data_pedido, :total, :forma_de_pagamento)");
+        $stmt = $this->db->prepare("INSERT INTO pedido (id_cliente, data_pedido, total, preference_id) VALUES (:id_cliente, :data_pedido, :total, :preference_id)");
 
         $stmt->bindValue(':id_cliente', $pedido->getIdCliente());
         $stmt->bindValue(':data_pedido', $pedido->getData());
         $stmt->bindValue(':total', $pedido->getTotal());
-        $stmt->bindValue(':forma_de_pagamento', $pedido->getFormaDePagamento());
+        $stmt->bindValue(':preference_id', $pedido->getPreference_id());
 
         $stmt->execute();
 

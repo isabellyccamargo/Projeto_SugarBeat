@@ -26,7 +26,8 @@ class ProdutoController {
             null,
             $data['nome'] ?? null,
             $data['preco'] ?? null,
-            $data['imagem'] ?? null
+            $data['imagem'] ?? null,
+            $data['nome_categoria'] ?? null
         );
         try {
             $novoProduto = $this->produtoService->criarNovoProduto($produto);
@@ -44,7 +45,8 @@ class ProdutoController {
             $id,
             $data['nome'] ?? null,
             $data['preco'] ?? null,
-            $data['imagem'] ?? null
+            $data['imagem'] ?? null,
+            $data['nome_categoria'] ?? null
         );
         try {
             $this->produtoService->atualizarProduto($produto);

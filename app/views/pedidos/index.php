@@ -87,7 +87,7 @@ if (!empty($carrinho)) {
                     <form action="processar_pedido.php" method="POST">
                         <!-- Dados do pedido -->
                         <input type="hidden" name="pedido[id_cliente]" value="<?php echo $_SESSION['cliente_id']; ?>">
-                        <input type="hidden" name="pedido[forma_de_pagamento]" id="forma_de_pagamento" value="pix">
+                        <input type="hidden" name="pedido[preference_id]" id="preference_id" value="pix">
 
                         <?php foreach ($itens as $index => $item): ?>
                             <input type="hidden" name="itens[<?php echo $index; ?>][id_produto]" value="<?php echo $item['produto']->getIdProduto(); ?>">
@@ -129,7 +129,7 @@ if (!empty($carrinho)) {
         // Atualiza o campo hidden com a forma de pagamento selecionada
         document.querySelectorAll("input[name=metodo_pagamento]").forEach(el => {
             el.addEventListener("change", function() {
-                document.getElementById("forma_de_pagamento").value = this.value;
+                document.getElementById("preference_id").value = this.value;
             });
         });
     </script>

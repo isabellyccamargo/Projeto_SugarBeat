@@ -53,7 +53,7 @@ class ProdutoService
 
         $encontrado = false;
         foreach ($_SESSION['carrinho'] as $chave => $item) {
-            //verifica se o id do produto que esat no carrinho é igual ao qual queremos adcionar
+            //verifica se o id do produto que esta no carrinho é igual ao qual queremos adcionar
             if ($item['id'] == $idProduto) {
                 //se ja estiver, aumenta a quantidade
                 $_SESSION['carrinho'][$chave]['quantidade']++;

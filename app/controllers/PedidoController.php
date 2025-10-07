@@ -36,10 +36,10 @@ class PedidoController
         $itensData = filter_input(INPUT_POST, 'itens', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
 
         $id_cliente = $pedidoData['id_cliente'] ?? null;
-        $forma_de_pagamento = $pedidoData['forma_de_pagamento'] ?? null;
+        $preference_id = $pedidoData['preference_id'] ?? null;
         $descricao_pedido = $pedidoData['descricao_pedido'] ?? null;
 
-        if (empty($id_cliente) || empty($forma_de_pagamento) || empty($itensData)) {
+        if (empty($id_cliente) || empty($preference_id) || empty($itensData)) {
             throw new Exception("Dados de pedido incompletos.");
         }
 
@@ -48,7 +48,7 @@ class PedidoController
             $id_cliente,
             date('Y-m-d H:i:s'),
             0,
-            $forma_de_pagamento,
+            $preference_id,
             $descricao_pedido
         );
 
