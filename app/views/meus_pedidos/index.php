@@ -67,7 +67,7 @@ $pedidos = $pedidoController->getPedidosPorCliente($clienteId);
                             <td><?= htmlspecialchars($pedido->getIdPedido()) ?></td>
                             <td><?= htmlspecialchars($pedido->getData()) ?></td>
                             <td>R$ <?= number_format($pedido->getTotal(), 2, ',', '.') ?></td>
-                            <td><?= htmlspecialchars($pedido->getFormaDePagamento()) ?></td>
+                            <td><?= htmlspecialchars($pedido->getPreference_id()) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
