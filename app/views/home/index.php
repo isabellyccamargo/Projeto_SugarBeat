@@ -41,6 +41,8 @@ $produtos = $produtoController->get();
             <img src="../../../fotos/banner4.jpg" alt="Banner" class="banner-img">
         </div>
 
+        <h2> OI </h2>
+        
         <div class="produtos">
             <h2 class="sabores">Nossos Sabores</h2>
             <div class="grid">
