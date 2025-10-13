@@ -18,7 +18,6 @@
 <!-- <footer> -->
     <div class="rodape-container">
         <div class="rodape-conteudo">
-
             <div class="secao">
                 <h3 class="siga">Siga-nos</h3>
                 <div class="insta">
