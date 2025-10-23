@@ -2,62 +2,112 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f5e6c4; /* Bege claro */
-    /* margin: 0;
-    padding: 30px; */
+    margin: 0;
+    padding: 0;
+    /* LÓGICA FLEXBOX PARA FIXAR O FOOTER NO FINAL */
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column;
 }
 
-/* Container centralizado */
+/* Container centralizado (Marrom escuro) */
 .container {
-    max-width: 1200px;
-    max-height: 500px;
-    height: 100%;
-    width: 100%;
-    margin: auto;
-    margin-top: 100px;
-    margin-bottom: 20px;
+    width: 90%;
+    max-width: 1100px;
+    margin: 100px auto 50px auto; /* Afasta do header e do footer */
     background-color: #3d2500; /* Marrom escuro */
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    overflow-y: auto; /* Adiciona a barra de rolagem vertical */
-    padding-right: 20px; 
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    
+    /* FAZ O CONTAINER OCUPAR TODO O ESPAÇO DISPONÍVEL */
+    flex-grow: 1; 
 }
 
 /* Título */
 h1 {
     text-align: center;
     color: #f5e6c4; /* Dourado claro */
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    font-size: 28px;
+    letter-spacing: 1px;
 }
+
+/* ------------------ Tabela ------------------ */
 
 /* Tabela */
 table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 1px; /* Espaço entre linhas */
+    border-collapse: collapse; 
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 /* Cabeçalho */
 thead tr {
-    background-color: #f5e6c4; /* Dourado */
-    color: #3d2500; /* Marrom escuro */
+    background-color: #f5e6c4;
+    color: #3d2500;
     font-weight: bold;
-    border-radius: 8px;
 }
 
-th {
-    padding: 12px;
+th, td {
+    padding: 14px;
     text-align: center;
 }
 
 /* Linhas */
 tbody tr {
-    background-color: white; /* Marrom mais claro */
-    color: #3d2500;
-    border-radius: 8px;
+    border-bottom: 1px solid #ddd;
+    transition: background 0.3s;
+    cursor: pointer;
 }
 
-tbody td {
-    padding: 12px;
-    text-align: center;
+tbody tr:hover {
+    background-color: #f8d99b;
 }
+
+/* Nenhum pedido */
+tbody td[colspan="5"] {
+    background-color: #fff4d1;
+    color: #3d2500;
+    font-weight: bold;
+}
+
+/* Responsividade */
+@media (max-width: 700px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody tr {
+        margin-bottom: 15px;
+        border: 1px solid #f5e6c4;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #f5e6c4;
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #3d2500;
+    }
+
+    tbody td:last-child {
+        border-bottom: none;
+    }
+}
+/* O footer não precisa de margin-top, pois o flexbox e o margin-bottom do container já o posicionam corretamente. */

@@ -5,7 +5,6 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Verifica se o cliente está logado
 if (!isset($_SESSION['cliente_id'])) {
-    // Redireciona para a página de login se não estiver logado
     header('Location: ../login/index.php');
     exit();
 }
@@ -22,7 +21,6 @@ require_once '../../controllers/PedidoController.php';
 $clienteId = $_SESSION['cliente_id'];
 
 // Instancia as classes
-// Assumindo que sua classe de conexão retorna um objeto PDO
 $conexao = Connection::connect();
 $pedidoRepository = new PedidoRepository($conexao);
 $itemPedidoRepository = new ItemPedidoRepository($conexao);
@@ -40,49 +38,49 @@ $pedidos = $pedidoController->getPedidosPorCliente($clienteId);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedidos Realizados</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
+    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg"> 
 </head>
 
 <body>
-
     <?php include '../header/index.php'; ?>
 
     <div class="container">
-    
         <h1>Pedidos Realizados</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Data</th>
-                    <th>Total</th>
-                    <th>Pagamento</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($pedidos)) : ?>
-                    <?php foreach ($pedidos as $pedido): ?>
-                        <tr>
-                            <!-- Acessa os dados usando os métodos do objeto Pedido -->
-                            <td><?= htmlspecialchars($pedido->getIdPedido()) ?></td>
-                            <td><?= htmlspecialchars($pedido->getData()) ?></td>
-                            <td>R$ <?= number_format($pedido->getTotal(), 2, ',', '.') ?></td>
-                            <td><?= htmlspecialchars($pedido->getPreference_id()) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
                     <tr>
-                        <td colspan="5">-- Nenhum pedido encontrado --</td>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Quantidade</th>
+                        <th>Total</th>
+                        <th>Pagamento</th>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($pedidos)) : ?>
+                        <?php foreach ($pedidos as $pedido): ?>
+                            <tr onclick="window.location='detalhe_pedido.php?id=<?= htmlspecialchars($pedido->getIdPedido()) ?>';" style="cursor: pointer;">
+                                <td data-label="ID"><?= htmlspecialchars($pedido->getIdPedido()) ?></td>
+                                <td data-label="Data"><?= htmlspecialchars($pedido->getData()) ?></td>
+                                <td data-label="Quantidade">
+                                    <a href="detalhe_pedido.php?id=<?= htmlspecialchars($pedido->getIdPedido()) ?>" class="link-detalhe">Ver Itens</a>
+                                </td>
+                                <td data-label="Total">R$ <?= number_format($pedido->getTotal(), 2, ',', '.')?></td>
+                                <td data-label="Pagamento"><?= htmlspecialchars($pedido->getPreference_id() ?? 'Não Informado') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5">-- Nenhum pedido encontrado --</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <?php include '../footer/index.php'; ?>
-
 </body>
-
-
-
 </html>
