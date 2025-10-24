@@ -84,3 +84,5 @@ $pedidos = $pedidoController->getPedidosPorCliente($clienteId);
     <?php include '../footer/index.php'; ?>
 </body>
 </html>
+
+<!-- hello dear -->
