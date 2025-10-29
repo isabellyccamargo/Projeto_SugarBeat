@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>SugarBeat</title>
-    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
+    <link rel="icon" type="image/png" href="../../../../fotos/imgsite.jpg">
     <link rel="stylesheet" href="../footer/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,7 @@
 
             <div class="secao logo-secao">
                 <div class="logo-rodape">
-                    <img src="../../../fotos/imgsite.jpg" alt="Logo da Empresa" class="logo">
+                    <img src="../../../../fotos/imgsite.jpg" alt="Logo da Empresa" class="logo">
                 </div>
                 <p class="slogan">"O doce que marca momentos!"</p>
             </div>

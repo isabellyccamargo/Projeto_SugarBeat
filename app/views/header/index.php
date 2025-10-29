@@ -11,7 +11,7 @@ if (session_status() == PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <title>SugarBeat</title>
-    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
+    <link rel="icon" type="image/png" href="../../../../fotos/imgsite.jpg">
     <link rel="stylesheet" href="../header/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <div class="topo">
         <a href="../home/" style="text-decoration: none;">
             <div class="logo-area">
-                <img src="../../../fotos/logo.jpg" alt="Logo da Empresa" class="logo" />
+                <img src="../../../../fotos/logo.jpg" alt="Logo da Empresa" class="logo" />
                 <span class="nome-empresa">SugarBeat</span>
             </div>
         </a>

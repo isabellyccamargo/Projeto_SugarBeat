@@ -11,7 +11,6 @@ body {
     font-family: var(--fontfamily);
 }
 
-
 .window-container {
     width: 90vw;
     max-width: 900px;
@@ -25,7 +24,6 @@ body {
     margin-bottom: 20px;
 }
 
-
 .window-header {
     background-color: #3b2500ff;
     padding: 8px 15px;
@@ -33,18 +31,6 @@ body {
     justify-content: flex-end;
     align-items: center;
     border-bottom: 1px solid #2b1c00;
-}
-
-
-.window-control {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-left: 8px;
-}
-
-.window-control.close {
-    background-color: rgb(252, 218, 143);
 }
 
 .window-control.minimize,

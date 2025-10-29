@@ -23,7 +23,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho de Compras</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
+    <link rel="icon" type="image/png" href="../../../../fotos/imgsite.jpg">
     <!-- Adiciona CSS para remover as setas dos inputs de tipo "number" -->
     <style>
         /* Oculta as setas para cima/baixo nos campos de número para navegadores baseados em WebKit (Chrome, Safari) */

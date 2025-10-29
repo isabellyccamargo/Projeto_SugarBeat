@@ -24,7 +24,7 @@ $produtos = $produtoController->get();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SugarBeat</title>
-    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg">
+    <link rel="icon" type="image/png" href="../../../../fotos/imgsite.jpg">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +38,7 @@ $produtos = $produtoController->get();
 
     <main class="main-content">
         <div class="banner">
-            <img src="../../../fotos/banner4.jpg" alt="Banner" class="banner-img">
+            <img src="../../../../fotos/banner4.jpg" alt="Banner" class="banner-img">
         </div>
 
 
