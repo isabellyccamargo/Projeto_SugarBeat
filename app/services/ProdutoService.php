@@ -21,12 +21,14 @@ class ProdutoService
 
     public function adicionarAoCarrinho($idProduto)
     {
+        // pega o produto no banco de dados
         $produto = $this->produtoRepository->getById($idProduto);
 
         if (!$produto) {
             return ['success' => false, 'message' => 'Produto não encontrado.'];
         }
 
+        // guarda o estoque em uma variável
         $estoque = $produto->getEstoque(); 
 
         if (!isset($_SESSION['carrinho'])) {
@@ -35,21 +37,27 @@ class ProdutoService
 
         $encontrado = false;
 
+        // percorre todos os itens que estão na sessão do carrinho
         foreach ($_SESSION['carrinho'] as $chave => $item) {
+            // verifica se o produto já está no carrinho
             if ($item['id'] == $idProduto) {
                 $novaQuantidade = $item['quantidade'] + 1;
 
+                // nova quantidade é maior que estoque, se for ocorre mensagem de erro e não deixa adcionar
                 if ($novaQuantidade > $estoque) {
                     return ['success' => false, 'message' => 'Estoque insuficiente para adicionar mais unidades.'];
                 }
 
+                // se não for, adciona nova quantidade
                 $_SESSION['carrinho'][$chave]['quantidade'] = $novaQuantidade;
                 $encontrado = true;
                 break;
             }
         }
 
+        // se não estiver no carrinho
         if (!$encontrado) {
+            // verifica se tem pelo menos uma unidade em estoque
             if ($estoque < 1) {
                 return ['success' => false, 'message' => 'Produto fora de estoque.'];
             }
@@ -66,42 +74,7 @@ class ProdutoService
 
         return ['success' => true, 'message' => 'Produto adicionado com sucesso!'];
     }
-    public function verificarEstoqueCarrinho()
-    {
-        if (!isset($_SESSION['carrinho']) || empty($_SESSION['carrinho'])) {
-            return ['success' => false, 'message' => 'Carrinho vazio.'];
-        }
 
-        foreach ($_SESSION['carrinho'] as $item) {
-            $produto = $this->produtoRepository->getById($item['id']);
-
-            if (!$produto) {
-                return ['success' => false, 'message' => "Produto '{$item['nome']}' não encontrado."];
-            }
-
-            $estoqueAtual = $produto->getEstoque();
-
-            if ($item['quantidade'] > $estoqueAtual) {
-                return [
-                    'success' => false,
-                    'message' => "Estoque insuficiente para o produto '{$item['nome']}'. Disponível: {$estoqueAtual} unidade(s)."
-                ];
-            }
-        }
-        return ['success' => true, 'message' => 'Todos os produtos têm estoque suficiente.'];
-    }
-
-    public function finalizarPedido()
-    {
-        $verificacao = $this->verificarEstoqueCarrinho();
-
-        if (!$verificacao['success']) {
-            return $verificacao; // ❌ Bloqueia se faltar estoque
-        }
-
-        // Se tudo ok, segue o fluxo de finalização
-        return ['success' => true, 'message' => 'Pedido pronto para ser finalizado.'];
-    }
 
     public function getCarrinho()
     {
@@ -150,18 +123,23 @@ class ProdutoService
             return ['success' => false, 'message' => 'Carrinho não encontrado.'];
         }
 
+        // pega produto no banco de dados
         $produto = $this->produtoRepository->getById($idProduto);
         if (!$produto) {
             return ['success' => false, 'message' => 'Produto não encontrado.'];
         }
 
+        // armazena o estoque em uma variável
         $estoque = $produto->getEstoque(); 
 
         $encontrado = false;
         foreach ($_SESSION['carrinho'] as $chave => $item) {
+            //verifica se o id que esta no carrinho é o msm que o usuario acabou de clicar para adcionar
             if ($item['id'] == $idProduto) {
+                // garante que o valor da variavel é valido, inteiro e maior que 1
                 $novaQuantidade = max(1, (int)$novaQuantidade);
 
+                // veririfca se o cliente não esta tentando ultrapassar o estoque
                 if ($novaQuantidade > $estoque) {
                     return [
                         'success' => false,
@@ -169,6 +147,7 @@ class ProdutoService
                     ];
                 }
 
+                 // se não estiver, adciona nova quantidade
                 $_SESSION['carrinho'][$chave]['quantidade'] = $novaQuantidade;
                 $encontrado = true;
                 break;
@@ -181,4 +160,50 @@ class ProdutoService
 
         return ['success' => true, 'message' => 'Quantidade atualizada com sucesso.'];
     }
+
+     public function finalizarPedido()
+    {
+        // chama a função
+        $verificacao = $this->verificarEstoqueCarrinho();
+
+        // se verificação não for sucesso ele retorna o verificação que esta armazenado a mensagem de erro 
+        if (!$verificacao['success']) {
+            return $verificacao; 
+        }
+ 
+        // se for cai no pedido com sucesso pronto para finalizar
+        return ['success' => true, 'message' => 'Pedido pronto para ser finalizado.'];
+    }
+
+    public function verificarEstoqueCarrinho()
+    {
+        // verifica se o carrinho existe e não está vazio
+        if (!isset($_SESSION['carrinho']) || empty($_SESSION['carrinho'])) {
+            return ['success' => false, 'message' => 'Carrinho vazio.'];
+        }
+
+        // percorre os produtos do carrinho 
+        foreach ($_SESSION['carrinho'] as $item) {
+            //confere novamente o banco 
+            $produto = $this->produtoRepository->getById($item['id']);
+
+            // caso o produto não seja encontrado mais retorna a mensagem
+            if (!$produto) {
+                return ['success' => false, 'message' => "Produto '{$item['nome']}' não encontrado."];
+            }
+
+            // estoque mais recente
+            $estoqueAtual = $produto->getEstoque();
+
+            // verifica quanto o cliente quer comprar se é maior ao tanto que tem disponivel
+            if ($item['quantidade'] > $estoqueAtual) {
+                return [
+                    'success' => false,
+                    'message' => "Estoque insuficiente para o produto '{$item['nome']}'. Disponível: {$estoqueAtual} unidade(s)."
+                ];
+            }
+        }
+        return ['success' => true, 'message' => 'Todos os produtos têm estoque suficiente.'];
+    }
+
 }
