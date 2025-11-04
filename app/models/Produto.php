@@ -7,6 +7,7 @@ class Produto
     private $preco;
     private $imagem;
     private $id_categoria;
+    private $nome_categoria;
     private $estoque;
     private $ativo;
 
@@ -16,6 +17,7 @@ class Produto
         $preco = null,
         $imagem = null,
         $id_categoria = null,
+        $nome_categoria = null,
         $estoque = null,
         $ativo = null
     ) {
@@ -24,6 +26,7 @@ class Produto
         $this->preco = $preco;
         $this->imagem = $imagem;
         $this->id_categoria = $id_categoria;
+        $this->nome_categoria = $nome_categoria;
         $this->estoque = $estoque;
         $this->ativo = $ativo;
     }
@@ -72,6 +75,16 @@ class Produto
     {
         $this->id_categoria = $id_categoria;
     }
+
+    public function getNomeCategoria()
+    {
+        return $this->nome_categoria;
+    }
+    public function setNomeCategoria($nome_categoria)
+    {
+        $this->nome_categoria = $nome_categoria;
+    }
+
     public function getEstoque()
     {
         return $this->estoque;

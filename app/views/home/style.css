@@ -125,6 +125,12 @@ body {
     border-radius: 7px;
 }
 
+.adicionar-btn.indisponivel {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
 
     /* Ajustes para o banner */

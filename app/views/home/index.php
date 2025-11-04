@@ -46,13 +46,19 @@ $produtos = $produtoController->get();
             <h2 class="sabores">Nossos Sabores</h2>
             <div class="grid">
                 <?php
-                // A variável $produtos já foi carregada pelo PHP no início do arquivo
                 if (isset($produtos) && is_array($produtos)) {
                     foreach ($produtos as $produto) {
+                        $emEstoque = $produto->getEstoque() > 0;
                         echo '<div class="card">';
                         echo '<img src="' . htmlspecialchars($produto->getImagem()) . '" alt="' . htmlspecialchars($produto->getNome()) . '">';
                         echo '<p>' . htmlspecialchars($produto->getNome()) . '</p>';
-                        echo '<button class="adicionar-btn" data-id="' . htmlspecialchars($produto->getIdProduto()) . '">Adicionar</button>';
+                        echo '<p>Estoque: ' . htmlspecialchars($produto->getEstoque()) . '</p>';
+
+                        if ($emEstoque) {
+                            echo '<button class="adicionar-btn" data-id="' . htmlspecialchars($produto->getIdProduto()) . '">Adicionar</button>';
+                        } else {
+                            echo '<button class="adicionar-btn indisponivel" disabled>Indisponível</button>';
+                        }
                         echo '</div>';
                     }
                 } else {

@@ -34,6 +34,7 @@ class ProdutoRepository implements IProdutoRepository
         }
     }
 
+
     public function getAll()
     {
         $stmt = $this->db->query("SELECT pro.id_produto, pro.nome, pro.ativo, pro.preco, pro.imagem, pro.estoque, cat.nome_categoria " .
@@ -56,6 +57,4 @@ class ProdutoRepository implements IProdutoRepository
         }
         return $produtos;
     }
-
-
 }
