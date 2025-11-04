@@ -38,7 +38,7 @@ $pedidos = $pedidoController->getPedidosPorCliente($clienteId);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedidos Realizados</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="../../../../fotos/imgsite.jpg"> 
+    <link rel="icon" type="image/png" href="../../../fotos/imgsite.jpg"> 
 </head>
 
 <body>
@@ -60,12 +60,30 @@ $pedidos = $pedidoController->getPedidosPorCliente($clienteId);
                 </thead>
                 <tbody>
                     <?php if (!empty($pedidos)) : ?>
-                        <?php foreach ($pedidos as $pedido): ?>
-                            <tr onclick="window.location='detalhe_pedido.php?id=<?= htmlspecialchars($pedido->getIdPedido()) ?>';" style="cursor: pointer;">
+                        <?php 
+                            foreach ($pedidos as $pedido):
+                            
+                            // Lógica para calcular a quantidade total de itens
+                            
+                            // >>> INÍCIO DA BUFFERIZAÇÃO para ocultar o echo do Repositório <<<
+                            ob_start();
+                            $itensDoPedido = $itemPedidoRepository->getByPedidoId($pedido->getIdPedido());
+                            ob_end_clean(); // Descarta o texto de depuração
+                            // >>> FIM DA BUFFERIZAÇÃO <<<
+
+                            $quantidadeTotal = 0;
+                            
+                            if (!empty($itensDoPedido)) {
+                                foreach ($itensDoPedido as $item) {
+                                    $quantidadeTotal += $item->getQuantidade();
+                                }
+                            }
+                            ?>
+                            <tr> 
                                 <td data-label="ID"><?= htmlspecialchars($pedido->getIdPedido()) ?></td>
                                 <td data-label="Data"><?= htmlspecialchars($pedido->getData()) ?></td>
                                 <td data-label="Quantidade">
-                                    <a href="detalhe_pedido.php?id=<?= htmlspecialchars($pedido->getIdPedido()) ?>" class="link-detalhe">Ver Itens</a>
+                                    <?= $quantidadeTotal ?> Itens
                                 </td>
                                 <td data-label="Total">R$ <?= number_format($pedido->getTotal(), 2, ',', '.')?></td>
                                 <td data-label="Pagamento"><?= htmlspecialchars($pedido->getPreference_id() ?? 'Não Informado') ?></td>
@@ -85,3 +103,5 @@ $pedidos = $pedidoController->getPedidosPorCliente($clienteId);
 </body>
 </html>
 
+<!-- aqui -->
+ 
