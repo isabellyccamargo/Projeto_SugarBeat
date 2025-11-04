@@ -9,14 +9,6 @@ class ProdutoService
         $this->produtoRepository = $produtoRepository;
     }
 
-    public function criarNovoProduto(Produto $produto)
-    {
-        if (empty($produto->getNome()) || $produto->getPreco() <= 0) {
-            throw new Exception("Nome e preço válidos são obrigatórios.");
-        }
-        return $this->produtoRepository->save($produto);
-    }
-
     public function getProduto($id)
     {
         return $this->produtoRepository->getById($id);
@@ -27,43 +19,26 @@ class ProdutoService
         return $this->produtoRepository->getAll();
     }
 
-    public function atualizarProduto(Produto $produto)
-    {
-        return $this->produtoRepository->update($produto);
-    }
-
-    public function deletarProduto($id)
-    {
-        return $this->produtoRepository->delete($id);
-    }
-
     public function adicionarAoCarrinho($idProduto)
     {
         $produto = $this->produtoRepository->getById($idProduto);
 
-        //verifica se a variável não existe, se não existir retorna a mensagem
         if (!$produto) {
             return ['success' => false, 'message' => 'Produto não encontrado.'];
         }
 
-        // verifica se o carrinho não foi criado
         if (!isset($_SESSION['carrinho'] )) {
             $_SESSION['carrinho'] = [];
         }
 
         $encontrado = false;
         foreach ($_SESSION['carrinho'] as $chave => $item) {
-            //verifica se o id do produto que esta no carrinho é igual ao qual queremos adcionar
             if ($item['id'] == $idProduto) {
-                //se ja estiver, aumenta a quantidade
                 $_SESSION['carrinho'][$chave]['quantidade']++;
-                // marca como true indicando que não precisamos adcionar um produto novo
                 $encontrado = true;
                 break;
             }
         }
-
-        // verifica se não existe, se o produto não foi encontrado no foreach anterior
         if (!$encontrado) {
             $novo_item = [
                 'id'        => $produto->getIdProduto(),
@@ -78,17 +53,14 @@ class ProdutoService
         return ['success' => true, 'message' => 'Produto adicionado com sucesso!'];
     }
 
-    // Retorna todos os itens do carrinho
     public function getCarrinho()
     {
         return isset($_SESSION['carrinho']) ? $_SESSION['carrinho'] : [];
     }
 
-    // Retorna a quantidade total de itens (somando as quantidades)
     public function getQuantidadeTotalCarrinho()
     {
         $total = 0;
-        //verifica se existe o carrinho na sessão e isset retorna true
         if (isset($_SESSION['carrinho'])) {
             foreach ($_SESSION['carrinho'] as $item) {
                 $total += $item['quantidade'];
@@ -97,7 +69,6 @@ class ProdutoService
         return $total;
     }
 
-    // Retorna o valor total do carrinho
     public function getValorTotalCarrinho()
     {
         $total = 0;
@@ -109,7 +80,6 @@ class ProdutoService
         return $total;
     }
 
-    // Remove item pelo ID
     public function removerDoCarrinho($idProduto)
     {
         if (isset($_SESSION['carrinho'])) {
@@ -133,7 +103,6 @@ class ProdutoService
         $encontrado = false;
         foreach ($_SESSION['carrinho'] as $chave => $item) {
             if ($item['id'] == $idProduto) {
-                // Garante que a quantidade é um número e é no mínimo 1
                 $novaQuantidade = max(1, (int)$novaQuantidade);
                 $_SESSION['carrinho'][$chave]['quantidade'] = $novaQuantidade;
                 $encontrado = true;
