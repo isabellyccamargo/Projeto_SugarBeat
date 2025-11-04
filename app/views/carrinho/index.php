@@ -97,7 +97,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                         <span id="summary-items-count">QUANTIDADE TOTAL : <?php echo $num_itens; ?></span>
                         <span id="summary-total-price">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
-    
+
                     <div class="summary-row total-row">
                         <span>TOTAL</span>
                         <span id="final-total">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
@@ -144,12 +144,13 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                     const data = await response.json();
 
                     if (data.success) {
-                        // Atualiza os totais do resumo com os dados do servidor
                         summaryItemsCount.textContent = `ITENS ${data.total_items}`;
                         summaryTotalPrice.textContent = formatPrice(data.total_price);
                         finalTotal.textContent = formatPrice(data.total_price);
                     } else {
-                        console.error('Erro ao atualizar o carrinho:', data.message);
+                        alert(data.message); // ⚠️ mostra mensagem de erro
+                        // recarrega a página pra corrigir o valor visualmente
+                        location.reload();
                     }
                 } catch (error) {
                     console.error('Falha na requisição:', error);
@@ -237,7 +238,19 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                     } else {
                         // Se o carrinho tem itens, redireciona o usuário
                         mensagemErro.style.display = 'none'; // Esconde a mensagem de erro, caso esteja visível
-                        window.location.href = '../carrinho/finalizar_compra_gateway.php';
+                        fetch('../carrinho/verificar_estoque.php')
+                            .then(res => res.json())
+                            .then(data => {
+                                if (!data.success) {
+                                    alert(data.message);
+                                } else {
+                                    window.location.href = '../carrinho/finalizar_compra_gateway.php';
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                alert('Erro ao verificar o estoque. Tente novamente.');
+                            });
                     }
                 });
             }
