@@ -52,7 +52,7 @@ $produtos = $produtoController->get();
                         echo '<div class="card">';
                         echo '<img src="' . htmlspecialchars($produto->getImagem()) . '" alt="' . htmlspecialchars($produto->getNome()) . '">';
                         echo '<p>' . htmlspecialchars($produto->getNome()) . '</p>';
-                        echo '<p>Estoque: ' . htmlspecialchars($produto->getEstoque()) . '</p>';
+                       echo '<p>R$ ' . number_format($produto->getPreco(), 2, ',', '.') . '</p>';
 
                         if ($emEstoque) {
                             echo '<button class="adicionar-btn" data-id="' . htmlspecialchars($produto->getIdProduto()) . '">Adicionar</button>';
