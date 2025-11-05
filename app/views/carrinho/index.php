@@ -13,6 +13,8 @@ $produtoService = new ProdutoService($produtoRepository);
 $carrinho = $produtoService->getCarrinho();
 $num_itens = $produtoService->getQuantidadeTotalCarrinho();
 $total_carrinho = $produtoService->getValorTotalCarrinho();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +72,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                                 <div class="item-controls">
                                     <div class="quantity-control">
                                         <button class="quantity-btn" data-action="decrement" data-id="<?php echo $item['id']; ?>">-</button>
-                                        <!-- ATENÇÃO: removi o atributo 'readonly' aqui -->
+                                        
                                         <input type="number" value="<?php echo $item['quantidade']; ?>" class="quantity-input" data-id="<?php echo $item['id']; ?>">
                                         <button class="quantity-btn" data-action="increment" data-id="<?php echo $item['id']; ?>">+</button>
                                     </div>
@@ -103,8 +105,8 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                         <span id="final-total">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
                     <div class="summary-details">
-                        <button id="finalizar-pedido-btn" class="checkout-btn">Finalizar Pedido</button>
-                        <div id="mensagem-erro-carrinho" style="color: red; margin-top: 20px; display: none; text-align: center;">O carrinho está vazio.</div>
+                        <a href="finalizar_compra_gateway.php" class="checkout-btn" id="finalizar-pedido-btn">Finalizar Pedido</a>
+                         <div id="mensagem-erro-carrinho" style="color: red; margin-top: 20px; display: none; text-align: center;">O carrinho está vazio.</div>
                     </div>
                 </div>
             </div>
@@ -238,19 +240,6 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                     } else {
                         // Se o carrinho tem itens, redireciona o usuário
                         mensagemErro.style.display = 'none'; // Esconde a mensagem de erro, caso esteja visível
-                        fetch('../carrinho/verificar_estoque.php')
-                            .then(res => res.json())
-                            .then(data => {
-                                if (!data.success) {
-                                    alert(data.message);
-                                } else {
-                                    window.location.href = '../carrinho/finalizar_compra_gateway.php';
-                                }
-                            })
-                            .catch(err => {
-                                console.error(err);
-                                alert('Erro ao verificar o estoque. Tente novamente.');
-                            });
                     }
                 });
             }
