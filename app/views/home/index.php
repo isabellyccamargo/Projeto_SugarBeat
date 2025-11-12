@@ -1,7 +1,5 @@
 <?php
 
-
-
 require_once '../../config/connection.php';
 require_once '../../repositories/ProdutoRepository.php';
 require_once '../../services/ProdutoService.php';
@@ -14,6 +12,20 @@ $produtoService = new ProdutoService($produtoRepository);
 $produtoController = new ProdutoController($produtoService);
 
 $produtos = $produtoController->get();
+
+$produtosAgrupados = [];
+
+if (isset($produtos) && is_array($produtos)) {
+    foreach ($produtos as $produto) {
+        $nomeCategoria = $produto->getNomeCategoria();
+
+        if (!isset($produtosAgrupados[$nomeCategoria])) {
+            $produtosAgrupados[$nomeCategoria] = [];
+        }
+
+        $produtosAgrupados[$nomeCategoria][] = $produto;
+    }
+}
 
 ?>
 
@@ -44,28 +56,41 @@ $produtos = $produtoController->get();
 
         <div class="produtos">
             <h2 class="sabores">Nossos Sabores</h2>
-            <div class="grid">
-                <?php
-                if (isset($produtos) && is_array($produtos)) {
-                    foreach ($produtos as $produto) {
-                        $emEstoque = $produto->getEstoque() > 0;
-                        echo '<div class="card">';
-                        echo '<img src="' . htmlspecialchars($produto->getImagem()) . '" alt="' . htmlspecialchars($produto->getNome()) . '">';
-                        echo '<p>' . htmlspecialchars($produto->getNome()) . '</p>';
-                       echo '<p>R$ ' . number_format($produto->getPreco(), 2, ',', '.') . '</p>';
 
-                        if ($emEstoque) {
-                            echo '<button class="adicionar-btn" data-id="' . htmlspecialchars($produto->getIdProduto()) . '">Adicionar</button>';
-                        } else {
-                            echo '<button class="adicionar-btn indisponivel" disabled>Indisponível</button>';
-                        }
-                        echo '</div>';
-                    }
-                } else {
-                    echo '<p>Nenhum produto encontrado.</p>';
-                }
-                ?>
-            </div>
+
+
+            <?php if (!empty($produtosAgrupados)): ?>
+
+                <?php foreach ($produtosAgrupados as $nomeCategoria => $listaProdutos): ?>
+
+                    <h3 class="nome-categoria" style="margin-top: 90px; margin-bottom: 15px; font-size: 40px; color:#3b2500ff;">
+                        <?php echo htmlspecialchars($nomeCategoria); ?>
+                    </h3>
+
+                    <div class="grid">
+
+                        <?php foreach ($listaProdutos as $produto):
+                            $emEstoque = $produto->getEstoque() > 0;
+                        ?>
+                            <div class="card">
+                                <img src="<?php echo htmlspecialchars($produto->getImagem()); ?>" alt="<?php echo htmlspecialchars($produto->getNome()); ?>">
+                                <p><?php echo htmlspecialchars($produto->getNome()); ?></p>
+                                <p>R$ <?php echo number_format($produto->getPreco(), 2, ',', '.'); ?></p>
+
+                                <?php if ($emEstoque): ?>
+                                    <button class="adicionar-btn" data-id="<?php echo htmlspecialchars($produto->getIdProduto()); ?>">Adicionar</button>
+                                <?php else: ?>
+                                    <button class="adicionar-btn indisponivel" disabled>Indisponível</button>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+
+                    </div> <?php endforeach; ?>
+
+            <?php else: ?>
+                <p>Nenhum produto encontrado.</p>
+            <?php endif; ?>
+        </div>
         </div>
 
         <div class="tabela-precos">
