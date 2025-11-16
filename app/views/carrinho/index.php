@@ -26,6 +26,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
     <title>Carrinho de Compras</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="../../../../fotos/imgsite.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Adiciona CSS para remover as setas dos inputs de tipo "number" -->
     <style>
         /* Oculta as setas para cima/baixo nos campos de número para navegadores baseados em WebKit (Chrome, Safari) */
@@ -105,7 +106,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                         <span id="final-total">R$ <?php echo number_format($total_carrinho, 2, ',', '.'); ?></span>
                     </div>
                     <div class="summary-details">
-                        <a href="finalizar_compra_gateway.php" class="checkout-btn" id="finalizar-pedido-btn">Finalizar Pedido</a>
+                        <a class="checkout-btn" id="finalizar-pedido-btn">Finalizar Pedido</a>
                         <div id="mensagem-erro-carrinho" style="color: red; margin-top: 20px; display: none; text-align: center;">O carrinho está vazio.</div>
                     </div>
                 </div>
@@ -123,15 +124,16 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
             const finalTotal = document.getElementById('final-total');
             const finalizarBtn = document.getElementById('finalizar-pedido-btn');
             const mensagemErro = document.getElementById('mensagem-erro-carrinho');
+            let qtdAnterior = 0;
 
             // Função para formatar valores em moeda
             const formatPrice = valor => `R$ ${parseFloat(valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
             // Atualiza carrinho no servidor (AJAX)
-            async function updateServerCart(id, quantidade) {
+            async function updateServerCart(id, input) {
                 const formData = new FormData();
                 formData.append('id_produto', id);
-                formData.append('quantidade', quantidade);
+                formData.append('quantidade', input.value);
 
                 try {
                     const res = await fetch('atualizar_quantidade.php', {
@@ -140,15 +142,23 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                     });
                     const data = await res.json();
 
+                    const response = {
+                        tipo: data.success ? 'success' : 'error',
+                        titulo: 'Carrinho',
+                        mensagem: data.message
+                    };
+
                     if (!data.success) {
-                        alert(data.message);
-                        return location.reload();
+                        mostrarMensagem(response.tipo, response.titulo, response.mensagem);
+                        input.value = qtdAnterior;
+                        return;
                     }
 
                     summaryItemsCount.textContent = `ITENS ${data.total_items}`;
                     summaryTotalPrice.textContent = finalTotal.textContent = formatPrice(data.total_price);
-                } catch {
-                    alert('Erro ao atualizar o carrinho.');
+                } catch (e) {
+                    console.error(e.message);
+                    alert(e.message);
                 }
             }
 
@@ -161,7 +171,7 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                 const preco = parseFloat(item.querySelector('.item-price').textContent.replace(/[R$\s.]/g, '').replace(',', '.'));
                 item.querySelector('.item-total').textContent = formatPrice(preco * qtd);
 
-                updateServerCart(id, qtd);
+                updateServerCart(id, input);
             }
 
             // Incrementa/decrementa quantidades
@@ -171,6 +181,8 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                 const input = e.target.closest('.cart-item').querySelector('.quantity-input');
                 const id = e.target.dataset.id;
                 const action = e.target.dataset.action;
+
+                qtdAnterior = input.value;
 
                 input.value = action === 'increment' ? +input.value + 1 : Math.max(1, +input.value - 1);
                 handleQuantityChange(id, input);
@@ -184,16 +196,73 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
             });
 
             // Impede finalizar se o carrinho estiver vazio
-            finalizarBtn?.addEventListener('click', e => {
+            finalizarBtn?.addEventListener('click', async (e) => {
+                e.preventDefault();
+
                 const numItens = parseInt(document.querySelector('.items-count').textContent) || 0;
+
+                // 1. Verificação de Carrinho Vazio
                 if (numItens === 0) {
-                    e.preventDefault();
                     mensagemErro.style.display = 'block';
-                } else {
-                    mensagemErro.style.display = 'none';
+                    return;
+                }
+
+                mensagemErro.style.display = 'none';
+
+                try {
+                    const res = await fetch('finalizar_compra_gateway.php', {
+                        method: 'POST'
+                    });
+                    const data = await res.json();
+
+                    if (data.redirect && data.redirect.includes('login')) {
+                        // Não logado: redireciona para o login
+                        window.location.href = data.redirect;
+                        return;
+                    }
+
+                    if (!data.success) {
+                        // Falha na Validação (Estoque Insuficiente)
+                        mostrarMensagem('error', 'Erro no Estoque', data.message);
+                        return;
+                    }
+
+                    window.location.href = data.redirect;
+                } catch (error) {
+                    console.error('Erro ao finalizar pedido:', error);
+                    mostrarMensagem('error', 'Erro de Comunicação', 'Não foi possível verificar o estoque. Tente novamente.');
+                }
+            });
+
+            cartItemsContainer.addEventListener('focusin', e => {
+                if (e.target.classList.contains('quantity-input')) {
+                    qtdAnterior = e.target.value;
                 }
             });
         });
+    </script>
+
+    <script>
+        // Utilidade para exibir mensagens personalizadas com SweetAlert2
+        function mostrarMensagem(tipo, titulo, mensagem) {
+            const cores = {
+                success: '#2f3e1d',
+                error: '#a94442',
+                warning: '#8a6d3b',
+                info: '#31708f'
+            };
+
+            Swal.fire({
+                icon: tipo,
+                title: titulo,
+                // Use 'html' em vez de 'text' para renderizar tags HTML
+                html: mensagem,
+                confirmButtonColor: cores[tipo] || '#2f3e1d',
+                background: '#fdfae5',
+                color: '#2f3e1d',
+                heightAuto: false
+            });
+        }
     </script>
 
 </body>

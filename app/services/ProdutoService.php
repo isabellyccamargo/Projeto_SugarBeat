@@ -76,9 +76,9 @@ class ProdutoService
 
                 if ($novaQuantidade > $estoque) {
                     return [
-                        'success' => false, 'message' => 'Estoque insuficiente para adicionar mais unidades.',
+                        'success' => false,
+                        'message' => 'Estoque insuficiente para adicionar mais unidades.',
                     ];
-                    
                 }
 
                 $_SESSION['carrinho'][$chave]['quantidade'] = $novaQuantidade;
@@ -104,6 +104,7 @@ class ProdutoService
             return ['success' => false, 'message' => 'Produto não encontrado.'];
         }
 
+        // guarda o estooque em uma variável
         $estoque = $produto->getEstoque();
         foreach ($_SESSION['carrinho'] as $chave => $item) {
             //verifica se o produto já está no carrinho

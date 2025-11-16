@@ -68,13 +68,23 @@ class PedidoController
             return $this->pedidoService->criarNovoPedido($pedido, $itens);
             http_response_code(201);
         } catch (Exception $e) {
-            throw $e;
+            $mensagemBruta = $e->getMessage();
+            $mensagemLimpa = "Não foi possível processar o seu pedido.";
+
+            if (preg_match('/SQLSTATE\[45000\].*? \d+ (.*)/s', $mensagemBruta, $matches)) {
+                $mensagemLimpa = $matches[1];
+            } else {
+
+                $mensagemLimpa = $mensagemBruta;
+            }
+
             http_response_code(400);
-            
+            throw new Exception($mensagemLimpa);
         }
     }
 
-     public function getPedidosPorCliente($clienteId) {
+    public function getPedidosPorCliente($clienteId)
+    {
         return $this->pedidoService->getPedidosPorCliente($clienteId);
     }
 }

@@ -39,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Redirecione de volta para a página do carrinho para mostrar a mensagem
         header('Location: ../../views/pedidos/index.php');
         exit();
-
     } catch (Exception $e) {
         // Em caso de erro, configure a mensagem de erro na sessão
         $_SESSION['alert_message'] = [
             'type' => 'error',
             'title' => 'Erro!',
-            'text' => 'Não foi possível processar o seu pedido. Por favor, tente novamente.'
+            // CÓDIGO CORRIGIDO
+            'text' => 'Não foi possível processar o seu pedido. ' . $e->getMessage()
         ];
 
         // Redirecione de volta para a página do carrinho para mostrar a mensagem

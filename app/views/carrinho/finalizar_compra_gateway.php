@@ -11,22 +11,23 @@ $conexao = Connection::connect();
 $produtoRepository = new ProdutoRepository($conexao);
 $produtoService = new ProdutoService($produtoRepository);
 
-$verificacao = $produtoService->verificarEstoqueCarrinho();
-
-// Se o cliente estiver logado
-if (isset($_SESSION['cliente_id'])) {
-    if (!$verificacao['success']) {
-        // Estoque insuficiente → volta pro carrinho
-        $_SESSION['erro_carrinho'] = $verificacao['message'];
-        header("Location: ../carrinho/index.php");
-        exit();
-    } else {
-        // Tudo certo → vai pros pedidos
-        header("Location: ../pedidos/index.php");
-        exit();
-    }
-} else {
-    // Não logado → redireciona pro login
-    header("Location: ../login/?origem=carrinho");
+// Se o cliente NÃO estiver logado, retornar imediatamente
+if (!isset($_SESSION['cliente_id'])) {
+    echo json_encode(['success' => false, 'message' => 'Usuário não logado.', 'redirect' => '../login/?origem=carrinho']);
     exit();
 }
+
+$verificacao = $produtoService->verificarEstoqueCarrinho();
+
+if (!$verificacao['success']) {
+    // 2. Estoque insuficiente: retorna a mensagem de erro
+    echo json_encode([
+        'success' => false, 
+        'message' => $verificacao['message']
+    ]);
+    exit();
+}
+
+echo json_encode(['success' => true, 'message' => 'Estoque verificado com sucesso.', 'redirect' => '../pedidos/index.php']);
+exit();
+?>

@@ -39,7 +39,8 @@ class ProdutoRepository implements IProdutoRepository
     {
         $stmt = $this->db->query("SELECT pro.id_produto, pro.nome, pro.ativo, pro.preco, pro.imagem, pro.estoque, cat.nome_categoria " .
             "  FROM produto pro " .
-            " INNER JOIN categoria cat on cat.id_categoria = pro.id_categoria;");
+            " INNER JOIN categoria cat on cat.id_categoria = pro.id_categoria " .
+            " WHERE pro.ativo = 1");
         $produtosData = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $produtos = [];
 
@@ -57,4 +58,6 @@ class ProdutoRepository implements IProdutoRepository
         }
         return $produtos;
     }
+
+    
 }
