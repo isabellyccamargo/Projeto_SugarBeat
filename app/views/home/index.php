@@ -57,8 +57,6 @@ if (isset($produtos) && is_array($produtos)) {
         <div class="produtos">
             <h2 class="sabores">Nossos Sabores</h2>
 
-
-
             <?php if (!empty($produtosAgrupados)): ?>
 
                 <?php foreach ($produtosAgrupados as $nomeCategoria => $listaProdutos): ?>

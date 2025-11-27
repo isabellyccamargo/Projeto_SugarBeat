@@ -126,10 +126,10 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
             const mensagemErro = document.getElementById('mensagem-erro-carrinho');
             let qtdAnterior = 0;
 
-            // Função para formatar valores em moeda
+
             const formatPrice = valor => `R$ ${parseFloat(valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 
-            // Atualiza carrinho no servidor (AJAX)
+
             async function updateServerCart(id, input) {
                 const formData = new FormData();
                 formData.append('id_produto', id);
@@ -158,50 +158,37 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                     summaryTotalPrice.textContent = finalTotal.textContent = formatPrice(data.total_price);
                 } catch (e) {
                     console.error(e.message);
-                    alert(e.message);
+                    mostrarMensagem('error', 'Erro', 'Não foi possível atualizar o carrinho no servidor.');
+                    input.value = qtdAnterior; // Reverte para a quantidade anterior em caso de erro de comunicação
                 }
             }
 
-            // Atualiza subtotal localmente e envia ao servidor
+
             function handleQuantityChange(id, input) {
                 let qtd = Math.max(1, parseInt(input.value) || 1);
                 input.value = qtd;
 
                 const item = input.closest('.cart-item');
-                const preco = parseFloat(item.querySelector('.item-price').textContent.replace(/[R$\s.]/g, '').replace(',', '.'));
-                item.querySelector('.item-total').textContent = formatPrice(preco * qtd);
+                // Pega o preço unitário e remove R$, espaços e troca vírgula por ponto
+                const precoElement = item.querySelector('.item-price');
+                const precoText = precoElement ? precoElement.textContent : 'R$ 0,00';
+                const preco = parseFloat(precoText.replace(/[R$\s.]/g, '').replace(',', '.'));
+
+                const itemTotalElement = item.querySelector('.item-total');
+                if (itemTotalElement) {
+                    itemTotalElement.textContent = formatPrice(preco * qtd);
+                }
 
                 updateServerCart(id, input);
             }
 
-            // Incrementa/decrementa quantidades
-            cartItemsContainer.addEventListener('click', e => {
-                if (!e.target.classList.contains('quantity-btn')) return;
+            // NOVA FUNÇÃO: Lida com a lógica de checkout de forma independente (sem precisar de evento de clique)
+            async function handleCheckout() {
+                // Garante que o número de itens seja lido corretamente
+                const itemsCountElement = document.querySelector('.items-count');
+                const numItensText = itemsCountElement ? itemsCountElement.textContent.trim().split(' ')[0] : '0';
+                const numItens = parseInt(numItensText) || 0;
 
-                const input = e.target.closest('.cart-item').querySelector('.quantity-input');
-                const id = e.target.dataset.id;
-                const action = e.target.dataset.action;
-
-                qtdAnterior = input.value;
-
-                input.value = action === 'increment' ? +input.value + 1 : Math.max(1, +input.value - 1);
-                handleQuantityChange(id, input);
-            });
-
-            // Digitação manual na quantidade
-            cartItemsContainer.addEventListener('input', e => {
-                if (e.target.classList.contains('quantity-input')) {
-                    handleQuantityChange(e.target.dataset.id, e.target);
-                }
-            });
-
-            // Impede finalizar se o carrinho estiver vazio
-            finalizarBtn?.addEventListener('click', async (e) => {
-                e.preventDefault();
-
-                const numItens = parseInt(document.querySelector('.items-count').textContent) || 0;
-
-                // 1. Verificação de Carrinho Vazio
                 if (numItens === 0) {
                     mensagemErro.style.display = 'block';
                     return;
@@ -213,25 +200,59 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                     const res = await fetch('finalizar_compra_gateway.php', {
                         method: 'POST'
                     });
+
                     const data = await res.json();
 
+                    // 1. Caso de Cliente NÃO LOGADO (O processa.login.php fará o redirect final para pedidos)
                     if (data.redirect && data.redirect.includes('login')) {
-                        // Não logado: redireciona para o login
                         window.location.href = data.redirect;
                         return;
                     }
 
                     if (!data.success) {
-                        // Falha na Validação (Estoque Insuficiente)
                         mostrarMensagem('error', 'Erro no Estoque', data.message);
                         return;
                     }
 
-                    window.location.href = data.redirect;
+                    // 2. Caso de sucesso e redirecionamento final (cliente logado, estoque ok)
+                    if (data.success && data.redirect) {
+                        window.location.href = data.redirect;
+                        return;
+                    }
                 } catch (error) {
                     console.error('Erro ao finalizar pedido:', error);
                     mostrarMensagem('error', 'Erro de Comunicação', 'Não foi possível verificar o estoque. Tente novamente.');
                 }
+            }
+
+            cartItemsContainer.addEventListener('click', e => {
+                if (!e.target.classList.contains('quantity-btn')) return;
+
+                const cartItem = e.target.closest('.cart-item');
+                if (!cartItem) return;
+
+                const input = cartItem.querySelector('.quantity-input');
+                const id = e.target.dataset.id;
+                const action = e.target.dataset.action;
+
+                if (!input || !id) return;
+
+                qtdAnterior = input.value;
+
+                input.value = action === 'increment' ? +input.value + 1 : Math.max(1, +input.value - 1);
+                handleQuantityChange(id, input);
+            });
+
+            cartItemsContainer.addEventListener('input', e => {
+                if (e.target.classList.contains('quantity-input')) {
+                    handleQuantityChange(e.target.dataset.id, e.target);
+                }
+            });
+
+            // O Listener do botão agora apenas chama a função handleCheckout
+            finalizarBtn?.addEventListener('click', (e) => {
+                e.preventDefault();
+                handleCheckout();
             });
 
             cartItemsContainer.addEventListener('focusin', e => {
@@ -239,11 +260,12 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
                     qtdAnterior = e.target.value;
                 }
             });
+
+            // O BLOCO AUTO-CHECKOUT FOI REMOVIDO POIS O processa.login.php AGORA FAZ O REDIRECIONAMENTO DIRETO APÓS O LOGIN.
         });
     </script>
 
     <script>
-        // Utilidade para exibir mensagens personalizadas com SweetAlert2
         function mostrarMensagem(tipo, titulo, mensagem) {
             const cores = {
                 success: '#2f3e1d',
@@ -255,7 +277,6 @@ $total_carrinho = $produtoService->getValorTotalCarrinho();
             Swal.fire({
                 icon: tipo,
                 title: titulo,
-                // Use 'html' em vez de 'text' para renderizar tags HTML
                 html: mensagem,
                 confirmButtonColor: cores[tipo] || '#2f3e1d',
                 background: '#fdfae5',

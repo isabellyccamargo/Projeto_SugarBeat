@@ -1,4 +1,6 @@
 <?php
+ob_clean(); // limpa qualquer saída antes
+header('Content-Type: application/json; charset=utf-8');
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }

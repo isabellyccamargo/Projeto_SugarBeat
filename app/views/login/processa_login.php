@@ -2,7 +2,9 @@
 // processa.login.php
 require_once '../../config/connection.php';
 require_once '../../repositories/ClienteRepository.php';
+require_once '../../repositories/ProdutoRepository.php';
 require_once '../../services/ClienteService.php';
+require_once '../../services/ProdutoService.php';
 require_once '../../controllers/ClienteController.php';
 require_once '../../models/Cliente.php';
 
@@ -38,8 +40,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             header("Location: ../pedidos");
                             break;
                         case 'carrinho':
-                            // Após o login, retorna para o guardião que, por sua vez, levará para a finalização.
-                            header("Location: ../carrinho/finalizar_compra_gateway.php");
+                            $produtoRepository = new ProdutoRepository($conexao);
+                            $produtoService = new ProdutoService($produtoRepository);
+
+                            $carrinho = $produtoService->getCarrinho();
+                            if (empty($carrinho)) {
+                                header("Location: ../carrinho/index.php?erro=" . urlencode("Seu carrinho está vazio."));
+                                exit();
+                            }
+
+                            header("Location: ../pedidos/index.php");
+
+                            exit();
                             break;
                         default:
                             header("Location: ../cadastro/index.php?editar=true");
